@@ -1,0 +1,61 @@
+.product-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 15em;
+    padding: 10px;
+    margin: 10px;
+  }
+  
+  .ImageDiv img {
+    width: 40em;
+    height: auto;
+    border-radius: 5px;
+  }
+  
+  .PrincipalData {
+    margin-top: 10px;
+  }
+  
+  .PrincipalData p {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .PrincipalData h3 {
+    font-size: 18px;
+    margin: 5px 0;
+  }
+  
+  .SecondaryData {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .SecondaryData p {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .AddCartButton {
+    /* Colocamos el botón al final */
+    margin-top: auto;
+    background-color: #1d9d00;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .AddCartButton:hover {
+    background-color: #006b09;
+
+  }
+  @media screen and (max-width: 768px) {
+    .product-card {
+      width: 90%;
+    }
+  }

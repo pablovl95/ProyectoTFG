@@ -1,0 +1,16 @@
+/* Home.css */
+
+.HomeContainer {
+    width: 100%;
+
+  }
+  .HomeTitle {
+    font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .data-container{
+    margin: auto;
+    width: 80%;
+  }

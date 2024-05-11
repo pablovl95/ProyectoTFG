@@ -1,123 +1,226 @@
-.navbar {
-  display: flex;
-  justify-content: space-between;
-}
-
-.navbar-default {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 0 20px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-mobile {
-  display: none;
-}
-
-.navbar-logo img {
-  width: 100%;
-  height: 50px;
-}
-
-.search-bar {
-  display: flex;
-  width: 100%;
-  margin-left: 2em;
-  margin-right: 1em;
-}
-
-.search-container {
-  position: relative;
-  width: 100%;
-}
-
-.search-bar input {
-  width: calc(100% - 36px);
-  height: 2em;
-  border-radius: 1em;
-}
-
-.search-icon {
-  position: absolute;
-  right: 1em;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-}
-
-.nav-links > div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-right: 1em;
-  margin-left: 1em;
-  cursor: pointer;
-}
-
-@media screen and (max-width: 768px) {
-  .navbar-default {
-    display: none;
-  }
-
-  .navbar-mobile {
-    display: block;
-    width: 100%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    /* Añadido para dar un poco de espacio */
-  }
-
-  .upperbar {
+.nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    margin-bottom: 0.5em;
-    background-color: #ffffff;
-  }
+    background-color: #1d640e;
+    color: white;
+    position: sticky;
+    top: 0;
+}
 
-  .navbar-logo {
+
+.nav .title {
+    font-size: 1.5rem;
+    margin: 1rem 0 0.5rem 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+.nav ul {
     display: flex;
-    align-items: center;
-    width: 100%;
-  }
+}
 
-  .navbar-logo img {
-    margin-left: 1em;
-    width: 30px;
-    height: 30px;
-  }
+.nav ul li {
+   list-style: none; 
+}
 
-  .search-bar {
-    display: flex;
-    width: 100%;
-    margin: 0 0;
-    border-radius: 2em;
-  }
+.nav ul li a {
+    display: block;
+    text-decoration: none;
+    color: white;
+    padding: 0.5rem;
+    margin: 0 0.5rem;
+    border-radius: 0.5rem;
+}
 
-  .search-container {
-    width: 100%;
-    position: relative;
-  }
+.nav ul li a:not(.active):hover {
+    background-color:#17480d ;
+}
 
-  .search-bar input {
-    width: calc(100% - 36px);
-    height: 2em;
-    border-radius: 1em;
-  }
-
-  .search-icon {
-    align-items: center;
+.nav .menu {
+    display: none;
     position: absolute;
-    right: 1.5em;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+    top: 0.75rem;
+    right: 0.5rem;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 2.25rem;
+    height: 2rem;
+}
+.SearchBar-default{
+    position:relative;
+    display: flex;
+    align-items: center;
+    margin: 1rem 1rem 0rem 1rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    background-color: #ffffff;
+
+}
+.SearchBar-default input {
+    width: 95%;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+
+}
+.IconSearch {
+    position: absolute;
+    right: 0.75rem;
+    color: white;
+    cursor: pointer;
+}
+.nav .menu span {
+    height: 0.4rem;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 0.2rem;
+}
+.icons{
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+}
+.categories {
+
+  display: flex;
+  justify-content: center;
+  background-color: #1d640e;
+  padding-bottom: 1rem;
+}
+
+.categories ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories ul li {
+  margin: 0 10px;
+}
+
+.categories ul li a {
+  text-decoration: none;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+.categories ul li a:hover {
+  background-color: #17480d;
+  padding-top:0.5rem;
+}
+.SearchBar-mobile{
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .nav {
+        position: relative;
+        flex-direction: row; 
+    }
+    .nav .title {
+        font-size: 1.5rem;
+        margin: 1rem 0  1rem -5rem;
+        font-weight: bold;
+        text-decoration: none;
+        color: white;
+    }
+    
+    .nav .menu {
+        display:flex;
+        margin-left: 0.5rem;
+        position: relative; /* Ajustar la posición del menú */
+        top: auto;
+        right: auto;
+
+    }
+
+    .nav ul {
+        display: flex;
+        flex-direction: row; /* Cambiar la dirección de la lista de columna a fila */
+        justify-content: space-around; /* Alinear los elementos horizontalmente */
+        width: auto; /* Ajustar el ancho automáticamente */
+        margin-bottom: 0; /* Eliminar margen inferior */
+    }
+
+    .nav ul li {
+        width: auto;
+        text-align: center;
+    }
+
+    .nav ul li a {
+        margin: 0.2rem 0; /* Ajustar el margen superior e inferior */
+    }
+
+    .SearchBar-default {
+        display: none;
+    }
+
+    .SearchBar-mobile {
+        display: flex;
+        padding: 0.5rem ;
+        position: relative;
+        align-items: center;
+        border-radius: 0.5rem;
+        width: 90%;
+        border: #17480d 1px solid;
+        background-color: #ffffff;
+    }
+
+    .SearchBar-mobile input {
+        width: 100%;
+        border: none;
+        border-radius: 0.5rem;
+    }
+
+    .icons {
+        display: flex;
+        align-items: center;
+        margin-top:0;
+    }
+    .categories {
+        display: none;
+    }
+    .close-icon {
+        font-weight: bold;
+        color: #ffffff;
+        font-size: x-large;
+        position: absolute;
+        right: 2rem;
+        top: 1rem;
+
+      }
+      .menu-categories {
+        position: inherit;
+        list-style: none; 
+        background-color: #17480d;
+        width: 66%;
+        height: 100%;
+        text-align: left; /* Alinea el texto a la izquierda */
+      }
+      
+      .category-title {
+        font-weight: bold;
+        color: #ffffff;
+        font-size: larger;
+        margin: 1rem 0 1rem 1rem;
+      }
+      
+      .menu-categories li {
+        margin-left:3rem;
+        margin-bottom: 1rem; /* Espacio entre elementos de la lista */
+      }
+      
+      .menu-categories li a {
+        text-decoration: none; /* Quita el subrayado predeterminado del enlace */
+        color: #ffffff; /* Color del texto */
+      }
+      
+      .menu-categories li a:hover {
+        color: #137200; /* Cambia el color del texto al pasar el ratón sobre él */
+      }
+      
 }

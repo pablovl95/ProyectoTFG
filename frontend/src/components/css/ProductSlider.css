@@ -1,0 +1,26 @@
+.slider-container {
+  position: relative;
+  margin-bottom: 3em;
+}
+
+.slider-controls {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between; /* Esto distribuye los botones a los extremos */
+  width: 100%; /* Asegura que los botones ocupen el ancho completo */
+}
+
+.slider-control-button-left,
+.slider-control-button-right {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border:none;
+}
+
+.slider-control-button-left:hover,
+.slider-control-button-right:hover {
+  background-color: #009b1f;
+}

@@ -1,0 +1,26 @@
+.Categorys-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #b65b5b;
+    border-bottom: 1em;
+    border-width: 4em;
+    border-color: #72b65b;
+    padding: 10px 0;
+  }
+  
+  .Categorys-bar a {
+    text-decoration: none;
+    color: #333;
+    margin: 0 10px;
+    font-size: 16px;
+  }
+  
+  .Categorys-bar a:hover {
+    color: #007bff;
+  }
+  @media screen and (max-width: 768px) {
+    .Categorys-bar {
+      display: none;
+    }
+  }

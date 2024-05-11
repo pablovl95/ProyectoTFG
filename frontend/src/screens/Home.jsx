@@ -1,10 +1,37 @@
 import React from 'react';
+import ProductSlider from '../components/ProductSlider';
 
+import "./css/Home.css"; // Importa tus estilos CSS aquí
 function Home ()  {
+
+  
+  const sliderList = [
+    {
+      "id": 1,
+      "name": "slider1",
+      "imagen": "/slider1.png"
+    },
+    {
+      "id": 2,
+      "name": "slider2",
+      "imagen": "/slider2.png"
+    },
+    {
+      "id": 3,
+      "name": "slider3",
+      "imagen": "/slider3.png"
+    }
+  ]
+
   return (
-    <div>
-      <h2>Home</h2>
-      <p>Bienvenido a la página de inicio</p>
+    <div className="HomeContainer">
+      <ProductSlider sliderList={sliderList}/>
+      <div className='data-container'>
+      <h1 className="HomeTitle">
+      Productos más vendidos
+      </h1>
+      </div>
+      
     </div>
   );
 }
