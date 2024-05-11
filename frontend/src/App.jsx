@@ -10,6 +10,7 @@ import Product from "./screens/Product.jsx";
 
 function App() {
   const [login, setLogin] = useState(false);
+  const [register, setRegister] = useState(false);
 useEffect(() => {
   console.log("Login status: ", login);
 }, [login]);
