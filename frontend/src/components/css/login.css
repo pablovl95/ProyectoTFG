@@ -121,11 +121,59 @@
     background-color: #f2f2f2;
   }
   
-  @media (max-width: 768px) {
-    .login-container {
-        height: 100%;
-        width: 100%; 
-        padding: 5em;
-        align-items: center;
-    }
+/* Agrega estilos para dispositivos móviles */
+@media (max-width: 480px) {
+  .login-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px; /* Ajusta el ancho máximo para un mejor aspecto en dispositivos móviles */
+    padding: 1em;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 0.5em;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 998;
+  }
+  .buttonSwitchOn,
+  .buttonSwitchOff {
+    width: 100%; /* Ajusta el ancho de los botones de cambio */
+  }
+
+  .close-div {
+    top: 0.5em; /* Ajusta la posición del botón de cierre */
+    right: 0.5em;
+  }
+
+
+  h2 {
+    font-size: 1.5em; /* Ajusta el tamaño del título */
+  }
+
+  .form-group {
+    width: 80%;
+    margin: auto;
+  }
+  .form-group input {
+    margin-bottom: 1rem;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    padding: 6px; /* Reduce el relleno de los campos de entrada */
+    font-size: 0.9em; /* Reduce el tamaño de la fuente */
+  }
+
+  .forgot-password {
+    font-size: 0.8em; /* Reduce el tamaño del texto de contraseña olvidada */
+  }
+
+  button[type="submit"] {
+    font-size: 1em; /* Ajusta el tamaño de fuente del botón de enviar */
+  }
+
+  .social-login {
+    margin-top: 10px; /* Reduce el margen superior de la sección de inicio de sesión social */
+  }
 }

@@ -81,6 +81,7 @@ const imageGalleryRef = React.createRef(null);
         <h3>Acerca de este producto</h3>
         <p>{product.description}</p>
       </div>
+
     </div>
   );
 };

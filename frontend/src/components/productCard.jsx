@@ -10,13 +10,13 @@ const ProductCard = ({ product }) => {
                 <img src={product.imagen} alt={product.nombre} />
             </div>
             <div className="PrincipalData">
-                <p>{product.categoria}</p>
                 <a href={`/Product/${product.id}`}>{product.nombre}</a>
             </div>
             <div className="SecondaryData">
                 <p>{product.calification}</p>
-                <p>{product.precio}</p>
+                <p>{product.categoria}</p>
             </div>
+            <p>{product.precio}</p>
             <div className="AddCartButton">
                     Añadir al carrito
                 </div>

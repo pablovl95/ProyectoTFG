@@ -7,7 +7,7 @@ import  About  from "./screens/About";
 import  Home  from "./screens/Home";
 import  Search  from "./screens/Search";
 import Product from "./screens/Product";
-
+import Footer from "./components/Footer";
 function App() {
   const [login, setLogin] = useState(false);
   const [register, setRegister] = useState(false);
@@ -23,6 +23,7 @@ useEffect(() => {
         <Route path="/product/:id" element={<Product />} />
         <Route path="/search" element={<Search />} />
       </Routes>
+      <Footer/>
       {login && (
           <div className="overlay">
             <Login onClose={() => setLogin(false)} onRegister={() => setRegister(true) && setLogin(false)} />
