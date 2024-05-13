@@ -2,24 +2,28 @@ import React from 'react';
 import './css/productCard.css';
 import { Link } from 'react-router-dom';
 const ProductCard = ({ product }) => {
+    const imageUrls = product?.ProductImages.slice(1, -1).split(',');
+
+    // Obtener la primera URL de imagen del producto
+    const firstImageUrl = imageUrls[0]?.trim();
 
     return (
-       
+
         <div className="product-card" >
             <div className="ImageDiv">
-                <img src={product.imagen} alt={product.nombre} />
+                <img src={firstImageUrl} alt={product?.ProductName} />
             </div>
             <div className="PrincipalData">
-                <a href={`/Product/${product.id}`}>{product.nombre}</a>
+                <a href={`/Product/${product?.ProductID}`}>{product?.ProductName}</a>
             </div>
             <div className="SecondaryData">
-                <p>{product.calification}</p>
-                <p>{product.categoria}</p>
+                <p>{product?.Rating}</p>
+                <p>{product?.PrincipalCategoryId}</p>
             </div>
-            <p>{product.precio}</p>
+            <p>{product?.Price}</p>
             <div className="AddCartButton">
-                    Añadir al carrito
-                </div>
+                Añadir al carrito
+            </div>
         </div>
     );
 };
