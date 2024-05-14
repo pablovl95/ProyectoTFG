@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { IconAdjustmentsAlt } from '@tabler/icons-react';
 import { ClipLoader } from 'react-spinners';
-import ProductCard from '../components/ProductCard';
+import ProductCard from '../components/productCard';
 import './css/Search.css';
 
 const Search = () => {
@@ -19,7 +19,7 @@ const Search = () => {
   const backendUrl = process.env.NODE_ENV === 'development'
     ? 'http://localhost:5000'
     : process.env.REACT_APP_BACKEND_URL;
-
+console.log(backendUrl);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const productsPerPage = 10;
