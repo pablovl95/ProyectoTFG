@@ -22,6 +22,7 @@ const Product = () => {
   const fetchProducts = async () => {
     setLoading(true); // Set loading to true before fetching data
     try {
+      console.log(`${backendUrl}/api/v1/products?ProductID=${params.id}`)
       const productResponse = await fetch(`${backendUrl}/api/v1/products?ProductId=${params.id}`);
       if (!productResponse.ok) {
         throw new Error('Error fetching product data');

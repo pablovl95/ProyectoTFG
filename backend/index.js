@@ -38,39 +38,35 @@ app.get('/api/v1/products', async (req, res) => {
         AND = " AND ";
       }
       if ('q' in req.query) {
-        console.log(req.query.q);
         StringQuery += `(Products.ProductName LIKE '%${req.query.q}%' OR Products.ProductDescription LIKE '%${req.query.q}%')`;
         StringQuery += AND;
       } if ('PrincipalCategoryId' in req.query) {
-        console.log(req.query.PrincipalCategoryId);
         StringQuery += `Products.PrincipalCategoryId = ${req.query.PrincipalCategoryId}`;
         StringQuery += AND;
       }
       if ('ShopID' in req.query) {
-        console.log(req.query.ShopID);
         StringQuery += `Products.ShopID = ${req.query.ShopID}`;
         StringQuery += AND;
       }
       if ('MinPrice' in req.query) {
-        console.log(req.query.MinPrice);
         StringQuery += `Products.Price >= ${req.query.MinPrice}'`;
         StringQuery += AND;
       }
       if ('MaxPrice' in req.query) {
-        console.log(req.query.MaxPrice);
         StringQuery += `Products.Price <= ${req.query.MaxPrice}`;
         StringQuery += AND;
       } if ('MinRating' in req.query) {
-        console.log(req.query.MinRating);
         StringQuery += `Products.Rating >= ${req.query.customerRating}`;
         StringQuery += AND;
       } if ('MaxRating' in req.query) {
-        console.log(req.query.MaxRating);
         StringQuery += `Products.Rating <= ${req.query.customerRating}`;
         StringQuery += AND;
       } if ('SecundaryCategoryId' in req.query) {
-        console.log(req.query.SecundaryCategoryId);
         StringQuery += `Products.SecundaryCategoryId = ${req.query.SecundaryCategoryId}`;
+        StringQuery += AND;
+      }
+      if ('ProductID' in req.query) {
+        StringQuery += `Products.ProductID = ${req.query.ProductID}`;
         StringQuery += AND;
       }
       if ( StringQuery.endsWith("AND ")){
