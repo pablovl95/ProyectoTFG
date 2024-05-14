@@ -3,7 +3,7 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import 'dotenv/config';
-import { createClient } from 'libsql';
+import { createClient } from "@libsql/client";
 
 const db = createClient({
   url: process.env.LIBSQL_URL,
