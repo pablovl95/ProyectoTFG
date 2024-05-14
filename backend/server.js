@@ -18,6 +18,11 @@ const PORT = 5000;
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
+
+app.get('/', (req, res) => {
+  res.send('Hola Mundo');
+});
+
 app.get('/api/v1/users', async (req, res) => {
   data = await db.execute("SELECT * FROM Users");
   res.status(200).send(data.rows);
