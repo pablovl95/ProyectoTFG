@@ -1,88 +1,10 @@
--- Table for storing addresses
-CREATE TABLE Addresses (
-    AddressID INTEGER PRIMARY KEY,
-    AddressType TEXT NOT NULL,
-    StreetAddress TEXT NOT NULL,
-    StreetNumber TEXT,
-    Floor TEXT,
-    Staircase TEXT
-);
+DROP TABLE IF EXISTS Reviews;
+DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Products;
+DROP TABLE IF EXISTS Categories;
+DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS Shops;
 
--- Table for storing orders
-CREATE TABLE Orders (
-    OrderID INTEGER PRIMARY KEY,
-    ChosenProducts TEXT, -- Assuming a list of product IDs separated by commas
-    UserID INTEGER NOT NULL, -- Foreign key to link with Users table
-    StoreID INTEGER NOT NULL, -- Foreign key to link with Stores table
-    SelectedDeliveryPersonID INTEGER, -- Foreign key to link with Users table (delivery person)
-    OrderDateTime DATETIME,
-    OrderStatus TEXT CHECK(OrderStatus IN ('Pending', 'In Progress', 'Completed', 'Cancelled', 'Refunded')) NOT NULL,
-    DeliveryInformation TEXT,
-    PaymentDetails TEXT
-);
-
-
--- Table for storing customer service chat messages
-CREATE TABLE CustomerServiceMessages (
-    MessageID INTEGER PRIMARY KEY,
-    SenderUserID INTEGER NOT NULL, -- Foreign key to link with Users table (customer)
-    ReceiverWorkerID INTEGER NOT NULL, -- Foreign key to link with Users table (customer service worker)
-    MessageDateTime DATETIME,
-    MessageContent TEXT,
-    MessageStatus TEXT CHECK(MessageStatus IN ('Read', 'Unread')) NOT NULL
-);
-
--- Table for storing pickup points
-CREATE TABLE PickupPoints (
-    PickupPointID INTEGER PRIMARY KEY,
-    CompanyName TEXT NOT NULL,
-    AddressID INTEGER NOT NULL, -- Foreign key to link with Addresses table
-    UNIQUE(CompanyName, AddressID)
-);
-
--- Table for storing news sections
-CREATE TABLE NewsSections (
-    SectionID INTEGER PRIMARY KEY,
-    SectionTitle TEXT NOT NULL,
-    SectionDescription TEXT,
-    AssociatedProducer INTEGER NOT NULL, -- Foreign key to link with Users table (producer)
-    FollowersCount INTEGER
-);
-
--- Table for storing articles in news sections
-CREATE TABLE NewsArticles (
-    ArticleID INTEGER PRIMARY KEY,
-    ArticleTitle TEXT NOT NULL,
-    ArticleDescription TEXT,
-    ArticleContent TEXT,
-    PublicationDateTime DATETIME,
-    AuthorID INTEGER NOT NULL, -- Foreign key to link with Users table
-    SectionID INTEGER NOT NULL, -- Foreign key to link with NewsSections table
-    FOREIGN KEY (SectionID) REFERENCES NewsSections(SectionID)
-);
-
--- Table for storing monthly statistics
-CREATE TABLE MonthlyStatistics (
-    StatisticID INTEGER PRIMARY KEY,
-    StoreID INTEGER NOT NULL, -- Foreign key to link with Stores table
-    MonthlySales INTEGER,
-    MonthlyProfits REAL,
-    BestSellingProduct TEXT,
-    LeastSellingProduct TEXT
-);
-
--- Table for storing pickup point opening requests
-CREATE TABLE PickupPointOpeningRequests (
-    RequestID INTEGER PRIMARY KEY,
-    ApplicantFirstName TEXT NOT NULL,
-    ApplicantLastName TEXT NOT NULL,
-    ApplicantPhone TEXT,
-    ApplicantProposal TEXT
-);
--- USado ahora mismo
-
-
--- Table for storing product categories
 CREATE TABLE
   Categories (
     CategoryID INTEGER PRIMARY KEY,
@@ -90,7 +12,6 @@ CREATE TABLE
     CategoryDescription TEXT
   );
 
--- Table for storing stores
 CREATE TABLE
   Shops (
     ShopID INTEGER PRIMARY KEY,
@@ -104,32 +25,20 @@ CREATE TABLE
     TotalSales INTEGER DEFAULT 0 -- Nuevo campo para total de ventas
   );
 
-CREATE TABLE Users (
-    ID INTEGER PRIMARY KEY,
+  CREATE TABLE Users (
+    UserID INTEGER PRIMARY KEY,
     FirstName TEXT NOT NULL,
     LastName TEXT NOT NULL,
     Email TEXT UNIQUE NOT NULL,
-    Password TEXT NOT NULL,
+    ProfileImageUrl TEXT DEFAULT 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+    Password TEXT,
     Phone TEXT,
     UserType TEXT CHECK(UserType IN ('delivery', 'producer', 'consumer', 'administrator')) NOT NULL,
     AssociatedStoreID INTEGER,
     AccountStatus TEXT CHECK(AccountStatus IN ('active', 'inactive')) NOT NULL,
     FOREIGN KEY (AssociatedStoreID) REFERENCES Shops(ShopID)
 );
--- Table for storing product reviews
-CREATE TABLE Reviews (
-    ReviewID INTEGER PRIMARY KEY,
-    ProductID INTEGER NOT NULL,
-    Comment TEXT,
-    UserID INTEGER NOT NULL,
-    AssignedRating INTEGER CHECK (AssignedRating BETWEEN 1 AND 5),
-    FOREIGN KEY (ProductID) REFERENCES Products(ID),
-    FOREIGN KEY (UserID) REFERENCES Users(ID)
-);
 
-
--- Table for storing products
--- Table for storing products
 CREATE TABLE
   Products (
     ProductID INTEGER PRIMARY KEY,
@@ -147,9 +56,99 @@ CREATE TABLE
     FOREIGN KEY (PrincipalCategoryId) REFERENCES Categories (CategoryID),
     FOREIGN KEY (ShopID) REFERENCES Shops (ShopID)
   );
+CREATE TABLE Reviews (
+    ReviewID INTEGER PRIMARY KEY,
+    ProductID INTEGER NOT NULL,
+    Comment TEXT,
+    UserID INTEGER NOT NULL,
+    AssignedRating INTEGER CHECK (AssignedRating BETWEEN 1 AND 5),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+);
 
 
 
+INSERT INTO
+  Shops (
+    ShopID,
+    ShopName,
+    UserID,
+    AddressID,
+    ShopDescription,
+    OpeningHours,
+    Phone,
+    Email,
+    TotalSales
+  )
+VALUES
+  (
+    1,
+    'Tienda Orgánica',
+    1,
+    1,
+    'Tienda especializada en productos orgánicos',
+    'Lun-Vie: 8:00-20:00, Sáb-Dom: 9:00-18:00',
+    '+1234567890',
+    'info@tiendaorganica.com',
+    0
+  ),
+  (
+    2,
+    'Supermercado Saludable',
+    2,
+    2,
+    'Ofrecemos una amplia variedad de productos saludables',
+    'Lun-Sáb: 7:00-21:00, Dom: 8:00-18:00',
+    '+0987654321',
+    'contacto@supermercadosaludable.com',
+    0
+  );
+
+-- Actualización de los datos para la categoría en español
+INSERT INTO
+  Categories (CategoryID, CategoryName, CategoryDescription)
+VALUES
+  (
+    1,
+    'Frutas',
+    'Productos frescos y deliciosos directamente de la naturaleza'
+  ),
+  (
+    2,
+    'Verduras',
+    'Variedad de verduras frescas y orgánicas para una alimentación saludable'
+  ),
+  (
+    3,
+    'Productos de Colmena',
+    'Delicias naturales producidas por nuestras amigables abejas'
+  ),
+  (
+    4,
+    'Lácteos',
+    'Productos lácteos frescos y nutritivos para tu dieta diaria'
+  ),
+  (
+    5,
+    'Carne',
+    'Carnes frescas y de calidad para satisfacer tus antojos'
+  ),
+  (
+    6,
+    'Huevos',
+    'Huevos frescos y orgánicos, directamente del gallinero a tu mesa'
+  ),
+  (
+    7,
+    'Cereales',
+    'Variedad de cereales nutritivos para un desayuno energético'
+  );
+
+  INSERT INTO Users (FirstName, LastName, Email, Password, Phone, UserType, AssociatedStoreID, AccountStatus)
+VALUES
+    ('Juan', 'Pérez', 'juan@example.com', 'contraseña123', '123456789', 'consumer', NULL, 'active'),
+    ('María', 'Gómez', 'maria@example.com', 'password456', '987654321', 'producer', 1, 'active'),
+    ('Carlos', 'López', 'carlos@example.com', 'clave789', '567891234', 'delivery', NULL, 'inactive');
 
 
 INSERT INTO
@@ -178,7 +177,7 @@ VALUES
     4,
     100,
     0,
-    0,
+    2,
     '[https://rodaleinstitute.org/wp-content/uploads/Apples-2-600x400.jpg, https://rodaleinstitute.org/wp-content/uploads/Apples-2-600x400.jpg, https://freshindiaorganics.com/cdn/shop/products/Apples.jpg?v=1686739530]',
     1
   ),
@@ -192,7 +191,7 @@ VALUES
     5,
     250,
     0,
-    0,
+    1,
     '[https://chiquitabrands.com/wp-content/uploads/2019/08/Organics2.jpg,https://www.melissas.com/cdn/shop/products/image-of-organic-bananas-organics-14763756421164_600x600.jpg?v=1616958064, https://freshindiaorganics.com/cdn/shop/products/Bananas-Edited.jpg?v=1686727223]',
     2
   ),
@@ -220,7 +219,7 @@ VALUES
     4,
     22,
     0,
-    0,
+    2,
     '[https://attra.ncat.org/wp-content/uploads/2022/04/tomato.jpg, https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3uVQxZMhsqJwrU63P9VmbssIPtbPl248-cOq_CGCC1Q&s, https://media.npr.org/assets/img/2013/02/20/organictomatoess-9eb3642825e1b3be1b481c1592b4925c2cf3ae29.jpg]',
     2
   ),
@@ -308,89 +307,6 @@ VALUES
     '[https://www.diggers.com.au/cdn/shop/products/cucumber-double-yield-s0961_2ebf04c5-a6d1-4103-ab90-dd15c4559037_2048x.jpg, https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM_whNNlOFR2HplqElYVJrabjPSsKie_jPDCaLOZeeFw&s, https://mckenzieseeds.com/cdn/shop/products/Mck_VegetableHL_140118_Cucumber_NationalPickling_front_0bb82ee0-e27a-4391-b7b9-8de4fa362a35.jpg?v=1652889297]',
     2
   );
-
-INSERT INTO
-  Shops (
-    ShopID,
-    ShopName,
-    UserID,
-    AddressID,
-    ShopDescription,
-    OpeningHours,
-    Phone,
-    Email,
-    TotalSales
-  )
-VALUES
-  (
-    1,
-    'Tienda Orgánica',
-    1,
-    1,
-    'Tienda especializada en productos orgánicos',
-    'Lun-Vie: 8:00-20:00, Sáb-Dom: 9:00-18:00',
-    '+1234567890',
-    'info@tiendaorganica.com',
-    0
-  ),
-  (
-    2,
-    'Supermercado Saludable',
-    2,
-    2,
-    'Ofrecemos una amplia variedad de productos saludables',
-    'Lun-Sáb: 7:00-21:00, Dom: 8:00-18:00',
-    '+0987654321',
-    'contacto@supermercadosaludable.com',
-    0
-  );
-
--- Actualización de los datos para la categoría en español
-INSERT INTO
-  Categories (CategoryID, CategoryName, CategoryDescription)
-VALUES
-  (
-    1,
-    'Frutas',
-    'Productos frescos y deliciosos directamente de la naturaleza'
-  ),
-  (
-    2,
-    'Verduras',
-    'Variedad de verduras frescas y orgánicas para una alimentación saludable'
-  ),
-  (
-    3,
-    'Productos de Colmena',
-    'Delicias naturales producidas por nuestras amigables abejas'
-  ),
-  (
-    4,
-    'Lácteos',
-    'Productos lácteos frescos y nutritivos para tu dieta diaria'
-  ),
-  (
-    5,
-    'Carne',
-    'Carnes frescas y de calidad para satisfacer tus antojos'
-  ),
-  (
-    6,
-    'Huevos',
-    'Huevos frescos y orgánicos, directamente del gallinero a tu mesa'
-  ),
-  (
-    7,
-    'Cereales',
-    'Variedad de cereales nutritivos para un desayuno energético'
-  );
-
-  INSERT INTO Users (FirstName, LastName, Email, Password, Phone, UserType, AssociatedStore, AccountStatus)
-VALUES
-    ('Juan', 'Pérez', 'juan@example.com', 'contraseña123', '123456789', 'consumer', NULL, 'active'),
-    ('María', 'Gómez', 'maria@example.com', 'password456', '987654321', 'producer', 'Tienda de Ropa', 'active'),
-    ('Carlos', 'López', 'carlos@example.com', 'clave789', '567891234', 'delivery', NULL, 'inactive');
-
 -- Tabla de revisiones
 INSERT INTO Reviews (ProductID, Comment, UserID, AssignedRating)
 VALUES
