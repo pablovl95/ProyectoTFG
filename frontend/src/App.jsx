@@ -8,25 +8,38 @@ import  Home  from "./screens/Home";
 import  Search  from "./screens/Search";
 import Product from "./screens/Product";
 import Footer from "./components/Footer";
+import Shop from "./screens/Shop";
+import Cart from "./screens/Cart";
+import { auth } from "./auth";
+
 function App() {
-  const [login, setLogin] = useState(false);
+  const [loginView, setLoginView] = useState(false);
   const [register, setRegister] = useState(false);
-useEffect(() => {
-  console.log("Login status: ", login);
-}, [login]);
+  const [product, setProduct] = useState({});
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    // Verifica si el usuario está autenticado al cargar la aplicación
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user); // Actualiza el estado del usuario
+    });
+
+    return () => unsubscribe(); // Se asegura de desuscribirse cuando se desmonta el componente
+  }, []);
   return (
     <div className="App">
-      <Navbar login={() => setLogin(true)} />
+      <Navbar loginView={() => setLoginView(true)} user={user} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/product/:id" element={<Product />} />
-        <Route path="/search" element={<Search />} />
+        <Route path="/product/:id" element={<Product poduct={product}/>} />
+        <Route path="/search" element={<Search/>} />
+        <Route path="/shop/:id" element={<Shop/>} />
+        <Route path="/cart" element={<Cart/>} />
       </Routes>
       <Footer/>
-      {login && (
+      {loginView && !user &&(
           <div className="overlay">
-            <Login onClose={() => setLogin(false)} onRegister={() => setRegister(true) && setLogin(false)} />
+            <Login onClose={() => setLoginView(false)} onRegister={() => setRegister(true) && setLoginView(false)} />
           </div>
         )}
     </div>

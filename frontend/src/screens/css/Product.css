@@ -2,7 +2,8 @@
   display: flex;
   justify-content: space-between;
   width: 80%;
-  margin:auto;
+  margin-top: 1rem;
+  margin:2rem auto;
 }
 
 .product-image {
@@ -10,8 +11,7 @@
 }
 
 .product-details {
-  padding: 20px;
-  width: 50%;
+  width: 60%;
 }
 
 .product-header {
@@ -35,23 +35,25 @@
 
 .quantity-container {
   display: flex;
-  align-items: center;
+  text-align: center;
+  width: 30%;
+  margin: auto;
   margin-bottom: 10px;
 }
 
 .quantity-container label {
-  margin-right: 10px;
+  margin-right: 15px;
 }
 
 .quantity-container div {
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 0.25rem 0.5rem;
   border: 1px solid #ccc;
   border-radius: 3px;
 }
 
 .quantity-container input {
-  width: 50px;
+  width: 30px;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 3px;
@@ -74,4 +76,26 @@
 h3 {
   font-size: 20px;
   margin-top: 20px;
+}
+.review-item {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+.review-item div {
+  display: flex;
+  align-items: center;
+}
+.review-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.review-item h4 {
+  margin-left: 1rem;
+}
+.review-item p {
+  margin: 0;
 }

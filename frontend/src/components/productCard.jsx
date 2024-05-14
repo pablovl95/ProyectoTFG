@@ -8,23 +8,23 @@ const ProductCard = ({ product }) => {
     const firstImageUrl = imageUrls[0]?.trim();
 
     return (
-
-        <div className="product-card" >
+        <Link to={`/product/${product.ProductID}`} className="product-card" >
             <div className="ImageDiv">
                 <img src={firstImageUrl} alt={product?.ProductName} />
             </div>
             <div className="PrincipalData">
-                <a href={`/Product/${product?.ProductID}`}>{product?.ProductName}</a>
+                {product?.ProductName}
             </div>
             <div className="SecondaryData">
                 <p>{product?.Rating}</p>
-                <p>{product?.PrincipalCategoryId}</p>
+                <p>{product?.PrincipalCategoryName}</p>
             </div>
             <p>{product?.Price}</p>
             <div className="AddCartButton">
                 Añadir al carrito
             </div>
-        </div>
+        </Link >
+
     );
 };
 
