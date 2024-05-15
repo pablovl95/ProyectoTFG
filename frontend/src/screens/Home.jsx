@@ -2,9 +2,9 @@ import React from 'react';
 import ProductSlider from '../components/ProductSlider';
 
 import "./css/Home.css"; // Importa tus estilos CSS aquí
-function Home ()  {
+function Home() {
 
-  
+
   const sliderList = [
     {
       "id": 1,
@@ -25,13 +25,15 @@ function Home ()  {
 
   return (
     <div className="HomeContainer">
-      <ProductSlider sliderList={sliderList}/>
-      <div className='data-container'>
-      <h1 className="HomeTitle">
-      Productos más vendidos
-      </h1>
+      <div className="Slider">
+        <ProductSlider sliderList={sliderList} className="Slider" />
       </div>
-      
+      <div className='data-container'>
+        <h1 className="HomeTitle">
+          Productos más vendidos
+        </h1>
+      </div>
+
     </div>
   );
 }

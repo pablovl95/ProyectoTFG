@@ -105,11 +105,11 @@ CREATE TABLE
   );
 
 CREATE TABLE Users (
-    ID INTEGER PRIMARY KEY,
+    UserID INTEGER PRIMARY KEY,
     FirstName TEXT NOT NULL,
     LastName TEXT NOT NULL,
     Email TEXT UNIQUE NOT NULL,
-    Password TEXT NOT NULL,
+    ProfileImageUrl TEXT,
     Phone TEXT,
     UserType TEXT CHECK(UserType IN ('delivery', 'producer', 'consumer', 'administrator')) NOT NULL,
     AssociatedStoreID INTEGER,
@@ -385,11 +385,11 @@ VALUES
     'Variedad de cereales nutritivos para un desayuno energético'
   );
 
-  INSERT INTO Users (FirstName, LastName, Email, Password, Phone, UserType, AssociatedStore, AccountStatus)
+  INSERT INTO Users (FirstName, LastName, Email, Phone, UserType, AssociatedStoreID, AccountStatus)
 VALUES
-    ('Juan', 'Pérez', 'juan@example.com', 'contraseña123', '123456789', 'consumer', NULL, 'active'),
-    ('María', 'Gómez', 'maria@example.com', 'password456', '987654321', 'producer', 'Tienda de Ropa', 'active'),
-    ('Carlos', 'López', 'carlos@example.com', 'clave789', '567891234', 'delivery', NULL, 'inactive');
+    ('Juan', 'Pérez', 'juan@example.com', '123456789', 'consumer', NULL, 'active'),
+    ('María', 'Gómez', 'maria@example.com', '987654321', 'producer', 1, 'active'),
+    ('Carlos', 'López', 'carlos@example.com', '567891234', 'delivery', NULL, 'inactive');
 
 -- Tabla de revisiones
 INSERT INTO Reviews (ProductID, Comment, UserID, AssignedRating)

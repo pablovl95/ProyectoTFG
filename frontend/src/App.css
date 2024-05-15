@@ -11,12 +11,9 @@
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 997;
 }
+@media (max-width: 768px) {
+  .overlay {
+    position: flex;
 
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
-.row input{
-  width: 50%;
+  }
 }

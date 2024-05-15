@@ -26,12 +26,11 @@ CREATE TABLE
   );
 
   CREATE TABLE Users (
-    UserID INTEGER PRIMARY KEY,
+    UserID TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(4))) || '-' || lower(hex(randomblob(2))) || '-4' || substr(lower(hex(randomblob(2))), 2) || '-' || substr('89ab', 1 + (abs(random()) % 4) / 2, 1) || substr(lower(hex(randomblob(2))), 2) || '-' || lower(hex(randomblob(6)))),
     FirstName TEXT NOT NULL,
     LastName TEXT NOT NULL,
     Email TEXT UNIQUE NOT NULL,
     ProfileImageUrl TEXT DEFAULT 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-    Password TEXT,
     Phone TEXT,
     UserType TEXT CHECK(UserType IN ('delivery', 'producer', 'consumer', 'administrator')) NOT NULL,
     AssociatedStoreID INTEGER,
@@ -144,11 +143,11 @@ VALUES
     'Variedad de cereales nutritivos para un desayuno energético'
   );
 
-  INSERT INTO Users (FirstName, LastName, Email, Password, Phone, UserType, AssociatedStoreID, AccountStatus)
+  INSERT INTO Users (FirstName, LastName, Email, Phone, UserType, AssociatedStoreID, AccountStatus)
 VALUES
-    ('Juan', 'Pérez', 'juan@example.com', 'contraseña123', '123456789', 'consumer', NULL, 'active'),
-    ('María', 'Gómez', 'maria@example.com', 'password456', '987654321', 'producer', 1, 'active'),
-    ('Carlos', 'López', 'carlos@example.com', 'clave789', '567891234', 'delivery', NULL, 'inactive');
+    ('Juan', 'Pérez', 'juan@example.com',667323456, 'consumer', NULL, 'active'),
+    ('María', 'Gómez', 'maria@example.com',667323456,  'producer', 1, 'active'),
+    ('Carlos', 'López', 'carlos@example.com',667323456, 'delivery', NULL, 'inactive');
 
 
 INSERT INTO
@@ -310,8 +309,8 @@ VALUES
 -- Tabla de revisiones
 INSERT INTO Reviews (ProductID, Comment, UserID, AssignedRating)
 VALUES
-    (1, 'Muy cómoda y bonita.', 1, 5),
-    (2, 'Excelente calidad.', 1, 4),
-    (3, 'Los zapatos son geniales.', 2, 5),
-    (1, 'La camiseta se encogió después del primer lavado.', 2, 2),
-    (3, 'El color de los zapatos no coincide con la imagen.', 3, 3);
+    (1, 'Muy buena calidad.', '2089745d-95c3-48c2-82a7-05db4508fbc3', 5),
+    (2, 'Excelente calidad.', '2089745d-95c3-48c2-82a7-05db4508fbc3', 4),
+    (3, 'Increible producto, llego rapido y excelente enbalaje.', '8845d10d-e67a-499f-85a9-8c8d6fc96fef', 5),
+    (1, 'Venia uno podrido', '8845d10d-e67a-499f-85a9-8c8d6fc96fef', 2),
+    (3, 'No era un buen producto', '2089745d-95c3-48c2-82a7-05db4508fbc3', 3);
