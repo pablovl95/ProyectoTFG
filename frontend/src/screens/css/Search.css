@@ -5,11 +5,13 @@
   width: 90%;
   margin: auto;
 }
+
 .filter-container {
   flex: 1;
   margin-right: 1rem;
   width: 40%;
 }
+
 .products-list {
   flex: 5;
   display: grid;
@@ -42,11 +44,15 @@
 }
 
 @media screen and (max-width: 768px) {
+  .filter-container {
+    display: none;
+  }
+
   .product-list-container {
     display: flex;
     margin: auto;
   }
-  
+
   .products-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -55,7 +61,7 @@
   .filters {
     display: flex;
     position: fixed;
-    background-color: aliceblue;
+    background-color: rgb(249, 255, 247);
     color: #383838;
     cursor: pointer;
     padding: 0.3rem;
@@ -77,7 +83,7 @@
 
   .filters-content {
     display: flex;
-    background-color: aliceblue;
+    background-color: rgb(249, 255, 247);
     border: #9a9a9a 1px solid;
     color: #4f4f4f;
     cursor: pointer;

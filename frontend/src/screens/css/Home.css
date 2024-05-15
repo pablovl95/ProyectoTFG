@@ -18,3 +18,15 @@
     margin: auto;
     width: 90%;
   }
+  .data-container-cards{
+    display: flex;
+    width: 80%;
+    margin:auto;
+    justify-content: row;
+  }
+  @media screen and (max-width: 768px) {
+    .data-container-cards{
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
