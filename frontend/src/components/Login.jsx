@@ -1,7 +1,7 @@
 // Login.js
 import React, { useState } from 'react';
 import './css/login.css';
-import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithRedirect, GoogleAuthProvider, FacebookAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../auth';
 
 function Login({ onClose }) {
@@ -17,30 +17,7 @@ function Login({ onClose }) {
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      const displayName = user.displayName;
-      let firstName = '';
-      let lastName = '';
-
-      if (displayName) {
-        const nameParts = displayName.split(' ');
-        firstName = nameParts[0];
-        lastName = nameParts.slice(1).join(' ');
-      }
-
-      const userData = {
-        FirstName: firstName,
-        LastName: lastName,
-        Email: user.email,
-        Telephone: user?.phoneNumber,
-        ProfileImageUrl: user.photoURL,
-        UserType: 'consumer',
-        AccountStatus: 'active'
-      };
-      console.log('User:', userData);
-      
-      onClose();
+      await signInWithRedirect(auth, provider);
     } catch (error) {
       console.error('Error during Google login:', error);
     }
@@ -49,11 +26,7 @@ function Login({ onClose }) {
   const handleFacebookLogin = async () => {
     const provider = new FacebookAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
-      const credential = FacebookAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      const user = result.user;
-      console.log('User:', user);
+      await signInWithRedirect(auth, provider);
     } catch (error) {
       console.error('Error during Facebook login:', error);
     }
