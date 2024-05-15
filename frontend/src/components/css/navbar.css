@@ -59,17 +59,17 @@
 
 }
 .SearchBar-default input {
-    width: 95%;
+    width: 100%;
     padding: 0.5rem 1rem;
     border: none;
-    border-radius: 0.5rem;
-
+    font-size: 1rem;
 }
 .IconSearch {
-    position: absolute;
-    right: 0.75rem;
-    color: white;
-    cursor: pointer;
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  color: white;
+  cursor: pointer;
 }
 .nav .menu span {
     height: 0.4rem;
@@ -176,6 +176,19 @@
     align-items: center;
     
   }
+  .search-selector {
+    height: 100%; 
+    width: auto; 
+    padding: 0; 
+    border: 1px solid #cccccc00; 
+    border-radius: 4px; 
+    font-size: 1rem;
+    background-color: white; 
+    cursor: pointer; 
+  }
+  
+  
+
 @media (max-width: 768px) {
     .nav {
         position: relative;
@@ -233,7 +246,6 @@
     .SearchBar-mobile input {
         width: 100%;
         border: none;
-        border-radius: 0.5rem;
     }
 
     .icons {
@@ -282,5 +294,5 @@
       .menu-categories li a:hover {
         color: #137200; /* Cambia el color del texto al pasar el ratón sobre él */
       }
-      
+
 }

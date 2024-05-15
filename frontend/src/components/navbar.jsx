@@ -5,10 +5,22 @@ import { IconMenu2, IconShoppingCart, IconUsers, IconSearch } from '@tabler/icon
 import { auth } from "../auth";
 
 export default function Navbar({ loginView, user }) {
+  const PrincipalCategories = [
+    { id: 1, name: "Frutas" },
+    { id: 2, name: "Verduras" },
+    { id: 3, name: "Legumbres" },
+    { id: 4, name: "Cereales" },
+    { id: 5, name: "Carne" },
+    { id: 6, name: "Lácteos" },
+    { id: 7, name: "Huevos" },
+    { id: 8, name: "Productos de colmena" }
+  ];
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [cart, setCart] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchType, setSearchType] = useState('productos');
 
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
@@ -41,9 +53,13 @@ export default function Navbar({ loginView, user }) {
             EcoShop
           </Link>
           <div className="SearchBar-default">
+            <select value={searchType} onChange={(e) => setSearchType(e.target.value)} className="search-selector">
+              <option value="search">Productos</option>
+              <option value="shops">Tiendas</option>
+            </select>
             <input type="text" placeholder="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-            <Link to={`/search?q=${searchQuery}`} className="IconSearch">
-              <IconSearch color="black"  />
+            <Link to={`/${searchType}?q=${searchQuery}`} className="IconSearch">
+              <IconSearch color="black" />
             </Link>
           </div>
           <div className="icons">
@@ -56,13 +72,11 @@ export default function Navbar({ loginView, user }) {
             <IconUsers onClick={Modals} style={{ marginRight: '1rem' }} size={40} />
             {userMenuOpen && user && (
               <div className="user-menu">
-
                 <div className="user-menu-bubble">
-
                   <li><NavLink to="/profile">Mi perfil</NavLink></li>
                   <li><NavLink to="/orders">Mis pedidos</NavLink></li>
                   <li><NavLink to="/adresses">Direcciones</NavLink></li>
-                  {user && user.type == "Administrator" &&
+                  {user && user.type === "Administrator" &&
                     <>
                       <li><NavLink to="/dashboard?gestion">Usuarios</NavLink></li>
                       <li><NavLink to="/dashboard?gestion">Productos</NavLink></li>
@@ -70,10 +84,9 @@ export default function Navbar({ loginView, user }) {
                       <li><NavLink to="/ordersto">Pedidos para recogida</NavLink></li>
                     </>
                   }
-                  {user && user.type == "Sellet" && <li><NavLink to="/ordersto">Pedidos para recogida</NavLink></li>}
+                  {user && user.type === "Seller" && <li><NavLink to="/ordersto">Pedidos para recogida</NavLink></li>}
                   <li onClick={handleLogout} style={{ color: 'black' }}>Cerrar sesión</li>
                   <div className="bubble-pointer"></div>
-
                 </div>
               </div>
             )}
@@ -81,8 +94,12 @@ export default function Navbar({ loginView, user }) {
         </div>
         <div style={{ backgroundColor: "#1d640e", paddingBottom: "1rem", paddingLeft: "1rem" }}>
           <div className="SearchBar-mobile">
+            <select value={searchType} onChange={(e) => setSearchType(e.target.value)} className="search-selector">
+              <option value="productos">Productos</option>
+              <option value="tiendas">Tiendas</option>
+            </select>
             <input type="text" placeholder="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-            <Link to={`/search?q=${searchQuery}`} style={{ textDecoration: 'none', color: 'black' }}>
+            <Link to={`/search?type=${searchType}&q=${searchQuery}`} style={{ textDecoration: 'none', color: 'black' }}>
               <IconSearch color="black" className="IconSearch" />
             </Link>
           </div>
@@ -90,30 +107,11 @@ export default function Navbar({ loginView, user }) {
 
         <div className="categories">
           <ul className={menuOpen ? "open" : ""}>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=1">Frutas</NavLink>
-            </li>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=2">Verduras</NavLink>
-            </li>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=3">Legumbres</NavLink>
-            </li>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=4">Cereales</NavLink>
-            </li>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=5">Carne</NavLink>
-            </li>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=6">Lácteos</NavLink>
-            </li>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=7">Huevos</NavLink>
-            </li>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=8">Productos de colmena</NavLink>
-            </li>
+            {PrincipalCategories.map(category => (
+              <li key={category.id}>
+                <NavLink to={`/search?PrincipalCategoryId=${category.id}`}>{category.name}</NavLink>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -121,32 +119,11 @@ export default function Navbar({ loginView, user }) {
           <div className="close-icon">X</div>
           <div className="menu-categories">
             <div className="category-title">CATEGORIAS</div>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=1">Frutas</NavLink>
-            </li>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=2">Verduras</NavLink>
-            </li>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=3">Legumbres</NavLink>
-            </li>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=4">Cereales</NavLink>
-            </li>
-            <Link to="/search?PrincipalCategoryId=5">
-              <li>
-                <NavLink to="/search?PrincipalCategoryId=5">Carne</NavLink>
+            {PrincipalCategories.map(category => (
+              <li key={category.id}>
+                <NavLink to={`/search?PrincipalCategoryId=${category.id}`}>{category.name}</NavLink>
               </li>
-            </Link>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=6">Lácteos</NavLink>
-            </li>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=7">Huevos</NavLink>
-            </li>
-            <li>
-              <NavLink to="/search?PrincipalCategoryId=8">Productos de colmena</NavLink>
-            </li>
+            ))}
             <div className="category-title">CONFIGURACIÓN</div>
             <li>
               <NavLink to="/profile">Perfil</NavLink>
@@ -162,4 +139,4 @@ export default function Navbar({ loginView, user }) {
       </nav>
     </>
   );
-};
+}
