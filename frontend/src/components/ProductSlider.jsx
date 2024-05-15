@@ -19,7 +19,7 @@ function ProductSlider({ sliderList }) {
     <div className="slider-container">
       <Slider ref={slider => (sliderRef = slider)} {...settings}>
         {sliderList.map(x => (
-          <img src={x.imagen} alt={"SliderImage"} />
+          <img src={x.imagen} key={x.id} alt={"SliderImage"} />
         ))}
       </Slider>
       <div className="slider-controls">

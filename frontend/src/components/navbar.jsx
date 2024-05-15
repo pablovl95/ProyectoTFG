@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./css/navbar.css";
 import { Link, NavLink } from "react-router-dom";
-import { IconMenu2, IconShoppingCart, IconUsers, IconSearch } from '@tabler/icons-react';
+import { IconShoppingCart, IconUsers, IconSearch } from '@tabler/icons-react';
 import { auth } from "../auth";
 
 export default function Navbar({ loginView, user }) {
@@ -76,12 +76,9 @@ export default function Navbar({ loginView, user }) {
                   <li><NavLink to="/profile">Mi perfil</NavLink></li>
                   <li><NavLink to="/orders">Mis pedidos</NavLink></li>
                   <li><NavLink to="/adresses">Direcciones</NavLink></li>
-                  {user && user.type === "Administrator" &&
+                  {user && user.UserType === "administrator" &&
                     <>
-                      <li><NavLink to="/dashboard?gestion">Usuarios</NavLink></li>
-                      <li><NavLink to="/dashboard?gestion">Productos</NavLink></li>
                       <li><NavLink to="/pickuporders">Dashboard de Gestion</NavLink></li>
-                      <li><NavLink to="/ordersto">Pedidos para recogida</NavLink></li>
                     </>
                   }
                   {user && user.type === "Seller" && <li><NavLink to="/ordersto">Pedidos para recogida</NavLink></li>}
