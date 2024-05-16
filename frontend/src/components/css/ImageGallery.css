@@ -1,0 +1,36 @@
+.image-gallery {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start; /* Alinea el contenido a la izquierda */
+  }
+  
+  .main-image {
+    width: 40rem; /* Establece el ancho deseado */
+    height: auto; /* Establece la altura deseada */
+    margin-bottom: 20px;
+  }
+  
+  .main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Escala la imagen para cubrir todo el contenedor */
+  }
+  
+  .thumbnails {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .thumbnails img {
+    width: 50px; /* Tamaño fijo para todas las miniaturas */
+    height: 50px; /* Tamaño fijo para todas las miniaturas */
+    margin: 5px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    padding: 0.15rem;
+  }
+  
+  .thumbnails img.active {
+    border-color: rgb(11, 138, 0); /* Cambia a tu color deseado */
+  }
+  

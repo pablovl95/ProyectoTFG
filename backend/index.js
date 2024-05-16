@@ -95,10 +95,9 @@ app.get('/api/v1/products', async (req, res) => {
   }
 });
 app.get('/api/v1/products/:id', async (req, res) => {
-  let AND = "";
   const id = req.params.id;
   try {
-    let StringQuery = `SELECT Products.*, Categories.CategoryName AS PrincipalCategoryName, Shops.ShopID, Shops.ShopName FROM Products LEFT JOIN Categories ON Products.PrincipalCategoryId = Categories.CategoryID LEFT JOIN Shops ON Products.ShopID = Shops.ShopID WHERE Products.ProductID = ${id}`;
+    let StringQuery = `SELECT Products.*, Categories.CategoryName AS PrincipalCategoryName, Shops.ShopID, Shops.ShopName FROM Products LEFT JOIN Categories ON Products.PrincipalCategoryId = Categories.CategoryID LEFT JOIN Shops ON Products.ShopID = Shops.ShopID WHERE Products.ProductID = '${id}'`;
     const data = await db.execute(StringQuery);
     if (data.rows.length === 0) {
       res.sendStatus(404); // Si no hay resultados, enviar 404
@@ -158,7 +157,7 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
       SELECT Reviews.*, Users.FirstName, Users.ProfileImageUrl
       FROM Reviews
       INNER JOIN Users ON Reviews.UserID = Users.UserID
-      WHERE Reviews.ProductID=${req.params.id}
+      WHERE Reviews.ProductID='${req.params.id}'
     `;
     //console.log(query);
     const data = await db.execute(query);

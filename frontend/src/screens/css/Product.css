@@ -1,101 +1,127 @@
 .product-container {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
   width: 80%;
-  margin-top: 1rem;
-  margin:2rem auto;
+  margin:auto;
+  margin-top:1rem;
 }
 
 .product-image {
-  width: 30%;
+  width: 50%;
 }
 
 .product-details {
-  width: 60%;
+  width: 45%;
+  padding: 0 1rem;
 }
 
 .product-header {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  flex-direction: column;
 }
 
 .product-header p {
   margin: 0;
 }
 
-.product-details h2 {
-  margin-top: 0;
-  font-size: 24px;
+.product-header a {
+  text-decoration: none;
+  color: green;
+}
+
+.product-header span {
+  color: #ffd700; /* Color for star icons */
+}
+
+.product-header h2 {
+  margin: 1rem 0;
 }
 
 .product-details p {
-  margin: 10px 0;
+  margin: 0.5rem 0;
 }
 
 .quantity-container {
   display: flex;
-  text-align: center;
-  width: 30%;
-  margin: auto;
-  margin-bottom: 10px;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .quantity-container label {
-  margin-right: 15px;
+  margin-right: 1rem;
 }
 
 .quantity-container div {
   cursor: pointer;
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem;
   border: 1px solid #ccc;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 .quantity-container input {
-  width: 30px;
-  padding: 5px;
+  width: 50px;
+  text-align: center;
+  margin: 0 0.5rem;
   border: 1px solid #ccc;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 .add-to-cart-button {
-  background-color: #007bff;
-  color: #fff;
+  background-color: green;
+  color: white;
   border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
   cursor: pointer;
-  font-size: 16px;
+  margin-top: 1rem;
 }
 
 .add-to-cart-button:hover {
-  background-color:chartreuse;
+  background-color: darkgreen;
 }
 
-h3 {
-  font-size: 20px;
-  margin-top: 20px;
+.product-reviews {
+  margin-top: 2rem;
 }
+
 .review-item {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
-.review-item div {
-  display: flex;
-  align-items: center;
-}
+
 .review-item img {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 1rem;
 }
+
 .review-item h4 {
-  margin-left: 1rem;
+  margin: 0.5rem 0;
 }
+
 .review-item p {
   margin: 0;
 }
+
+
+.filled {
+  color: #ffc107; /* Color de las estrellas llenas */
+}
+
+.half-filled {
+  color: #d3d3d3; /* Color de las estrellas medio llenas */
+}
+
+.half-filled::before {
+  content: '★';
+  color: #ffc107; /* Color de las estrellas vacías */
+  position: absolute;
+  left: 0;
+  width: 50%;
+  overflow: hidden;
+}
+
+

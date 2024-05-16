@@ -179,7 +179,15 @@ const handleEditAddress = (AddressID) =>{
               <IconPencilMinus onClick={() => handleDeleteAddress(address.AddressID)} className="delete-icon" />
             </div>
           </div>
-        )) : <ClipLoader/>}
+        )) : 
+        <ClipLoader
+          color={"green"}
+          loading={loading}
+          size={150}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+        }
 
       </div>
     </div>

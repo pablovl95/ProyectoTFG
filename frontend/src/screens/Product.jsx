@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import ImageGallery from 'react-image-gallery';
+// import ImageGallery from 'react-image-gallery';
 import { ClipLoader } from 'react-spinners';
-import 'react-image-gallery/styles/css/image-gallery.css';
+// import 'react-image-gallery/styles/css/image-gallery.css';
+import ImageGallery from '../components/ImageGallery';
 import './css/Product.css';
 
 const Product = () => {
@@ -19,6 +20,32 @@ const Product = () => {
     ? 'http://localhost:5000'
     : process.env.REACT_APP_BACKEND_URL;
 
+
+    const renderStars = (rating) => {
+      const totalStars = 5;
+      const filledStars = Math.floor(rating);
+      const halfStar = rating - filledStars >= 0.5 ? true : false;
+      const stars = [];
+
+      for (let i = 1; i <= totalStars; i++) {
+          if (i <= filledStars) {
+              stars.push(
+                  <span key={i} className='filled'>★</span>
+              );
+          } else if (i === filledStars + 1 && halfStar) {
+              stars.push(
+                  <span key={i} className='half-filled'>★</span>
+              );
+          } else {
+              stars.push(
+                  <span key={i}>★</span>
+              );
+          }
+      }
+
+      return stars;
+  };
+
   const fetchProducts = async () => {
     setLoading(true); // Set loading to true before fetching data
     try {
@@ -28,11 +55,11 @@ const Product = () => {
       }
       const productData = await productResponse.json();
       const urls = productData[0].ProductImages.slice(1, -1).split(',');
-      const img = urls.map(url => ({
-        original: url,
-        thumbnail: url,
-      }));
-      setImages(img);
+      // const img = urls.map(url => ({
+      //   original: url,
+      //   thumbnail: url,
+      // }));
+      setImages(urls);
       setProduct(productData[0]);
 
       const reviewsResponse = await fetch(`${backendUrl}/api/v1/reviews/${params.id}`);
@@ -94,7 +121,7 @@ const Product = () => {
     <>
       <div className="product-container">
         <div className="product-image">
-          <div ref={imageGalleryRef}>
+          {/* <div ref={imageGalleryRef}>
             <ImageGallery
               items={images}
               infinite
@@ -104,7 +131,8 @@ const Product = () => {
               showNav={showNav}
               slideDuration={300}
             />
-          </div>
+          </div> */}
+          <ImageGallery imageUrls={images}/>
         </div>
         <div className="product-details">
           <div className="product-header">
@@ -114,7 +142,7 @@ const Product = () => {
                 {product?.ShopName}
               </Link>
             </p>
-            <p>{product?.Rating} Estrellas</p><p>({product?.TotalComments} Valoraciones)</p>
+            <p>{renderStars(product?.Rating)}({product?.TotalComments} Valoraciones)</p>
           </div>
           <h2>{product?.ProductName}</h2>
           <p>Categoría: {product?.PrincipalCategoryName}</p>

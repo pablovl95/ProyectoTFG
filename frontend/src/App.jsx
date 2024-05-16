@@ -30,16 +30,16 @@ function App() {
     // Verifica si el usuario está autenticado al cargar la aplicación
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setUser(user);
-      console.log(user);
+      // console.log(user);
       if (user) {
         await fetch(`${backendUrl}/api/v1/users/${user.uid}`)
           .then((response) => response.json())
           .then((data) => {
               setUserData(data[0]);
-              console.log("entrando",data[0]);
+              // console.log("entrando",data[0]);
           });
           if(userData === undefined){
-            console.log("no hay datos");
+            // console.log("no hay datos");
             await fetch(`${backendUrl}/api/v1/users`, {
               method: 'POST',
               headers: {
