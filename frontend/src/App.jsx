@@ -12,7 +12,7 @@ import Shop from "./screens/Shop";
 import Cart from "./screens/Cart";
 import Profile from "./screens/Profile";
 import Orders from "./screens/Orders";
-import Adresses from "./screens/Adresses";
+import Addresses from "./screens/Adresses";
 import Dashboard from "./screens/Dashboard";
 import Delivery from "./screens/Delivery";
 import { auth } from "./auth";
@@ -28,15 +28,32 @@ function App() {
 
   useEffect(() => {
     // Verifica si el usuario está autenticado al cargar la aplicación
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setUser(user);
+      console.log(user);
       if (user) {
-        fetch(`${backendUrl}/api/v1/users/${user.uid}`)
+        await fetch(`${backendUrl}/api/v1/users/${user.uid}`)
           .then((response) => response.json())
           .then((data) => {
-            setUserData(data[0]);
-            //console.log(data[0]);
+              setUserData(data[0]);
+              console.log("entrando",data[0]);
           });
+          if(userData === undefined){
+            console.log("no hay datos");
+            await fetch(`${backendUrl}/api/v1/users`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                FirstName: user.displayName.split(' ')[0],
+                LastName: user.displayName.split(' ')[1]+ user.displayName.split(' ')[2],
+                Email: user.email,
+                UserID: user.uid,
+                Phone: user.phoneNumber || 'NULL',
+              }),
+            });
+          }
       }
     });
 
@@ -55,8 +72,8 @@ function App() {
         {userData && (
           <>
             <Route path="/profile" element={<Profile />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/adresses" element={<Adresses />} />
+            <Route path="/profile/orders" element={<Orders />} />
+            <Route path="/profile/addresses" element={<Addresses />} />
           </>
         )}
         {userData?.UserType === 'administrator' && (

@@ -74,8 +74,8 @@ export default function Navbar({ loginView, user }) {
               <div className="user-menu">
                 <div className="user-menu-bubble">
                   <li><NavLink to="/profile">Mi perfil</NavLink></li>
-                  <li><NavLink to="/orders">Mis pedidos</NavLink></li>
-                  <li><NavLink to="/adresses">Direcciones</NavLink></li>
+                  <li><NavLink to="/profile/orders">Mis pedidos</NavLink></li>
+                  <li><NavLink to="/profile/addresses">Direcciones</NavLink></li>
                   {user && user.UserType === "administrator" &&
                     <>
                       <li><NavLink to="/pickuporders">Dashboard de Gestion</NavLink></li>

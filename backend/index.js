@@ -74,7 +74,7 @@ app.get('/api/v1/products', async (req, res) => {
         StringQuery += `Products.SecundaryCategoryId = ${req.query.SecundaryCategoryId}`;
         StringQuery += AND;
       }
-      if ( StringQuery.endsWith("AND ")){
+      if (StringQuery.endsWith("AND ")) {
         StringQuery = StringQuery.slice(0, -5);
       }
       StringQuery += ";";
@@ -99,12 +99,12 @@ app.get('/api/v1/products/:id', async (req, res) => {
   const id = req.params.id;
   try {
     let StringQuery = `SELECT Products.*, Categories.CategoryName AS PrincipalCategoryName, Shops.ShopID, Shops.ShopName FROM Products LEFT JOIN Categories ON Products.PrincipalCategoryId = Categories.CategoryID LEFT JOIN Shops ON Products.ShopID = Shops.ShopID WHERE Products.ProductID = ${id}`;
-      const data = await db.execute(StringQuery);
-      if (data.rows.length === 0) {
-        res.sendStatus(404); // Si no hay resultados, enviar 404
-      } else {
-        res.status(200).send(data.rows); // Si hay resultados, enviar los datos
-      }
+    const data = await db.execute(StringQuery);
+    if (data.rows.length === 0) {
+      res.sendStatus(404); // Si no hay resultados, enviar 404
+    } else {
+      res.status(200).send(data.rows); // Si hay resultados, enviar los datos
+    }
 
   } catch (error) {
     console.error("Error:", error);
@@ -182,52 +182,21 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
 // Endpoint para crear un nuevo usuario
 app.post('/api/v1/users', async (req, res) => {
   // console.log(req.body);
-  let { UserID,FirstName, LastName, Email, Phone } = req.body;
+  let { UserID, FirstName, LastName, Email, Phone } = req.body;
   //console.log(UserID,FirstName, LastName, Email, Phone);
-  if (req.body.FirstName === undefined || req.body.LastName === undefined || req.body.Email === undefined || req.body.UserID === undefined || req.body.Phone === undefined ) {
+  if (req.body.FirstName === undefined || req.body.LastName === undefined || req.body.Email === undefined || req.body.UserID === undefined || req.body.Phone === undefined) {
     res.status(400).send({ message: 'Faltan datos' });
-  } else{
+  } else {
     const query = `INSERT INTO Users (UserID, FirstName, LastName, Email, Phone, UserType, AssociatedStoreID, AccountStatus) 
   VALUES ('${UserID}','${FirstName}', '${LastName}', '${Email}', '${Phone}', 'consumer', NULL, 'active');`;
-  try {  
-    // console.log(query);
-  const data = await db.execute(query);
-  res.status(201).send({ message: 'Usuario creado' });
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).send({ message: 'Error al crear usuario' });
-  }
-}
-  
-});
-
-// Endpoint para obtener información de un usuario específico por su ID
-app.get('/api/v1/users/:id', (req, res) => {
-
-});
-app.get('/console', (req, res) => {
-  try{
-    console.log(req.body);
-    res.status(200).send("hola");
-  } catch (error) {
-    res.status(500).send({ message: 'Error al cargar datos' });
-  }});
-
-app.get('/charger', (req, res) => {
-  try{
-    const query = `INSERT INTO Reviews (ProductID, Comment, UserID, AssignedRating)
-    VALUES
-        (1, 'Muy buena calidad.', 1, 5),
-        (2, 'Excelente calidad.', 1, 4),
-        (3, 'Increible producto, llego rapido y excelente enbalaje.', 2, 5),
-        (1, 'Venia uno podrido', 2, 2),
-        (3, 'No era un buen producto', 3, 3);
-`;    
-
-    const data = db.execute(query);
-    res.status(200).send(data.rows);
-  } catch (error) {
-    res.status(500).send({ message: 'Error al cargar datos' });
+    try {
+      // console.log(query);
+      const data = await db.execute(query);
+      res.status(201).send({ message: 'Usuario creado' });
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).send({ message: 'Error al crear usuario' });
+    }
   }
 
 });
@@ -240,6 +209,128 @@ app.put('/api/v1/users/:id', (req, res) => {
 app.delete('/api/v1/users/:id', (req, res) => {
 
 });
+app.get('/api/v1/addresses/:id', async (req, res) => {
+  try {
+    const data = await db.execute(`SELECT * FROM Addresses WHERE UserID = '${req.params.id}'`);
+    res.status(200).send(data.rows);
+  } catch (error) {
+    console.error('Error al consultar la base de datos:', error);
+    res.status(500).send('Error al obtener las direcciones de la base de datos');
+  }
+});
+
+app.get('/api/v1/addresses', async (req, res) => {
+  try {
+    const data = await db.execute('SELECT * FROM Addresses');
+    res.status(200).send(data.rows);
+  } catch (error) {
+    console.error('Error al consultar la base de datos:', error);
+    res.status(500).send('Error al obtener las direcciones de la base de datos');
+  }
+});
+
+// Ruta DELETE para eliminar una dirección
+app.delete('/api/v1/addresses/:addressId', async (req, res) => {
+  try {
+    const addressId = req.params.addressId;
+    const query = `DELETE FROM Addresses WHERE AddressID = '${addressId}'`;
+    await db.execute(query);
+    res.status(200).send('Dirección eliminada correctamente');
+  } catch (error) {
+    console.error('Error al eliminar dirección en la base de datos:', error);
+    res.status(500).send('Error al eliminar la dirección de la base de datos');
+  }
+});
+
+// Ruta PUT para actualizar una dirección existente
+app.put('/api/v1/addresses/:addressId', async (req, res) => {
+  try {
+    const addressId = req.params.addressId;
+    const {
+      AddressType,
+      StreetAddress,
+      StreetNumber,
+      Floor,
+      Staircase,
+      City,
+      State,
+      PostalCode,
+      Country
+    } = req.body;
+
+    // Verificar que al menos uno de los campos a actualizar esté presente en la solicitud
+    if (!AddressType && !StreetAddress && !StreetNumber && !Floor && !Staircase && !City && !State && !PostalCode && !Country) {
+      return res.status(400).send('Al menos un campo para actualizar debe estar presente');
+    }
+
+    let updates = [];
+
+    if (AddressType) updates.push(`AddressType = '${AddressType}'`);
+    if (StreetAddress) updates.push(`StreetAddress = '${StreetAddress}'`);
+    if (StreetNumber) updates.push(`StreetNumber = '${StreetNumber}'`);
+    if (Floor) updates.push(`Floor = '${Floor}'`);
+    if (Staircase) updates.push(`Staircase = '${Staircase}'`);
+    if (City) updates.push(`City = '${City}'`);
+    if (State) updates.push(`State = '${State}'`);
+    if (PostalCode) updates.push(`PostalCode = '${PostalCode}'`);
+    if (Country) updates.push(`Country = '${Country}'`);
+
+    const query = `
+      UPDATE Addresses
+      SET ${updates.join(', ')}
+      WHERE AddressID = '${addressId}'
+    `;
+    await db.execute(query);
+    res.status(200).send('Dirección actualizada correctamente');
+  } catch (error) {
+    console.error('Error al actualizar dirección en la base de datos:', error);
+    res.status(500).send('Error al actualizar la dirección en la base de datos');
+  }
+});
+
+app.post('/api/v1/addresses/:id', async (req, res) => {
+  try {
+    const {
+      AddressType,
+      StreetAddress,
+      StreetNumber,
+      Floor,
+      Staircase,
+      City,
+      State,
+      PostalCode,
+      Country
+    } = req.body;
+    console.log(req.body)
+    // Verificar que todos los campos necesarios estén presentes en la solicitud
+    if (!AddressType || !StreetAddress || !City || !State || !PostalCode || !Country) {
+      return res.status(400).send('Todos los campos obligatorios deben estar presentes');
+    }
+
+    const query = `
+      INSERT INTO Addresses (
+        AddressType,
+        UserID,
+        StreetAddress,
+        StreetNumber,
+        Floor,
+        Staircase,
+        City,
+        State,
+        PostalCode,
+        Country
+      ) VALUES ('${AddressType}', '${req.params.id}', '${StreetAddress}', '${StreetNumber}', '${Floor}', '${Staircase}', '${City}','${State}','${PostalCode}','${Country}')
+    `;
+    console.log(query);
+    await db.execute(query);
+
+    res.status(201).send('Dirección agregada correctamente');
+  } catch (error) {
+    console.error('Error al insertar en la base de datos:', error);
+    res.status(500).send('Error al agregar la dirección a la base de datos');
+  }
+});
+
 
 // Inicia el servidor
 app.listen(PORT, () => {

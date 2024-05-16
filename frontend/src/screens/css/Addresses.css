@@ -1,0 +1,76 @@
+/* Addresses.css */
+
+.addresses-container {
+    width: 80%;
+    margin:auto;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .addresses-container h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .addresses-container button {
+    display: block;
+    margin: 0 auto 20px auto;
+    padding: 10px 20px;
+    background-color: #00810b;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .addresses-container button:hover {
+    background-color: #004f07;
+  }
+  
+  .addresses-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .address-container {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    width: 250px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .address-container:hover {
+    transform: scale(1.05);
+  }
+  
+  .address-container h3 {
+    margin-top: 0;
+    color: #333;
+  }
+  
+  .address-container p {
+    margin: 5px 0;
+    color: #666;
+  }
+  
+  .address-container p strong {
+    color: #333;
+  }
+  .separator {
+    margin: 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+
+  @media (max-width: 768px) {
+    .addresses-container {
+      width: 90%;
+    }
+  }
