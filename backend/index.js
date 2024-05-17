@@ -58,7 +58,7 @@ app.get('/api/v1/products', async (req, res) => {
         StringQuery += AND;
       }
       if ('MinPrice' in req.query) {
-        StringQuery += `Products.Price >= ${req.query.MinPrice}'`;
+        StringQuery += `Products.Price >= ${req.query.MinPrice}`;
         StringQuery += AND;
       }
       if ('MaxPrice' in req.query) {
@@ -78,7 +78,7 @@ app.get('/api/v1/products', async (req, res) => {
         StringQuery = StringQuery.slice(0, -5);
       }
       StringQuery += ";";
-      //console.log(StringQuery);
+      console.log(StringQuery);
       const data = await db.execute(StringQuery);
       if (data.rows.length === 0) {
         res.sendStatus(404); // Si no hay resultados, enviar 404

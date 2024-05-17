@@ -42,6 +42,64 @@
 .pagination button:hover {
   background-color: #1d640e;
 }
+/* Estilos para los filtros */
+.filter {
+  margin-bottom: 1rem;
+}
+
+.filter label {
+  display: block;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.filter input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.filter select {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.filter button {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #248311;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.filter button:hover {
+  background-color: #1d640e;
+}
+
+/* Estilos para el contenedor de filtros cuando está visible */
+.filter-container.visible {
+  display: block;
+  padding: 1rem;
+  background-color: #f9fff7;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.filter-container.hidden {
+  display: none;
+}
 
 @media screen and (max-width: 768px) {
   .filter-container {
@@ -56,6 +114,76 @@
   .products-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filters {
+    display: flex;
+    position: fixed;
+    background-color: rgb(249, 255, 247);
+    color: #383838;
+    cursor: pointer;
+    padding: 0.3rem;
+    bottom: 1rem;
+    text-align: center;
+    left: 25%;
+    right: 25%;
+    border-radius: 10rem;
+    z-index: 1000;
+  }
+
+  .filters a {
+    text-decoration: none;
+    font-size: small;
+    font-family: 'Roboto', sans-serif;
+    color: #908f8f;
+    margin: auto;
+  }
+
+  .filter-container {
+    display: none;
+  }
+
+  .filters-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem;
+  }
+
+  .filter-container.visible {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    padding: 2rem;
+    overflow-y: auto;
+  }
+
+  .filter {
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+
+  .filter label {
+    color: #fff;
+  }
+
+  .filter input, .filter select, .filter button {
+    width: 100%;
+  }
+
+  .filter button {
+    background-color: #248311;
+  }
+
+  .filter button:hover {
+    background-color: #1d640e;
   }
 
   .filters {

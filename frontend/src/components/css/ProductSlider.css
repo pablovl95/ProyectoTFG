@@ -1,26 +1,44 @@
-.slider-container {
+/* src/css/ProductSlider.css */
+.slider {
   position: relative;
-  margin-bottom: 3em;
+  width: 100%;
+  margin: auto;
+  overflow: hidden;
 }
 
-.slider-controls {
+.slider-image-container {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slider-image {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.left-arrow,
+.right-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  display: flex;
-  justify-content: space-between; /* Esto distribuye los botones a los extremos */
-  width: 100%; /* Asegura que los botones ocupen el ancho completo */
-}
-
-.slider-control-button-left,
-.slider-control-button-right {
-  padding: 10px;
+  font-size: 3rem;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgb(0, 0, 0);
   cursor: pointer;
-  font-size: 16px;
-  border:none;
+  padding: 0.5rem;
+  z-index: 2;
 }
 
-.slider-control-button-left:hover,
-.slider-control-button-right:hover {
-  background-color: #009b1f;
+.left-arrow {
+  left: 0;
+}
+
+.right-arrow {
+  right: 0;
+}
+
+.slide {
+  min-width: 100%;
+  box-sizing: border-box;
 }

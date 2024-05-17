@@ -1,37 +1,44 @@
-import React, { useRef } from 'react';
-import Slider from 'react-slick';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import "./css/ProductSlider.css"; // Importa tus estilos CSS aquí
+import React, { useState, useEffect } from 'react';
+import './css/ProductSlider.css';
 
-function ProductSlider({ sliderList }) {
-  let sliderRef = useRef(null);
+const ManualSlider = ({ images }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 4000
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 3000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [images.length]);
+
   return (
-    <div className="slider-container">
-      <Slider ref={slider => (sliderRef = slider)} {...settings}>
-        {sliderList.map(x => (
-          <img src={x.imagen} key={x.id} alt={"SliderImage"} />
+    <div className="slider">
+      <button className="left-arrow" onClick={prevSlide}>
+        &#10094;
+      </button>
+      <div className="slider-image-container" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
+        {images.map((image, index) => (
+          <div className="slide" key={index}>
+            <img src={image.url} alt={`Slide ${index + 1}`} className="slider-image" />
+          </div>
         ))}
-      </Slider>
-      <div className="slider-controls">
-        <div className="slider-control-button-left" onClick={() => sliderRef.slickPrev()}>
-          ◀
-        </div>
-        <div className="slider-control-button-right" onClick={() => sliderRef.slickNext()}>
-            ▶
-        </div>
       </div>
+      <button className="right-arrow" onClick={nextSlide}>
+        &#10095;
+      </button>
     </div>
   );
-}
+};
 
-export default ProductSlider;
+export default ManualSlider;
