@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { auth } from '../auth';
 import './css/Addresses.css';
-import { ClipLoader } from 'react-spinners';
 import { IconPencil, IconPencilMinus } from '@tabler/icons-react';
 
 
@@ -180,13 +179,7 @@ const handleEditAddress = (AddressID) =>{
             </div>
           </div>
         )) : 
-        <ClipLoader
-          color={"green"}
-          loading={loading}
-          size={150}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
+        <a>Cargando Datos</a>
         }
 
       </div>
