@@ -66,7 +66,7 @@ export default function Navbar({ loginView, user }) {
             <NavLink to="/cart" style={{ color: '#FFF' }}>
               <IconShoppingCart size={40} style={{ marginRight: '1rem' }} />
               {cart.length > 0 && (
-                <span className="cart-counter">{cart.length}</span>
+                <span className="cart-counter">{cart.map(x=>x.quantity).reduce((a,b)=>a+b,0)}</span>
               )}
             </NavLink>
             <IconUsers onClick={Modals} style={{ marginRight: '1rem' }} size={40} />

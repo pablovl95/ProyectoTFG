@@ -65,10 +65,7 @@ app.get('/api/v1/products', async (req, res) => {
         StringQuery += `Products.Price <= ${req.query.MaxPrice}`;
         StringQuery += AND;
       } if ('MinRating' in req.query) {
-        StringQuery += `Products.Rating >= ${req.query.customerRating}`;
-        StringQuery += AND;
-      } if ('MaxRating' in req.query) {
-        StringQuery += `Products.Rating <= ${req.query.customerRating}`;
+        StringQuery += `Products.Rating >= ${req.query.MinRating}`;
         StringQuery += AND;
       } if ('SecundaryCategoryId' in req.query) {
         StringQuery += `Products.SecundaryCategoryId = ${req.query.SecundaryCategoryId}`;

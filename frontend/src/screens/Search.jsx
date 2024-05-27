@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IconAdjustmentsAlt } from '@tabler/icons-react';
+import { IconAdjustmentsAlt, IconX } from '@tabler/icons-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import ProductCard from '../components/productCard';
@@ -37,7 +37,6 @@ const Search = () => {
     MinPrice: '',
     MaxPrice: '',
     MinRating: '',
-    MaxRating: '',
     SecundaryCategoryId: ''
   });
 
@@ -50,7 +49,6 @@ const Search = () => {
       MinPrice: params.get('MinPrice') || '',
       MaxPrice: params.get('MaxPrice') || '',
       MinRating: params.get('MinRating') || '',
-      MaxRating: params.get('MaxRating') || '',
       SecundaryCategoryId: params.get('SecundaryCategoryId') || ''
     });
     fetchProducts();
@@ -92,6 +90,30 @@ const Search = () => {
       .map(([key, value]) => `${key}=${value}`);
       //console.log(`search?${params.join('&')}`);
     navigate(`/search?${params.join('&')}`);
+    setFilterVisible(false); // Hide the modal after applying filters
+  };
+
+  const handleStarClick = (rating) => {
+    setFilters({
+      ...filters,
+      MinRating: rating
+    });
+  };
+
+  const renderStars = () => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <span
+          key={i}
+          className={`star ${i <= filters.MinRating ? 'selected' : ''}`}
+          onClick={() => handleStarClick(i)}
+        >
+          &#9733;
+        </span>
+      );
+    }
+    return stars;
   };
 
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -168,22 +190,10 @@ const Search = () => {
                 />
               </div>
               <div className="filter">
-                <label>Rating Mínimo</label>
-                <input
-                  type="number"
-                  name="MinRating"
-                  value={filters.MinRating}
-                  onChange={handleFilterChange}
-                />
-              </div>
-              <div className="filter">
-                <label>Rating Máximo</label>
-                <input
-                  type="number"
-                  name="MaxRating"
-                  value={filters.MaxRating}
-                  onChange={handleFilterChange}
-                />
+                <label>Valoración</label>
+                <div className="star-rating">
+                  {renderStars()}
+                </div>
               </div>
               <div className="filter">
                 <label>Categoría Secundaria</label>
@@ -195,6 +205,9 @@ const Search = () => {
                 />
               </div>
               <button onClick={applyFilters}>Aplicar Filtros</button>
+              <button className="close-modal" onClick={() => setFilterVisible(false)}>
+                <IconX />
+              </button>
             </div>
             <div className="products-list">
               {currentProducts.map((product) => (

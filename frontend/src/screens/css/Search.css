@@ -42,6 +42,7 @@
 .pagination button:hover {
   background-color: #1d640e;
 }
+
 /* Estilos para los filtros */
 .filter {
   margin-bottom: 1rem;
@@ -55,7 +56,7 @@
 }
 
 .filter input {
-  width: 100%;
+  width: 90%;
   padding: 0.5rem;
   font-size: 1rem;
   border: 1px solid #ccc;
@@ -88,6 +89,25 @@
   background-color: #1d640e;
 }
 
+.star-rating {
+  font-size: 1.5rem;
+  color: #ddd;
+  cursor: pointer;
+}
+
+.star-rating .star.selected {
+  color: #ffd700;
+}
+
+.close-modal {
+  display: block;
+  margin-top: 1rem;
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
 /* Estilos para el contenedor de filtros cuando está visible */
 .filter-container.visible {
   display: block;
@@ -116,74 +136,53 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .filters {
-    display: flex;
-    position: fixed;
-    background-color: rgb(249, 255, 247);
-    color: #383838;
-    cursor: pointer;
-    padding: 0.3rem;
-    bottom: 1rem;
-    text-align: center;
-    left: 25%;
-    right: 25%;
-    border-radius: 10rem;
-    z-index: 1000;
-  }
-
-  .filters a {
-    text-decoration: none;
-    font-size: small;
-    font-family: 'Roboto', sans-serif;
-    color: #908f8f;
-    margin: auto;
-  }
-
-  .filter-container {
-    display: none;
-  }
-
-  .filters-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0.5rem;
-  }
-
   .filter-container.visible {
     display: flex;
     flex-direction: column;
     position: fixed;
+    width: 100%;
+    height: 100%;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background-color: rgb(241, 255, 240);
     z-index: 1000;
-    padding: 2rem;
-    overflow-y: auto;
+    padding:1rem;
   }
 
   .filter {
-    margin-bottom: 1rem;
-    width: 100%;
+    width: 80%;
+    margin:1rem 0 0 1rem;
   }
 
   .filter label {
-    color: #fff;
+    color: #000000;
+    width: 90%;
   }
 
-  .filter input, .filter select, .filter button {
-    width: 100%;
+  .filter input {
+    width: 90%;
   }
+  .filter select {
+    width: 95%;
 
-  .filter button {
+  }
+  .filter-container button {
     background-color: #248311;
+    width: 50%;
+    margin-top: auto;
+    margin-left: 50%;
   }
 
   .filter button:hover {
     background-color: #1d640e;
+  }
+
+  .star-rating .star {
+    color: #ddd;
+  }
+
+  .star-rating .star.selected {
+    color: #ffd700;
   }
 
   .filters {
