@@ -14,6 +14,7 @@ const Product = () => {
   const [loading, setLoading] = useState(true);
   const imageGalleryRef = React.createRef();
   const params = useParams();
+
   const backendUrl = process.env.NODE_ENV === 'development'
     ? 'http://localhost:5000'
     : process.env.REACT_APP_BACKEND_URL;
@@ -36,7 +37,26 @@ const Product = () => {
 
     return stars;
   };
+  const calculateStarsPercentage = () => {
+    const totalReviews = product.TotalComments; // Total de valoraciones
+    const starsCount = {}; // Objeto para almacenar el recuento de estrellas
 
+    // Contar el número de valoraciones para cada cantidad de estrellas
+    reviews.forEach(review => {
+      const stars = review.AssignedRating;
+      starsCount[stars] = (starsCount[stars] || 0) + 1;
+    });
+
+    // Calcular el porcentaje para cada cantidad de estrellas
+    const starsPercentage = {};
+    for (let i = 1; i <= 5; i++) {
+      starsPercentage[i] = ((starsCount[i] || 0) / totalReviews) * 100;
+    }
+
+    return starsPercentage;
+  };
+
+  const totalStarsPercentaje = calculateStarsPercentage();
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -106,55 +126,97 @@ const Product = () => {
 
   return (
     <>
+      <p>
+        <Link to={`/search?PrincipalCategoryId=${product?.PrincipalCategoryId}`} style={{ textDecoration: 'none', color: 'green' }}>
+          {"Productos > "}{product?.PrincipalCategoryName} {product?.SecundaryCategoryName ? ' > ' : ''} {product?.SecundaryCategoryName} {product?.TertiaryCategoryName ? ' > ' : ''} {product?.TertiaryCategoryName}
+        </Link>
+      </p>
       <div className="product-container">
         <div className="product-image">
+          <p>{product?.StockAvailability > 0 ? 'Disponible' : 'No disponible'}</p>
           <ImageGallery imageUrls={images} />
         </div>
         <div className="product-details">
           <div className="product-header">
+            <h2>{product?.ProductName}</h2>
             <p>
               Visita la tienda de{' '}
               <Link to={`/shop/${product?.ShopID}`} style={{ textDecoration: 'none', color: 'green' }}>
                 {product?.ShopName}
               </Link>
             </p>
-            <p>{renderStars(product?.Rating)}({product?.TotalComments} Valoraciones)</p>
+            <div>
+              <p>
+                {product?.Rating} {renderStars(product?.Rating)}
+                {" | "}
+                <a href="#comentarios" style={{ textDecoration: 'none', color: 'green' }}>
+                  {product?.TotalComments} Valoraciones | Buscar en esta página
+                </a>
+              </p>
+
+            </div>
+            <h1>{(product?.Price * quantity).toFixed(2)} €</h1>
+            <a> 0,99 €/kg</a>
           </div>
-          <h2>{product?.ProductName}</h2>
-          <p>Categoría: {product?.PrincipalCategoryName}</p>
-          <p>Precio: {product?.Price}</p>
-          <p>Stock: {product?.StockAvailability > 0 ? 'Disponible' : 'No disponible'}</p>
           <div className="quantity-container">
-            <label>Cantidad:</label>
-            <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>-</button>
-            <input
-              type="number"
-              min="1"
-              max="100"
-              value={quantity}
-              onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
-            />
-            <button onClick={() => setQuantity(Math.min(100, quantity + 1))}>+</button>
+            <div className="quantity-selector">
+              <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>-</button>
+              <input
+                type="number"
+                min="1"
+                max="100"
+                value={quantity}
+                onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
+              />
+              <button onClick={() => setQuantity(Math.min(100, quantity + 1))}>+</button>
+            </div>
+            <button className="add-to-cart-button" onClick={addToCart}>Añadir al carrito</button>
           </div>
-          <button className="add-to-cart-button" onClick={addToCart}>Añadir al carrito</button>
           <h3>Acerca de este producto</h3>
           <p>{product?.ProductDescription}</p>
         </div>
       </div>
-      <div className="product-reviews">
-        <h3>Reseñas</h3>
-        {reviews.map(review => (
-          <div key={review.ReviewID} className="review-item">
-            <div>
-              <img src={review.ProfileImageUrl} alt="User Profile" />
-              <h4>{review.FirstName}</h4>
-              <h4>{review.AssignedRating} Estrellas</h4>
-            </div>
-            <div>
-              <p>{review.Comment}</p>
-            </div>
+      <div>
+        <h2>Buscar información especifica</h2>
+      </div>
+      <div id="comentarios" className="product-reviews">
+        <div className="Opiniones">
+          <h3>Opiniones de clientes</h3>
+          <div className="StarsTitle">
+            {renderStars(product?.Rating)} {product?.Rating} Estrellas de 5
           </div>
-        ))}
+          {product?.TotalComments} Valoraciones totales
+
+          {[5, 4, 3, 2, 1].map(stars => (
+
+            <div key={stars} className="starsLine">
+              <a>{stars} Estrellas</a>
+              <div className="WidthDiv">
+                <div className="WidthPercentaje" style={{ width: `${totalStarsPercentaje[stars]}%` }}></div>
+              </div>
+              {totalStarsPercentaje[stars]}%
+            </div>
+
+          ))}
+
+        </div>
+        <div className="Reseñas">
+          <h2>Principales Reseñas</h2>
+          {reviews.map(review => (
+            <div key={review.ReviewID} className="review-item">
+              <div className="header-comment">
+                <img src={review.ProfileImageUrl} alt="User Profile" />
+                <div >
+                  <h4>{review.FirstName}</h4>
+                  <h4>{review.AssignedRating} Estrellas</h4>
+                </div>
+              </div>
+              <div>
+                <p>{review.Comment}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );

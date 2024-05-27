@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import './css/productCard.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
+    const navigate = useNavigate();
+
     const imageUrls = product?.ProductImages.slice(1, -1).split(',');
-    // Obtener la primera URL de imagen del producto
     const firstImageUrl = imageUrls[0]?.trim();
 
-    // Función para generar las estrellas de valoración
     const renderStars = (rating) => {
         const totalStars = 5;
         const filledStars = Math.floor(rating);
@@ -46,10 +46,15 @@ const ProductCard = ({ product }) => {
         }
     };
 
+    const navigateToProduct = () => {
+        navigate(`/product/${product.ProductID}`);
+    };
+
     return (
-        <Link to={`/product/${product.ProductID}`} style={{ color: "black" }} className="product-card">
+        <div onClick={navigateToProduct} style={{ color: "black" }} className="product-card">
             <div className="product-card-image">
                 <img src={firstImageUrl} alt={product?.ProductName} />
+                <span>{product?.StockAvailability > 0 ? 'Disponible' : 'No disponible'}</span>
             </div>
             <div className="product-card-details">
                 <h2>{product?.ProductName}</h2>
@@ -64,10 +69,10 @@ const ProductCard = ({ product }) => {
                 <p>{product?.TotalComments}</p>
             </div>
             <p>{product?.Price} €</p>
-            <div className="product-card-add-to-cart-button" onClick={addToCart}>
+            <div className="product-card-add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart(); }}>
                 Añadir al carrito
             </div>
-        </Link>
+        </div>
     );
 };
 
