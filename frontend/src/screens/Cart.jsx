@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { IconTrash } from '@tabler/icons-react';
 import './css/Cart.css'; // Importa el archivo CSS
 
-const Cart = () => {
+const Cart = ({changeCart}) => {
   const [cart, setCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
 
@@ -26,6 +26,7 @@ const Cart = () => {
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     const total = calculateCartTotal(updatedCart);
     setCartTotal(total);
+    changeCart();
   };
 
   const handleQuantityChange = (productId, amount) => {
@@ -43,6 +44,7 @@ const Cart = () => {
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     const total = calculateCartTotal(updatedCart);
     setCartTotal(total);
+    changeCart();
   };
 
   const handleCheckout = () => {

@@ -16,7 +16,7 @@ const PrincipalCategories = [
   { id: 8, name: "Productos de colmena" }
 ];
 
-const Search = () => {
+const Search = ({changeCart}) => {
   const [products, setProducts] = useState([]);
   const [productCount, setProductCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -211,7 +211,7 @@ const Search = () => {
             </div>
             <div className="products-list">
               {currentProducts.map((product) => (
-                <ProductCard product={product} key={product.ProductID} />
+                <ProductCard product={product} key={product.ProductID} changeCart={changeCart} />
               ))}
             </div>
           </div>

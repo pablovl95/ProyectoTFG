@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './css/productCard.css';
 import { useNavigate } from 'react-router-dom';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, changeCart }) => {
     const navigate = useNavigate();
 
     const imageUrls = product?.ProductImages.slice(1, -1).split(',');
@@ -44,6 +44,7 @@ const ProductCard = ({ product }) => {
             const updatedCart = [...existingCart, { ...product, quantity: 1 }];
             localStorage.setItem('cart', JSON.stringify(updatedCart));
         }
+        changeCart();
     };
 
     const navigateToProduct = () => {

@@ -4,7 +4,7 @@ import { ClipLoader } from 'react-spinners';
 import ImageGallery from '../components/ImageGallery';
 import './css/Product.css';
 
-const Product = () => {
+const Product = ({changeCart}) => {
   const [showNav, setShowNav] = useState(window.innerWidth > 768);
   const [product, setProduct] = useState({});
   const [images, setImages] = useState([]);
@@ -108,6 +108,7 @@ const Product = () => {
       setCart(updatedCart);
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     }
+    changeCart();
   };
 
   if (loading) {

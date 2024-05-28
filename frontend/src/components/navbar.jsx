@@ -4,7 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import { IconShoppingCart, IconUsers, IconSearch } from '@tabler/icons-react';
 import { auth } from "../auth";
 
-export default function Navbar({ loginView, user }) {
+export default function Navbar({ loginView, user, changeCart }) {
   const PrincipalCategories = [
     { id: 1, name: "Frutas" },
     { id: 2, name: "Verduras" },
@@ -23,21 +23,25 @@ export default function Navbar({ loginView, user }) {
   const [searchType, setSearchType] = useState('productos');
 
   useEffect(() => {
-    const storedCart = localStorage.getItem('cart');
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
-    }
-  }, []);
+    updateCart();
+  }, [changeCart]);
 
   const handleLogout = () => {
     auth.signOut();
     setUserMenuOpen(false);
     setMenuOpen(false);
-  }
+  };
 
   const Modals = () => {
     setUserMenuOpen(!userMenuOpen);
     loginView();
+  };
+
+  const updateCart = () => {
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
   };
 
   return (
@@ -66,7 +70,7 @@ export default function Navbar({ loginView, user }) {
             <NavLink to="/cart" style={{ color: '#FFF' }}>
               <IconShoppingCart size={40} style={{ marginRight: '1rem' }} />
               {cart.length > 0 && (
-                <span className="cart-counter">{cart.map(x=>x.quantity).reduce((a,b)=>a+b,0)}</span>
+                <span className="cart-counter">{cart.map(x => x.quantity).reduce((a, b) => a + b, 0)}</span>
               )}
             </NavLink>
             <IconUsers onClick={Modals} style={{ marginRight: '1rem' }} size={40} />

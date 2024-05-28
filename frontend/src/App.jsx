@@ -21,10 +21,10 @@ function App() {
   const [loginView, setLoginView] = useState(false);
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [changer, setChanger] = useState(false);
   const backendUrl = process.env.NODE_ENV === 'development'
     ? 'http://localhost:5000'
     : process.env.REACT_APP_BACKEND_URL;
-
 
   useEffect(() => {
     // Verifica si el usuario está autenticado al cargar la aplicación
@@ -47,7 +47,7 @@ function App() {
               },
               body: JSON.stringify({
                 FirstName: user.displayName.split(' ')[0],
-                LastName: user.displayName.split(' ')[1]+ user.displayName.split(' ')[2],
+                LastName: user.displayName.split(' ')[1] + (user.displayName.split(' ')[2] || ''),
                 Email: user.email,
                 UserID: user.uid,
                 Phone: user.phoneNumber || 'NULL',
@@ -58,17 +58,22 @@ function App() {
     });
 
     return () => unsubscribe(); // Se asegura de desuscribirse cuando se desmonta el componente
-  }, []);
+  }, [backendUrl]);
+
+  const changeCart = () => {
+    setChanger(!changer);
+  };
+
   return (
     <div className="App">
-      <Navbar loginView={() => setLoginView(true)} user={userData} />
+      <Navbar loginView={() => setLoginView(true)} user={userData} changeCart={changer} />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home changeCart={changeCart}/>} />
         <Route path="/about" element={<About />} />
-        <Route path="/product/:id" element={<Product />} />
-        <Route path="/search" element={<Search />} />
+        <Route path="/product/:id" element={<Product changeCart={changeCart} />} />
+        <Route path="/search" element={<Search changeCart={changeCart} />} />
         <Route path="/shop/:id" element={<Shop />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/cart" element={<Cart changeCart={changeCart}/>} />
         {userData && (
           <>
             <Route path="/profile" element={<Profile />} />
@@ -77,12 +82,11 @@ function App() {
           </>
         )}
         {userData?.UserType === 'administrator' && (
-            <Route path="/dashboard" element={<Dashboard />} />
-          )}
-          {userData?.userType === 'delivery' && (
-            <Route path="/delivery" element={<Delivery />} />
-          )}
-
+          <Route path="/dashboard" element={<Dashboard />} />
+        )}
+        {userData?.userType === 'delivery' && (
+          <Route path="/delivery" element={<Delivery />} />
+        )}
       </Routes>
       <Footer />
       {loginView && !user && (

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ProductSlider from '../components/ProductSlider';
 import ProductCard from '../components/productCard';
 import "./css/Home.css"; // Importa tus estilos CSS aquí
-function Home() {
+function Home({changeCart}) {
   const backendUrl = process.env.NODE_ENV === 'development'
   ? 'http://localhost:5000'
   : process.env.REACT_APP_BACKEND_URL;
@@ -49,7 +49,7 @@ useEffect(() => {
         </h1>
         <div className="data-container-cards">
           {popularProducts.map((product) => (
-            <ProductCard key={product.ProductID} product={product} />
+            <ProductCard key={product.ProductID} product={product} changeCart={changeCart} />
           ))}
       </div>
       </div>
