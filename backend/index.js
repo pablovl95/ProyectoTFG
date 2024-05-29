@@ -21,6 +21,7 @@ const PORT = 5000;
 
 // Middleware para manejar datos JSON
 app.use(express.json());
+app.use(cors());
 app.use(morgan('dev'));
 app.use(cors());
 
@@ -89,7 +90,6 @@ app.get('/api/v1/products', async (req, res) => {
         StringQuery = StringQuery.slice(0, -5);
       }
       StringQuery += ";";
-      //console.log(StringQuery);
       const data = await db.execute(StringQuery);
       if (data.rows.length === 0) {
         res.sendStatus(404); // Si no hay resultados, enviar 404

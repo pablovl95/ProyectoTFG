@@ -8,28 +8,33 @@ function Dashboard() {
   const [search, setSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [isEditable, setIsEditable] = useState(false); // Estado para controlar si el formulario es editable o no
+  const [isEditable, setIsEditable] = useState(false);
   const itemsPerPage = 10;
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
     setSearch(false); // Reset search state when switching items
+    setFormdataview(false); // Reset formdataview when switching items
+    setFormData([]); // Clear formData immediately
   };
 
   const handleModificarClick = () => {
-    console.log("Modificar datos:", formData);
+    // console.log("Modificar datos:", formData);
     setIsEditable(true); // Hacer el formulario editable al hacer clic en "Modificar"
   };
 
   const handleEliminarClick = () => {
-    console.log("Eliminar datos:", formData);
+    // console.log("Eliminar datos:", formData);
   };
-
+const handleSaveClick = () => {
+    // console.log("Guardar cambios:", formData);
+    setIsEditable(false); // Hacer el formulario no editable al hacer clic en "Guardar cambios"
+};
   const handleSearch = async () => {
     try {
       const response = await fetch(`http://localhost:5000/api/v1/${selectedItem}`);
       const data = await response.json();
-      console.log('Search Results:', data);
+      // console.log('Search Results:', data);
       setFormData(data || []); // Handle case where data is null or undefined
       setCurrentPage(1);
       setSearch(true);
@@ -59,36 +64,34 @@ function Dashboard() {
   };
 
   const renderUserCard = () => {
-    if (selectedItem === 'users' && formData.length > 0) {
-      return formData.map((user, index) => (
-        <div key={index} className="user-card" onClick={() => handleGestionClick(user)}>
-          <img src={user?.ProfileImageUrl} alt={`${user?.FirstName} ${user?.LastName}`} />
-          <h3>{`${user?.FirstName} ${user?.LastName}`}</h3>
-          <p><strong>Correo Electrónico:</strong> {user?.Email}</p>
-          <p><strong>Teléfono:</strong> {user?.Phone}</p>
-          {/* Agrega más campos según la estructura de tus datos de usuario */}
-        </div>
-      ));
-    } else if (selectedItem === 'products' && formData.length > 0) {
-      return formData.map((product, index) => (
-        <div key={index} className="product-card" onClick={() => handleGestionClick(product)}>
-          <img src={product?.ProductImages?.slice(1, -1).split(',')[0]} alt={product?.ProductName} />
-          <h3>{product?.ProductName}</h3>
-          <p><strong>Precio:</strong> ${product?.Price}</p>
-          <p><strong>Descripción:</strong> {product?.ProductDescription}</p>
-          {/* Agrega más campos según la estructura de tus datos de producto */}
-        </div>
-      ));
-    } else {
-      return null; // Return null if formData is empty or selectedItem is not recognized
+    if (search) {
+      if (selectedItem === 'users' && formData.length > 0) {
+        return formData.map((user, index) => (
+          <div key={index} className="dashboard-user-card" onClick={() => handleGestionClick(user)}>
+            <img src={user?.ProfileImageUrl} alt={`${user?.FirstName} ${user?.LastName}`} />
+            <h3>{`${user?.FirstName} ${user?.LastName}`}</h3>
+            <p><strong>Correo Electrónico:</strong> {user?.Email}</p>
+            <p><strong>Teléfono:</strong> {user?.Phone}</p>
+          </div>
+        ));
+      } else if (selectedItem === 'products' && formData.length > 0) {
+        return formData.map((product, index) => (
+          <div key={index} className="dashboard-product-card" onClick={() => handleGestionClick(product)}>
+            <img src={"data:image/png;base64," + product?.ImageContent} alt={product?.ProductName} />
+            <h3>{product?.ProductName}</h3>
+            <p><strong>Precio:</strong> ${product?.Price}</p>
+            <p><strong>Descripción:</strong> {product?.ProductDescription}</p>
+          </div>
+        ));
+      }
     }
   };
 
   const renderForm = () => {
     return (
-      <form className="form-data">
+      <form className="dashboard-form-data">
         {Object.entries(formData).map(([key, value], index) => (
-          <div key={index} className="form-field">
+          <div key={index} className="dashboard-form-field">
             <label htmlFor={key}>{key}</label>
             <input
               type="text"
@@ -101,14 +104,14 @@ function Dashboard() {
         ))}
         {isEditable && (
           <>
-            <div onClick={handleModificarClick} className="SaveButton">Guardar Cambios</div>
-            <div onClick={handleEliminarClick} className="CancelButton">Cancelar</div>
+            <div onClick={handleSaveClick} className="dashboard-SaveButton">Guardar Cambios</div>
+            <div onClick={handleEliminarClick} className="dashboard-CancelButton">Cancelar</div>
           </>
         )}
         {formdataview && !isEditable && (
           <>
-            <div onClick={handleModificarClick} className="modifiedButton">Modificar</div>
-            <div onClick={handleEliminarClick} className="DeleteButton">Eliminar</div>
+            <div onClick={handleModificarClick} className="dashboard-modifiedButton">Modificar</div>
+            <div onClick={handleEliminarClick} className="dashboard-DeleteButton">Eliminar</div>
           </>
         )}
       </form>
@@ -118,8 +121,8 @@ function Dashboard() {
   return (
     <>
       <h1>Dashboard de Gestión</h1>
-      <div className="dashboard-content">
-        <div className="sidebar">
+      <div className="dashboard-contents">
+        <div className="dashboard-sidebar">
           <div onClick={() => handleItemClick('users')}>Usuarios</div>
           <div onClick={() => handleItemClick('products')}>Productos</div>
           <div onClick={() => handleItemClick('orders')}>Pedidos</div>
@@ -130,7 +133,7 @@ function Dashboard() {
           <div onClick={() => handleItemClick('Solicitudes de Apertura de Puntos de Recogida')}>Solicitudes de Apertura de Puntos de Recogida</div>
           <div onClick={() => handleItemClick('Noticias')}>Noticias</div>
         </div>
-        <div className="content">
+        <div className="dashboard-content">
           <h2>Datos de búsqueda</h2>
           <div>
             <input
@@ -141,7 +144,7 @@ function Dashboard() {
             />
             <button onClick={handleSearch}>Buscar</button>
           </div>
-          {search && renderUserCard()}
+          {renderUserCard()}
           {formdataview && renderForm()}
         </div>
       </div>

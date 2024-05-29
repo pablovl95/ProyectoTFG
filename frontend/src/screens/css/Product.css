@@ -1,15 +1,27 @@
 /* Estilos para el contenedor del producto */
+.product-container-global {
+margin: auto;
+width: 80%;
+display: flex;
+flex-direction: column;
+}
+.breadcrumbs {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
 .product-container {
   display: flex;
   flex-direction: row;
-  width: 80%;
-  margin: auto;
 }
 
 /* Estilos para el contenedor de la imagen del producto */
 .product-image {
   position: relative;
   width: 60%;
+
 }
 
 .product-image p {
@@ -25,6 +37,17 @@
 .product-details {
   padding: 0 1rem;
   width: 100%;
+
+}
+.product-description  {
+  display: flex;
+  flex-direction: column;
+  justify-content: right;
+  align-items: flex-start;
+  margin-left: 1rem;
+}
+.product-description h3 {
+margin:0
 }
 .product-details h1 {
   margin-top: 1rem;
@@ -116,8 +139,6 @@
   margin-top: 2rem;
   display: flex;
   flex-direction: row;
-  margin: auto;
-  width: 80%;
 }
 
 /* Estilos para la sección de opiniones */

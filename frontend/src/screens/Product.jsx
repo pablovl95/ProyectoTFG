@@ -70,7 +70,6 @@ const Product = ({changeCart}) => {
       // console.log(urls);
       setImages(urls);
       setProduct(productData[0]);
-
       const reviewsResponse = await fetch(`${backendUrl}/api/v1/reviews/${params.id}`);
       if (!reviewsResponse.ok) {
         throw new Error('Error fetching reviews data');
@@ -128,9 +127,9 @@ const Product = ({changeCart}) => {
   }
 
   return (
-    <>
-      <p>
-        <Link to={`/search?PrincipalCategoryId=${product?.PrincipalCategoryId}`} style={{ textDecoration: 'none', color: 'green' }}>
+    <div className='product-container-global'>
+      <p className="breadcrumbs">
+        <Link to={`/search?PrincipalCategoryId=${product?.PrincipalCategoryID}`} style={{ textDecoration: 'none', color: 'green' }}>
           {"Productos > "}{product?.PrincipalCategoryName} {product?.SecundaryCategoryName ? ' > ' : ''} {product?.SecundaryCategoryName} {product?.TertiaryCategoryName ? ' > ' : ''} {product?.TertiaryCategoryName}
         </Link>
       </p>
@@ -175,8 +174,10 @@ const Product = ({changeCart}) => {
             </div>
             <button className="add-to-cart-button" onClick={addToCart}>Añadir al carrito</button>
           </div>
+          <div className="product-description">
           <h3>Acerca de este producto</h3>
           <p>{product?.ProductDescription}</p>
+          </div>
         </div>
       </div>
       <div>
@@ -221,7 +222,7 @@ const Product = ({changeCart}) => {
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

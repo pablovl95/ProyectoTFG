@@ -32,30 +32,29 @@ function App() {
     // Verifica si el usuario está autenticado al cargar la aplicación
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setUser(user);
-      //console.log(user);
+      console.log(user);
       if (user) {
         await fetch(`${backendUrl}/api/v1/users/${user.uid}`)
           .then((response) => response.json())
           .then((data) => {
-              setUserData(data[0]);
-              console.log("entrando",data[0]);
+            setUserData(data[0]);
+            console.log("entrando", data[0]);
           });
-          if(userData === undefined){
-            // console.log("no hay datos");
-            await fetch(`${backendUrl}/api/v1/users`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                FirstName: user.displayName.split(' ')[0],
-                LastName: user.displayName.split(' ')[1] + (user.displayName.split(' ')[2] || ''),
-                Email: user.email,
-                UserID: user.uid,
-                Phone: user.phoneNumber || 'NULL',
-              }),
-            });
-          }
+      } if (userData === undefined) {
+        console.log("no hay datos");
+        await fetch(`${backendUrl}/api/v1/users`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            FirstName: user.displayName.split(' ')[0],
+            LastName: user.displayName.split(' ')[1] + (user.displayName.split(' ')[2] || ''),
+            Email: user.email,
+            UserID: user.uid,
+            Phone: user.phoneNumber || 'NULL',
+          }),
+        });
       }
     });
 
@@ -70,12 +69,12 @@ function App() {
     <div className="App">
       <Navbar loginView={() => setLoginView(true)} user={userData} changeCart={changer} />
       <Routes>
-        <Route path="/" element={<Home changeCart={changeCart}/>} />
+        <Route path="/" element={<Home changeCart={changeCart} />} />
         <Route path="/about" element={<About />} />
         <Route path="/product/:id" element={<Product changeCart={changeCart} />} />
         <Route path="/search" element={<Search changeCart={changeCart} />} />
         <Route path="/shop/:id" element={<Shop />} />
-        <Route path="/cart" element={<Cart changeCart={changeCart}/>} />
+        <Route path="/cart" element={<Cart changeCart={changeCart} />} />
         {userData && (
           <>
             <Route path="/profile" element={<Profile />} />

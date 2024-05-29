@@ -12,7 +12,7 @@ useEffect(() => {
     try {
       const response = await fetch(`${backendUrl}/api/v1/popularProducts`);
       const data = await response.json();
-      console.log(data);
+      //console.log(data);
       setPopularProducts(data);
     } catch (error) {
       console.log(error);

@@ -94,7 +94,7 @@ const Cart = ({changeCart}) => {
           {cart.map(item => (
             <div className="cart-item" key={item.ProductID}>
               <Link to={`/product/${item.ProductID}`} className='link-container'>
-                <img src={item.ProductImages.slice(1, -1).split(',')[0]?.trim()} alt={item.ProductName} className="cart-item-image" />
+                <img src={"data:image/png;base64,"+item.ImageContent} alt={item.ProductName} className="cart-item-image" />
                 <div className="cart-item-info">
                   <h3>{item.ProductName}</h3>
                   <p>{item.Price} €</p>

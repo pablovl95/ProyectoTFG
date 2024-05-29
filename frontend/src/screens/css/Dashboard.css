@@ -1,7 +1,9 @@
-.dashboard-content {
+.dashboard-contents {
     display: flex;
     justify-content: space-between;
+    width: 80%;
     margin-top: 20px;
+    margin: auto;
   }
   
   .dashboard-sidebar {
