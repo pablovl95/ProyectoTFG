@@ -1,0 +1,31 @@
+
+/* Estilos para cada ítem de reseña */
+.review-item {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .review-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 1rem;
+  }
+  .header-comment {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .review-item h4 {
+    margin: 0.5rem 0;
+  }
+  
+  .review-item p {
+    margin: 0;
+  }
+  

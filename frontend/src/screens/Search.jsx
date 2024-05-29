@@ -5,6 +5,9 @@ import { ClipLoader } from 'react-spinners';
 import ProductCard from '../components/productCard';
 import './css/Search.css';
 
+// Importa las funciones utilitarias desde utils.js
+import { buildURLSearchParams, renderStars } from '../utils/utils';
+
 const PrincipalCategories = [
   { id: 1, name: "Frutas" },
   { id: 2, name: "Verduras" },
@@ -16,7 +19,7 @@ const PrincipalCategories = [
   { id: 8, name: "Productos de colmena" }
 ];
 
-const Search = ({changeCart}) => {
+const Search = ({ changeCart }) => {
   const [products, setProducts] = useState([]);
   const [productCount, setProductCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -84,12 +87,8 @@ const Search = ({changeCart}) => {
   };
 
   const applyFilters = () => {
-    const searchParams = new URLSearchParams(filters);
-    const params = Array.from(searchParams.entries())
-      .filter(([key, value]) => value !== '')
-      .map(([key, value]) => `${key}=${value}`);
-      //console.log(`search?${params.join('&')}`);
-    navigate(`/search?${params.join('&')}`);
+    const params = buildURLSearchParams(filters);
+    navigate(`/search?${params}`);
     setFilterVisible(false); // Hide the modal after applying filters
   };
 
@@ -98,22 +97,6 @@ const Search = ({changeCart}) => {
       ...filters,
       MinRating: rating
     });
-  };
-
-  const renderStars = () => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <span
-          key={i}
-          className={`star ${i <= filters.MinRating ? 'selected' : ''}`}
-          onClick={() => handleStarClick(i)}
-        >
-          &#9733;
-        </span>
-      );
-    }
-    return stars;
   };
 
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -192,7 +175,7 @@ const Search = ({changeCart}) => {
               <div className="filter">
                 <label>Valoración</label>
                 <div className="star-rating">
-                  {renderStars()}
+                  {renderStars(filters.MinRating, handleStarClick)}
                 </div>
               </div>
               <div className="filter">
@@ -225,7 +208,7 @@ const Search = ({changeCart}) => {
           </div>
           <div className="pagination">
             {Array.from({ length: totalPages }, (_, i) => (
-              <button key={i + 1} onClick={() => handlePageChange(i + 1)}>{i + 1}</button>
+              <button key={i + 1} onClick={() => handlePageChange(i +1)}>{i + 1}</button>
             ))}
           </div>
         </>

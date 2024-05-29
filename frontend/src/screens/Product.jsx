@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import ImageGallery from '../components/ImageGallery';
 import './css/Product.css';
+import {renderCardReviews } from '../utils/utils';
 
 const Product = ({changeCart}) => {
   const [showNav, setShowNav] = useState(window.innerWidth > 768);
@@ -19,24 +20,29 @@ const Product = ({changeCart}) => {
     ? 'http://localhost:5000'
     : process.env.REACT_APP_BACKEND_URL;
 
-  const renderStars = (rating) => {
-    const totalStars = 5;
-    const filledStars = Math.floor(rating);
-    const halfStar = rating - filledStars >= 0.5;
-    const stars = [];
-
-    for (let i = 1; i <= totalStars; i++) {
-      if (i <= filledStars) {
-        stars.push(<span key={i} className='filled'>★</span>);
-      } else if (i === filledStars + 1 && halfStar) {
-        stars.push(<span key={i} className='half-filled'>★</span>);
-      } else {
-        stars.push(<span key={i}>★</span>);
+    const renderStars = (rating) => {
+      const totalStars = 5;
+      const filledStars = Math.floor(rating);
+      const halfStar = rating - filledStars >= 0.5;
+      const stars = [];
+    
+      for (let i = 1; i <= totalStars; i++) {
+        if (i <= filledStars) {
+          stars.push(<span key={i} className='filled'>★</span>);
+        } else if (i === filledStars + 1 && halfStar) {
+          stars.push(
+            <span key={i} className='half-filled' style={{ width: `${(rating - filledStars) * 100}%` }}>
+              ★
+            </span>
+          );
+        } else {
+          stars.push(<span key={i}>★</span>);
+        }
       }
-    }
-
-    return stars;
-  };
+    
+      return stars;
+    };
+    
   const calculateStarsPercentage = () => {
     const totalReviews = product.TotalComments; // Total de valoraciones
     const starsCount = {}; // Objeto para almacenar el recuento de estrellas
@@ -175,53 +181,51 @@ const Product = ({changeCart}) => {
             <button className="add-to-cart-button" onClick={addToCart}>Añadir al carrito</button>
           </div>
           <div className="product-description">
-          <h3>Acerca de este producto</h3>
-          <p>{product?.ProductDescription}</p>
+            <h3>Acerca de este producto</h3>
+            <p>{product?.ProductDescription}</p>
           </div>
         </div>
       </div>
+      <div className="separator"></div>
       <div>
-        <h2>Buscar información especifica</h2>
+        <h2>Información adicional sobre el producto</h2>
       </div>
-      <div id="comentarios" className="product-reviews">
-        <div className="Opiniones">
-          <h3>Opiniones de clientes</h3>
-          <div className="StarsTitle">
-            {renderStars(product?.Rating)} {product?.Rating} Estrellas de 5
-          </div>
-          {product?.TotalComments} Valoraciones totales
-
-          {[5, 4, 3, 2, 1].map(stars => (
-
-            <div key={stars} className="starsLine">
-              <a>{stars} Estrellas</a>
-              <div className="WidthDiv">
-                <div className="WidthPercentaje" style={{ width: `${totalStarsPercentaje[stars]}%` }}></div>
-              </div>
-              {totalStarsPercentaje[stars]}%
+      <div className="separator"></div>
+      {/* Renderizar las reseñas solo si hay comentarios */}
+      {reviews.length > 0 && (
+        <div id="comentarios" className="product-reviews">
+          <div className="Opiniones">
+            <h3>Opiniones de clientes</h3>
+            <div className="StarsTitle">
+              {renderStars(product?.Rating)} {product?.Rating} Estrellas de 5
             </div>
+            {product?.TotalComments} Valoraciones totales
 
-          ))}
+            {[5, 4, 3, 2, 1].map(stars => (
 
-        </div>
-        <div className="Reseñas">
-          <h2>Principales Reseñas</h2>
-          {reviews.map(review => (
-            <div key={review.ReviewID} className="review-item">
-              <div className="header-comment">
-                <img src={review.ProfileImageUrl} alt="User Profile" />
-                <div >
-                  <h4>{review.FirstName}</h4>
-                  <h4>{review.AssignedRating} Estrellas</h4>
+              <div key={stars} className="starsLine">
+                <a>{stars} Estrellas</a>
+                <div className="WidthDiv">
+                  <div className="WidthPercentaje" style={{ width: `${totalStarsPercentaje[stars]}%` }}></div>
                 </div>
+                {totalStarsPercentaje[stars]}%
               </div>
-              <div>
-                <p>{review.Comment}</p>
-              </div>
-            </div>
-          ))}
+
+            ))}
+
+          </div>
+          <div className="Reseñas">
+            <h2>Principales Reseñas</h2>
+            {renderCardReviews(reviews)}
+          </div>
         </div>
-      </div>
+      )}
+      {/* Si no hay comentarios, mostrar un mensaje */}
+      {reviews.length === 0 && (
+        <div>
+          <p>No hay valoraciones disponibles</p>
+        </div>
+      )}
     </div>
   );
 };

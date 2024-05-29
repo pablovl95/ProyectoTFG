@@ -20,7 +20,7 @@ export default function Navbar({ loginView, user, changeCart }) {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [cart, setCart] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchType, setSearchType] = useState('productos');
+  const [searchType, setSearchType] = useState('search');
 
   useEffect(() => {
     updateCart();

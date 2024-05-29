@@ -220,4 +220,20 @@
     bottom: 1rem;
     border-radius: 10rem;
   }
+  .close-filter-modal {
+    display: block;
+    position: fixed;
+    bottom: 1rem;
+    left: 25%;
+    right: 25%;
+    text-align: center;
+    z-index: 1000;
+  }
+  
+  .apply-filters-button {
+    display: block;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  
 }

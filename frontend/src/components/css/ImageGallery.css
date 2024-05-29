@@ -33,4 +33,25 @@
   .thumbnails img.active {
     border-color: rgb(11, 138, 0); /* Cambia a tu color deseado */
   }
+  @media screen and (max-width: 768px) {
+    .image-gallery {
+      flex-direction: column-reverse;
+    }
   
+    .main-image {
+      width: 100%;
+    }
+  
+    .thumbnails {
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+      margin-top: 10px;
+    }
+  
+    .thumbnails img {
+      width: 50px;
+      height: 50px;
+      margin: 0 5px;
+    }
+  }
