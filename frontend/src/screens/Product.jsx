@@ -65,7 +65,9 @@ const Product = ({changeCart}) => {
         throw new Error('Error fetching product data');
       }
       const productData = await productResponse.json();
-      const urls = productData[0].ProductImages.slice(1, -1).split(',');
+      //console.log(productData);
+      const urls = productData.map(product => product.ImageContent);
+      // console.log(urls);
       setImages(urls);
       setProduct(productData[0]);
 

@@ -2,7 +2,11 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import crypto from 'crypto';
+import multer from 'multer'; // Middleware para manejar la subida de archivos
+import path from 'path';
+
+const upload = multer({ dest: 'uploads/' }); // Directorio donde se almacenarán temporalmente los archivos subidos
+
 import 'dotenv/config';
 import { createClient } from "@libsql/client";
 
@@ -24,6 +28,16 @@ app.get('/', (req, res) => {
   res.send('Hola Mundo');
 });
 
+app.get('/api/v1/users', async (req, res) => {
+  try {
+    const data = await db.execute(`SELECT * FROM Users`);
+    res.status(200).send(data.rows);
+  } catch (error) {
+    console.error('Error al consultar la base de datos:', error);
+    res.status(500).send('Error al obtener el usuario de la base de datos');
+  }
+});
+
 app.get('/api/v1/users/:id', async (req, res) => {
   const id = req.params.id; // Obtener el valor del parámetro ID de la solicitud
   console.log(id);
@@ -40,7 +54,7 @@ app.get('/api/v1/users/:id', async (req, res) => {
 app.get('/api/v1/products', async (req, res) => {
   let AND = "";
   try {
-    let StringQuery = "SELECT Products.*, Categories.CategoryName AS PrincipalCategoryName, Shops.ShopID, Shops.ShopName FROM Products LEFT JOIN Categories ON Products.PrincipalCategoryId = Categories.CategoryID LEFT JOIN Shops ON Products.ShopID = Shops.ShopID WHERE ";
+    let StringQuery = "SELECT Products.*, Categories.CategoryName AS PrincipalCategoryName, Shops.ShopID, Shops.ShopName, ProductImages.ImageContent FROM Products LEFT JOIN Categories ON Products.PrincipalCategoryId = Categories.CategoryID LEFT JOIN Shops ON Products.ShopID = Shops.ShopID LEFT JOIN ProductImages ON Products.ImageDefaultID = ProductImages.ImageID WHERE ";
     //console.log(req.query);
     if (Object.keys(req.query).length > 0) {
       if (Object.keys(req.query).length > 1) {
@@ -75,7 +89,7 @@ app.get('/api/v1/products', async (req, res) => {
         StringQuery = StringQuery.slice(0, -5);
       }
       StringQuery += ";";
-      console.log(StringQuery);
+      //console.log(StringQuery);
       const data = await db.execute(StringQuery);
       if (data.rows.length === 0) {
         res.sendStatus(404); // Si no hay resultados, enviar 404
@@ -83,7 +97,7 @@ app.get('/api/v1/products', async (req, res) => {
         res.status(200).send(data.rows); // Si hay resultados, enviar los datos
       }
     } else {
-      const data = await db.execute("SELECT Products.*, Categories.CategoryName AS PrincipalCategoryName, Shops.ShopID, Shops.ShopName FROM Products LEFT JOIN Categories ON Products.PrincipalCategoryId = Categories.CategoryID LEFT JOIN Shops ON Products.ShopID = Shops.ShopID");
+      const data = await db.execute("SELECT Products.*, Categories.CategoryName AS PrincipalCategoryName, Shops.ShopID, Shops.ShopName, ProductImages.ImageContent FROM Products LEFT JOIN Categories ON Products.PrincipalCategoryId = Categories.CategoryID LEFT JOIN Shops ON Products.ShopID = Shops.ShopID LEFT JOIN ProductImages ON Products.ImageDefaultID = ProductImages.ImageID");
       res.status(200).send(data.rows);
     }
   } catch (error) {
@@ -94,7 +108,20 @@ app.get('/api/v1/products', async (req, res) => {
 app.get('/api/v1/products/:id', async (req, res) => {
   const id = req.params.id;
   try {
-    let StringQuery = `SELECT Products.*, Categories.CategoryName AS PrincipalCategoryName, Shops.ShopID, Shops.ShopName FROM Products LEFT JOIN Categories ON Products.PrincipalCategoryId = Categories.CategoryID LEFT JOIN Shops ON Products.ShopID = Shops.ShopID WHERE Products.ProductID = '${id}'`;
+    let StringQuery = `
+    SELECT
+  Products.*,
+  Categories.CategoryName AS PrincipalCategoryName,
+  Shops.ShopID,
+  Shops.ShopName,
+  ProductImages.ImageContent
+FROM
+  Products
+  LEFT JOIN Categories ON Products.PrincipalCategoryId = Categories.CategoryID
+  LEFT JOIN Shops ON Products.ShopID = Shops.ShopID
+  LEFT JOIN ProductImages ON ProductImages.ProductID = Products.ProductID WHERE Products.ProductID = '${id}';
+    
+    `;
     const data = await db.execute(StringQuery);
     if (data.rows.length === 0) {
       res.sendStatus(404); // Si no hay resultados, enviar 404
@@ -109,13 +136,11 @@ app.get('/api/v1/products/:id', async (req, res) => {
 });
 
 
+
 app.get('/api/v1/popularProducts', async (req, res) => {
   try {
     const query = `
-      SELECT Products.*, Categories.CategoryName AS PrincipalCategoryName, Shops.ShopID, Shops.ShopName
-      FROM Products
-      LEFT JOIN Categories ON Products.PrincipalCategoryId = Categories.CategoryID
-      LEFT JOIN Shops ON Products.ShopID = Shops.ShopID
+    SELECT Products.*, Categories.CategoryName AS PrincipalCategoryName, Shops.ShopID, Shops.ShopName, ProductImages.ImageContent FROM Products LEFT JOIN Categories ON Products.PrincipalCategoryId = Categories.CategoryID LEFT JOIN Shops ON Products.ShopID = Shops.ShopID LEFT JOIN ProductImages ON Products.ImageDefaultID = ProductImages.ImageID
       ORDER BY Products.TotalSales DESC
       LIMIT 3
     `;
@@ -326,7 +351,47 @@ app.post('/api/v1/addresses/:id', async (req, res) => {
     res.status(500).send('Error al agregar la dirección a la base de datos');
   }
 });
+app.get('/api/v1/productImages/:productId', upload.single('image'), async (req, res) => {
+  try {
+    const data = await db.execute(`SELECT * FROM ProductImages WHERE ProductID = '${req.params.productId}'`);
+    res.status(200).send(data.rows);
+  } catch (error) {
+    console.error('Error al subir imagen:', error);
+    res.status(500).send('Error al subir la imagen');
+  }
+});
+app.post('/api/v1/productImages/:productId', upload.single('image'), async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const image = req.body.image; // El archivo de imagen subido
+    const caption = req.body.caption; // El título de la imagen
+    await db.execute(`INSERT INTO ProductImages (ProductID, ImageContent, Caption) VALUES ('${productId}', '${image}', '${caption}')`);
+    res.status(200).send('Imagen subida correctamente');
+  } catch (error) {
+    console.error('Error al subir imagen:', error);
+    res.status(500).send('Error al subir la imagen');
+  }
+});
 
+app.get('/api/v1/producto', async (req, res) => {
+  try {
+    const query = `
+    CREATE TRIGGER SetDefaultImageAfterInsert AFTER INSERT ON ProductImages FOR EACH ROW WHEN NEW.ProductID IS NOT NULL BEGIN
+    UPDATE Products
+    SET
+      ImageDefaultID = NEW.ImageID
+    WHERE
+      ProductID = NEW.ProductID
+      AND ImageDefaultID IS NULL;
+    END;
+    `;
+    const data = await db.execute(query);
+    res.status(200).send(data);
+  } catch (error) {
+    console.error('Error al consultar la base de datos:', error);
+    res.status(500).send('Error al obtener las categorías de la base de datos');
+  }
+});
 
 // Inicia el servidor
 app.listen(PORT, () => {

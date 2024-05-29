@@ -4,10 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const ProductCard = ({ product, changeCart }) => {
     const navigate = useNavigate();
-
-    const imageUrls = product?.ProductImages.slice(1, -1).split(',');
-    const firstImageUrl = imageUrls[0]?.trim();
-
+    const imageUrl = product?.ImageContent;
     const renderStars = (rating) => {
         const totalStars = 5;
         const filledStars = Math.floor(rating);
@@ -54,7 +51,7 @@ const ProductCard = ({ product, changeCart }) => {
     return (
         <div onClick={navigateToProduct} style={{ color: "black" }} className="product-card">
             <div className="product-card-image">
-                <img src={firstImageUrl} alt={product?.ProductName} />
+                <img src={"data:image/png;base64,"+imageUrl} alt={product?.ProductName} />
                 <span>{product?.StockAvailability > 0 ? 'Disponible' : 'No disponible'}</span>
             </div>
             <div className="product-card-details">

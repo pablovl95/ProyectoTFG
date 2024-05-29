@@ -17,6 +17,8 @@ import Dashboard from "./screens/Dashboard";
 import Delivery from "./screens/Delivery";
 import { auth } from "./auth";
 
+import Images from "./screens/Images";
+
 function App() {
   const [loginView, setLoginView] = useState(false);
   const [user, setUser] = useState(null);
@@ -30,13 +32,13 @@ function App() {
     // Verifica si el usuario está autenticado al cargar la aplicación
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setUser(user);
-      // console.log(user);
+      //console.log(user);
       if (user) {
         await fetch(`${backendUrl}/api/v1/users/${user.uid}`)
           .then((response) => response.json())
           .then((data) => {
               setUserData(data[0]);
-              // console.log("entrando",data[0]);
+              console.log("entrando",data[0]);
           });
           if(userData === undefined){
             // console.log("no hay datos");
@@ -81,12 +83,13 @@ function App() {
             <Route path="/profile/addresses" element={<Addresses />} />
           </>
         )}
-        {userData?.UserType === 'administrator' && (
+        {userData?.UserType === "administrator" && (
           <Route path="/dashboard" element={<Dashboard />} />
         )}
         {userData?.userType === 'delivery' && (
           <Route path="/delivery" element={<Delivery />} />
         )}
+        <Route path="/images" element={<Images />} />
       </Routes>
       <Footer />
       {loginView && !user && (

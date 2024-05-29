@@ -1,0 +1,92 @@
+.dashboard-content {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .dashboard-sidebar {
+    width: 200px;
+    background-color: #f0f0f0;
+    padding: 20px;
+  }
+  
+  .dashboard-sidebar div {
+    cursor: pointer;
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #e0e0e0;
+  }
+  
+  .dashboard-sidebar div:hover {
+    background-color: #d0d0d0;
+  }
+  
+  .dashboard-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .dashboard-user-card,
+  .dashboard-product-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff; /* Agregado para fondo blanco */
+  }
+  
+  .dashboard-user-card img,
+  .dashboard-product-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+  
+  .dashboard-product-card img {
+    height: auto;
+  }
+  
+  .dashboard-form-data {
+    margin-top: 20px;
+  }
+  
+  .dashboard-form-field {
+    margin-bottom: 15px;
+  }
+  
+  .dashboard-form-field label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .dashboard-form-field input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .dashboard-SaveButton,
+  .dashboard-CancelButton,
+  .dashboard-modifiedButton,
+  .dashboard-DeleteButton {
+    cursor: pointer;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    display: inline-block;
+  }
+  
+  .dashboard-SaveButton:hover,
+  .dashboard-CancelButton:hover,
+  .dashboard-modifiedButton:hover,
+  .dashboard-DeleteButton:hover {
+    background-color: #0056b3;
+  }
+  

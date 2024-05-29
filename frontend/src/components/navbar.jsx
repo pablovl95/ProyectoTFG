@@ -82,7 +82,7 @@ export default function Navbar({ loginView, user, changeCart }) {
                   <li><NavLink to="/profile/addresses">Direcciones</NavLink></li>
                   {user && user.UserType === "administrator" &&
                     <>
-                      <li><NavLink to="/pickuporders">Dashboard de Gestion</NavLink></li>
+                      <li><NavLink to="/dashboard">Dashboard de Gestion</NavLink></li>
                     </>
                   }
                   {user && user.type === "Seller" && <li><NavLink to="/ordersto">Pedidos para recogida</NavLink></li>}

@@ -10,6 +10,12 @@ DROP TABLE IF EXISTS Orders;
 
 DROP TABLE IF EXISTS Shops;
 
+DROP TABLE IF EXISTS Addresses;
+
+DROP TABLE IF EXISTS ProductsOrders;
+
+DROP TABLE IF EXISTS ProductImages;
+
 CREATE TABLE
   Categories (
     CategoryID TEXT PRIMARY KEY DEFAULT (
@@ -25,13 +31,13 @@ CREATE TABLE
       LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
     ),
     ShopName TEXT NOT NULL,
-    UserID INTEGER NOT NULL, -- Foreign key para vincular con la tabla Users
-    AddressID INTEGER NOT NULL, -- Foreign key para vincular con la tabla Addresses
+    AddressID TEXT NOT NULL,
     ShopDescription TEXT,
     OpeningHours TEXT,
     Phone TEXT,
     Email TEXT,
-    TotalSales INTEGER DEFAULT 0 -- Nuevo campo para total de ventas
+    TotalSales INTEGER DEFAULT 0,
+    FOREIGN KEY (AddressID) REFERENCES Addresses (AddressID)
   );
 
 CREATE TABLE
@@ -52,7 +58,7 @@ CREATE TABLE
         'administrator'
       )
     ) NOT NULL,
-    AssociatedStoreID INTEGER,
+    AssociatedStoreID TEXT,
     AccountStatus TEXT CHECK (AccountStatus IN ('active', 'inactive')) NOT NULL,
     FOREIGN KEY (AssociatedStoreID) REFERENCES Shops (ShopID)
   );
@@ -64,16 +70,16 @@ CREATE TABLE
     ),
     ProductName TEXT NOT NULL,
     ProductDescription TEXT,
-    PrincipalCategoryId INTEGER NOT NULL,
-    SecundaryCategoryId INTEGER,
+    PrincipalCategoryID TEXT NOT NULL,
+    SecundaryCategoryID TEXT,
     Price REAL,
     Rating REAL CHECK (Rating BETWEEN 0 AND 5),
     StockAvailability INTEGER,
     TotalSales INTEGER DEFAULT 0,
     TotalComments INTEGER DEFAULT 0,
-    ProductImages TEXT,
+    ImageDefaultID TEXT,
     ShopID TEXT NOT NULL,
-    FOREIGN KEY (PrincipalCategoryId) REFERENCES Categories (CategoryID),
+    FOREIGN KEY (PrincipalCategoryID) REFERENCES Categories (CategoryID),
     FOREIGN KEY (ShopID) REFERENCES Shops (ShopID)
   );
 
@@ -82,15 +88,14 @@ CREATE TABLE
     ReviewID TEXT PRIMARY KEY DEFAULT (
       LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
     ),
-    ProductID INTEGER NOT NULL,
+    ProductID TEXT NOT NULL,
     Comment TEXT,
-    UserID INTEGER NOT NULL,
+    UserID TEXT NOT NULL,
     AssignedRating INTEGER CHECK (AssignedRating BETWEEN 1 AND 5),
     FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
     FOREIGN KEY (UserID) REFERENCES Users (UserID)
   );
 
--- Table for storing addresses
 CREATE TABLE
   Addresses (
     AddressID TEXT PRIMARY KEY DEFAULT (
@@ -126,9 +131,8 @@ CREATE TABLE
         'cancelled'
       )
     ) NOT NULL,
-    Summary NOT NULL,
-    FOREIGN KEY (UserID) REFERENCES Users (UserID),
-    FOREIGN KEY (ShopID) REFERENCES Shops (ShopID)
+    Summary TEXT NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES Users (UserID)
   );
 
 CREATE TABLE
@@ -136,6 +140,7 @@ CREATE TABLE
     ProductsOrderID TEXT PRIMARY KEY DEFAULT (
       LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
     ),
+    UserID TEXT NOT NULL,
     ShopID TEXT NOT NULL,
     Products TEXT NOT NULL,
     TotalPrice REAL NOT NULL,
@@ -148,48 +153,25 @@ CREATE TABLE
         'cancelled'
       )
     ) NOT NULL,
-    Summary NOT NULL,
+    Summary TEXT NOT NULL,
     FOREIGN KEY (UserID) REFERENCES Users (UserID),
     FOREIGN KEY (ShopID) REFERENCES Shops (ShopID)
   );
 
-INSERT INTO
-  Shops (
-    ShopID,
-    ShopName,
-    UserID,
-    AddressID,
-    ShopDescription,
-    OpeningHours,
-    Phone,
-    Email,
-    TotalSales
-  )
-VALUES
-  (
-    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7',
-    'Tienda Orgánica',
-    1,
-    1,
-    'Tienda especializada en productos orgánicos',
-    'Lun-Vie: 8:00-20:00, Sáb-Dom: 9:00-18:00',
-    '+1234567890',
-    'info@tiendaorganica.com',
-    0
+CREATE TABLE 
+ProductImages (
+  ImageID TEXT PRIMARY KEY DEFAULT (
+    LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
+    SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
   ),
-  (
-    'b8c4d5e6f7g8h9i0j1k2l3m4n5o6p7',
-    'Supermercado Saludable',
-    2,
-    2,
-    'Ofrecemos una amplia variedad de productos saludables',
-    'Lun-Sáb: 7:00-21:00, Dom: 8:00-18:00',
-    '+0987654321',
-    'contacto@supermercadosaludable.com',
-    0
-  );
+  ProductID TEXT NOT NULL,
+  ImageContent TEXT NOT NULL,
+  Caption TEXT,
+  UploadDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
+);
 
--- Actualización de los datos para la categoría en español
+
 INSERT INTO
   Categories (CategoryID, CategoryName, CategoryDescription)
 VALUES
@@ -272,6 +254,189 @@ VALUES
     'inactive'
   );
 
+
+-- Tabla de direcciones
+INSERT INTO
+  Addresses (
+    AddressID,
+    AddressType,
+    UserID,
+    StreetAddress,
+    StreetNumber,
+    FLOOR,
+    Staircase,
+    City,
+    State,
+    PostalCode,
+    Country
+  )
+VALUES
+  (
+    '9f6f21f1356d4d1abb89049e7a9d0aa0',
+    'Home',
+    'c8892c2ada205bf893b69d8243181a3',
+    'Calle de Alcalá',
+    '123',
+    '3',
+    'NO',
+    'Madrid',
+    'Madrid',
+    '28001',
+    'España'
+  ),
+  (
+    'be2242d856264f568f961d4b2d9984db',
+    'Work',
+    'c8892c2ada205bf893b69d8243181a3',
+    'Avenida de América',
+    '45',
+    '7',
+    'YES',
+    'Madrid',
+    'Madrid',
+    '28002',
+    'España'
+  ),
+  (
+    '162a7a7a14fb4f3e925958748e87d720',
+    'Home',
+    'c8892c2ada205bf893b69d8243181a3',
+    'Calle de Serrano',
+    '89',
+    '5',
+    'NO',
+    'Madrid',
+    'Madrid',
+    '28006',
+    'España'
+  ),
+  (
+    '1e43b9b9116842678f9f9c19d234dbf1',
+    'Work',
+    'c8892c2ada205bf893b69d8243181a3',
+    'Gran Vía',
+    '12',
+    '10',
+    'YES',
+    'Madrid',
+    'Madrid',
+    '28013',
+    'España'
+  ),
+  (
+    'a2be9b6e2d9044a2bded9a146d27dd36',
+    'Home',
+    'c8892c2ada205bf893b69d8243181a3',
+    'Carrer de Balmes',
+    '200',
+    '1',
+    'NO',
+    'Barcelona',
+    'Cataluña',
+    '08006',
+    'España'
+  ),
+  (
+    'e3edc29b29a4499a8b491b448ef1c4d3',
+    'Work',
+    'c8892c2ada205bf893b69d8243181a3',
+    'Passeig de Gràcia',
+    '50',
+    '2',
+    'YES',
+    'Barcelona',
+    'Cataluña',
+    '08007',
+    'España'
+  ),
+  (
+    '6e2cda5235854e92bad9ebd011a2a7f5',
+    'Home',
+    'c8892c2ada205bf893b69d8243181a3',
+    'Calle Mayor',
+    '15',
+    '4',
+    'NO',
+    'Valencia',
+    'Comunidad Valenciana',
+    '46001',
+    'España'
+  ),
+  (
+    '0e6494584b0744ffb5ab5c31eb50030',
+    'Work',
+    'c8892c2ada205bf893b69d8243181a3',
+    'Avenida del Puerto',
+    '23',
+    '3',
+    'YES',
+    'Valencia',
+    'Comunidad Valenciana',
+    '46021',
+    'España'
+  ),
+  (
+    '0ef3d78d707d498f9d3556a43c7781b3',
+    'Home',
+    'c8892c2ada205bf893b69d8243181a3',
+    'Calle Larios',
+    '10',
+    '2',
+    'NO',
+    'Málaga',
+    'Andalucía',
+    '29015',
+    'España'
+  ),
+  (
+    '511128f5c5484e39af273b4b2b3a8e4e',
+    'Work',
+    'c8892c2ada205bf893b69d8243181a3',
+    'Avenida de Andalucía',
+    '33',
+    '8',
+    'YES',
+    'Málaga',
+    'Andalucía',
+    '29006',
+    'España'
+  );
+
+
+INSERT INTO
+  Shops (
+    ShopID,
+    ShopName,
+    AddressID,
+    ShopDescription,
+    OpeningHours,
+    Phone,
+    Email,
+    TotalSales
+  )
+VALUES
+  (
+    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7',
+    'Tienda Orgánica',
+    '9f6f21f1356d4d1abb89049e7a9d0aa0',
+    'Tienda especializada en productos orgánicos',
+    'Lun-Vie: 8:00-20:00, Sáb-Dom: 9:00-18:00',
+    '+1234567890',
+    'info@tiendaorganica.com',
+    0
+  ),
+  (
+    'b8c4d5e6f7g8h9i0j1k2l3m4n5o6p7',
+    'Supermercado Saludable',
+    '9f6f21f1356d4d1abb89049e7a9d0aa0',
+    'Ofrecemos una amplia variedad de productos saludables',
+    'Lun-Sáb: 7:00-21:00, Dom: 8:00-18:00',
+    '+0987654321',
+    'contacto@supermercadosaludable.com',
+    0
+  );
+
+-- Productos
 INSERT INTO
   Products (
     ProductID,
@@ -284,7 +449,7 @@ INSERT INTO
     StockAvailability,
     TotalSales,
     TotalComments,
-    ProductImages,
+    ImageDefaultId,
     ShopID
   )
 VALUES
@@ -298,8 +463,8 @@ VALUES
     4,
     100,
     0,
-    2,
-    '[https://rodaleinstitute.org/wp-content/uploads/Apples-2-600x400.jpg, https://rodaleinstitute.org/wp-content/uploads/Apples-2-600x400.jpg, https://freshindiaorganics.com/cdn/shop/products/Apples.jpg?v=1686739530]',
+    5,
+    NULL,
     'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
   ),
   (
@@ -313,7 +478,7 @@ VALUES
     250,
     0,
     1,
-    '[https://chiquitabrands.com/wp-content/uploads/2019/08/Organics2.jpg,https://www.melissas.com/cdn/shop/products/image-of-organic-bananas-organics-14763756421164_600x600.jpg?v=1616958064, https://freshindiaorganics.com/cdn/shop/products/Bananas-Edited.jpg?v=1686727223]',
+    NULL,
     'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
   ),
   (
@@ -327,7 +492,7 @@ VALUES
     100,
     0,
     0,
-    '[https://tamarorganics.co.uk/wp-content/uploads/2017/11/Carrot-Oxhella-3.jpg, https://tamarorganics.co.uk/wp-content/uploads/2017/11/Carrot-Miami-2.jpg, https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy7ImCGPCRsNUDVtl8RQyGDF601P4W_Wp_OG1RA0f-ZA&s]',
+    NULL,
     'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
   ),
   (
@@ -341,7 +506,7 @@ VALUES
     22,
     0,
     2,
-    '[https://attra.ncat.org/wp-content/uploads/2022/04/tomato.jpg, https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3uVQxZMhsqJwrU63P9VmbssIPtbPl248-cOq_CGCC1Q&s, https://media.npr.org/assets/img/2013/02/20/organictomatoess-9eb3642825e1b3be1b481c1592b4925c2cf3ae29.jpg]',
+    NULL,
     'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
   ),
   (
@@ -355,7 +520,7 @@ VALUES
     11,
     0,
     0,
-    '[https://www.theorangefarmer.com/wp-content/uploads/2022/10/naranja.jpg, https://www.huelvainformacion.es/2021/11/23/provincia/Naranjas-Organic-Citrus_1631847659_147786435_1200x675.jpg, https://previews.123rf.com/images/bondvit/bondvit1703/bondvit170301460/74706781-kumquat-en-un-plato-raw-organic-orange-kumquats-naranjas-peque%C3%B1as-naranja-china-naranjas-ovaladas.jpg]',
+    NULL,
     'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
   ),
   (
@@ -369,7 +534,7 @@ VALUES
     150,
     0,
     0,
-    '[https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ75HOLIAoxrXWXtCHFNzkwE0a2kUVwouYWnHlntkwcyQ&s, https://freshindiaorganics.com/cdn/shop/products/Spinach-Edited.jpg?v=1569230059, https://www.kroger.com/product/images/large/front/0001111091128]',
+    NULL,
     'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
   ),
   (
@@ -383,7 +548,7 @@ VALUES
     100,
     0,
     0,
-    '[https://img.huffingtonpost.es/files/image_720_480/uploads/2024/03/06/imagen-de-archivo-de-fresas-en-una-fruteria.jpeg, https://modernfarmer.com/wp-content/uploads/2018/07/how-to-grow-strawberries-1200x900.jpg, https://cdn.shopify.com/s/files/1/0613/2249/4130/t/3/assets/organic_strawberries.jpg?v=1652698115]',
+    NULL,
     'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
   ),
   (
@@ -397,7 +562,7 @@ VALUES
     500,
     0,
     0,
-    '[https://sgfm.elcorteingles.es/SGFM/dctm/MEDIA03/202301/18/00118163500129____2__600x600.jpg, https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv1EEZp64e0dUbIZUSmkFeklaPejXGVrP0SYPvuwc8Mg&s, https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2PMdjgH6_5esL4W5t6cMA9Zd6tB9UcMOvAZ0XkRJphA&s]',
+    NULL,
     'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
   ),
   (
@@ -411,7 +576,7 @@ VALUES
     100,
     0,
     0,
-    '[https://fairtrasa.com/wp-content/uploads/pineapple-bg.jpg, https://www.melissas.com/cdn/shop/products/image-of-organic-pineapple-fruit-28663963680812_600x600.jpg?v=1628112278,https://www.froghollow.com/cdn/shop/products/Pineapple2-Edited_300x300.jpg?v=1664512936]',
+    NULL,
     'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
   ),
   (
@@ -425,7 +590,7 @@ VALUES
     250,
     0,
     0,
-    '[https://www.diggers.com.au/cdn/shop/products/cucumber-double-yield-s0961_2ebf04c5-a6d1-4103-ab90-dd15c4559037_2048x.jpg, https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM_whNNlOFR2HplqElYVJrabjPSsKie_jPDCaLOZeeFw&s, https://mckenzieseeds.com/cdn/shop/products/Mck_VegetableHL_140118_Cucumber_NationalPickling_front_0bb82ee0-e27a-4391-b7b9-8de4fa362a35.jpg?v=1652889297]',
+    NULL,
     'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
   );
 
@@ -464,137 +629,4 @@ VALUES
     3
   );
 
-INSERT INTO
-  Addresses (
-    AddressType,
-    UserID,
-    StreetAddress,
-    StreetNumber,
-    FLOOR,
-    Staircase,
-    City,
-    State,
-    PostalCode,
-    Country
-  )
-VALUES
-  (
-    'Home',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Calle de Alcalá',
-    '123',
-    '3',
-    'NO',
-    'Madrid',
-    'Madrid',
-    '28001',
-    'España'
-  ),
-  (
-    'Work',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Avenida de América',
-    '45',
-    '7',
-    'YES',
-    'Madrid',
-    'Madrid',
-    '28002',
-    'España'
-  ),
-  (
-    'Home',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Calle de Serrano',
-    '89',
-    '5',
-    'NO',
-    'Madrid',
-    'Madrid',
-    '28006',
-    'España'
-  ),
-  (
-    'Work',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Gran Vía',
-    '12',
-    '10',
-    'YES',
-    'Madrid',
-    'Madrid',
-    '28013',
-    'España'
-  ),
-  (
-    'Home',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Carrer de Balmes',
-    '200',
-    '1',
-    'NO',
-    'Barcelona',
-    'Cataluña',
-    '08006',
-    'España'
-  ),
-  (
-    'Work',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Passeig de Gràcia',
-    '50',
-    '2',
-    'YES',
-    'Barcelona',
-    'Cataluña',
-    '08007',
-    'España'
-  ),
-  (
-    'Home',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Calle Mayor',
-    '15',
-    '4',
-    'NO',
-    'Valencia',
-    'Comunidad Valenciana',
-    '46001',
-    'España'
-  ),
-  (
-    'Work',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Avenida del Puerto',
-    '23',
-    '3',
-    'YES',
-    'Valencia',
-    'Comunidad Valenciana',
-    '46021',
-    'España'
-  ),
-  (
-    'Home',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Calle Larios',
-    '10',
-    '2',
-    'NO',
-    'Málaga',
-    'Andalucía',
-    '29015',
-    'España'
-  ),
-  (
-    'Work',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Avenida de Andalucía',
-    '33',
-    '8',
-    'YES',
-    'Málaga',
-    'Andalucía',
-    '29006',
-    'España'
-  );
+-- Tabla de Imagenes

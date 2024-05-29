@@ -14,7 +14,7 @@ function ImageGallery({ imageUrls }) {
         {imageUrls.map((imageUrl, index) => (
           <img
             key={index}
-            src={imageUrl}
+            src={"data:image/png;base64,"+imageUrl}
             alt={`Thumbnail ${index + 1}`}
             className={currentIndex === index ? "active" : ""}
             onClick={() => handleClick(index)}
@@ -22,7 +22,7 @@ function ImageGallery({ imageUrls }) {
         ))}
       </div>
       <div className="main-image">
-        <img src={imageUrls[currentIndex]} alt={`Image ${currentIndex + 1}`} />
+        <img src={"data:image/png;base64,"+imageUrls[currentIndex]} alt={`Image ${currentIndex + 1}`} />
       </div>
 
     </div>
