@@ -28,14 +28,14 @@ function Images() {
       if (!productId) {
         throw new Error('Por favor, ingresa el ID del producto.');
       }
-
+  
       const uploadImage = async (image, caption) => {
         const reader = new FileReader();
         reader.readAsDataURL(image);
         return new Promise((resolve, reject) => {
           reader.onload = async () => {
             const base64Image = reader.result.split(',')[1];
-
+  
             const formData = new FormData();
             formData.append('image', base64Image);
             formData.append('caption', caption);
@@ -56,17 +56,18 @@ function Images() {
           };
         });
       };
-
+  
       const uploadPromises = selectedImages.map((image, index) => 
         uploadImage(image, captions[index] || '')
       );
       await Promise.all(uploadPromises);
-
+  
       console.log('Todas las imágenes fueron subidas correctamente');
     } catch (error) {
       console.error('Error al subir imágenes:', error.message);
     }
   };
+  
 
   const handleShowImages = async () => {
     try {

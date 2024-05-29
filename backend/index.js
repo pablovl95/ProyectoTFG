@@ -5,7 +5,7 @@ import cors from 'cors';
 import multer from 'multer'; // Middleware para manejar la subida de archivos
 import path from 'path';
 
-const upload = multer({ dest: 'uploads/' }); // Directorio donde se almacenarán temporalmente los archivos subidos
+const upload = multer(); // Eliminamos el directorio de destino para que los archivos se manejen en memoria
 
 import 'dotenv/config';
 import { createClient } from "@libsql/client";
@@ -14,7 +14,6 @@ const db = createClient({
   url: process.env.LIBSQL_URL,
   authToken: process.env.LIBSQL_AUTH_TOKEN,
 });
-
 
 const app = express();
 const PORT = 5000;
@@ -194,13 +193,6 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
   }
 });
 
-// INSERT INTO Users (FirstName, LastName, Email, Password, Phone, UserType, AssociatedStore, AccountStatus)
-// VALUES
-//     ('Juan', 'Pérez', 'juan@example.com', 'contraseña123', '123456789', 'consumer', NULL, 'active'),
-//     ('María', 'Gómez', 'maria@example.com', 'password456', '987654321', 'producer', 'Tienda de Ropa', 'active'),
-//     ('Carlos', 'López', 'carlos@example.com', 'clave789', '567891234', 'delivery', NULL, 'inactive');
-
-// Endpoint para crear un nuevo usuario
 app.post('/api/v1/users', async (req, res) => {
   // console.log(req.body);
   let { UserID, FirstName, LastName, Email, Phone } = req.body;
@@ -363,15 +355,16 @@ app.get('/api/v1/productImages/:productId', upload.single('image'), async (req, 
 app.post('/api/v1/productImages/:productId', upload.single('image'), async (req, res) => {
   try {
     const productId = req.params.productId;
-    const image = req.body.image; // El archivo de imagen subido
+    const image = req.file.buffer; // Accedemos al buffer del archivo en memoria
     const caption = req.body.caption; // El título de la imagen
-    await db.execute(`INSERT INTO ProductImages (ProductID, ImageContent, Caption) VALUES ('${productId}', '${image}', '${caption}')`);
+    await db.execute(`INSERT INTO ProductImages (ProductID, ImageContent, Caption) VALUES ('${productId}', '${image.toString('base64')}', '${caption}')`);
     res.status(200).send('Imagen subida correctamente');
   } catch (error) {
     console.error('Error al subir imagen:', error);
     res.status(500).send('Error al subir la imagen');
   }
 });
+
 
 app.get('/api/v1/producto', async (req, res) => {
   try {
