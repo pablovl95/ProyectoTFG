@@ -23,25 +23,27 @@ const Product = ({changeCart}) => {
     const renderStars = (rating) => {
       const totalStars = 5;
       const filledStars = Math.floor(rating);
-      const halfStar = rating - filledStars >= 0.5;
+      const halfStar = rating - filledStars >= 0.5 ? true : false;
       const stars = [];
-    
+
       for (let i = 1; i <= totalStars; i++) {
-        if (i <= filledStars) {
-          stars.push(<span key={i} className='filled'>★</span>);
-        } else if (i === filledStars + 1 && halfStar) {
-          stars.push(
-            <span key={i} className='half-filled' style={{ width: `${(rating - filledStars) * 100}%` }}>
-              ★
-            </span>
-          );
-        } else {
-          stars.push(<span key={i}>★</span>);
-        }
+          if (i <= filledStars) {
+              stars.push(
+                  <span key={i} className='filled'>★</span>
+              );
+          } else if (i === filledStars + 1 && halfStar) {
+              stars.push(
+                  <span key={i} className='half-filled'>★</span>
+              );
+          } else {
+              stars.push(
+                  <span key={i}>★</span>
+              );
+          }
       }
-    
+
       return stars;
-    };
+  };
     
   const calculateStarsPercentage = () => {
     const totalReviews = product.TotalComments; // Total de valoraciones

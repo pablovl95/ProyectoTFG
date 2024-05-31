@@ -161,24 +161,6 @@ margin:0
   align-items: flex-start;
 }
 
-/* Estilos para las estrellas */
-.filled {
-  color: #ffc107; /* Color de las estrellas llenas */
-}
-
-.half-filled {
-  color: #d3d3d3; /* Color de las estrellas medio llenas */
-}
-
-.half-filled::before {
-  content: '★';
-  color: #ffc107; /* Color de las estrellas vacías */
-  position: absolute;
-  left: 0;
-  width: 50%;
-  overflow: hidden;
-}
-
 /* Estilos para el contenedor de los porcentajes de valoraciones */
 .Opiniones a {
   margin-right: 10px;

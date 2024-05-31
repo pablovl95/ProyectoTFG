@@ -1,0 +1,201 @@
+.shipping-container {
+    display: flex;
+    justify-content: space-between;
+    width: 95%;
+    margin: auto;
+}
+
+.shipping-method {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    justify-content: flex-start;
+    margin-right: 2rem;
+}
+
+.shipping-method h3 {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.shipping-options {
+    display: flex;
+    flex-direction: column;
+}
+
+.shipping-option {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.shipping-option input {
+    width: 10%;
+}
+
+.shipping-option label {
+    width: 90%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.current-address {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.address-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}
+
+.address-details p {
+    margin: 4px 0;
+}
+
+.add-address {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+}
+
+.add-address p {
+    margin: 0;
+    color: #039e00;
+}
+
+.shipping-summary {
+    width: 25%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.summary-details p {
+    margin: 8px 0;
+}
+
+.summary-details input {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.summary-details button {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 8px;
+    background: #28a745;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.address-form {
+    width: 50%;
+    height: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.address-form-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #f9f9f9;
+}
+
+.address-form-header {
+    width: 100%;
+    display: flex;
+    color: #ffffff;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #28a745;
+}
+
+.address-form-header h3 {
+    padding: 1rem;
+    margin: 0;
+}
+
+.form-title {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin: auto;
+}
+
+.form-title input {
+    width: 92.5%;
+    margin: auto;
+    padding: 0;
+    height: 2.5rem;
+
+}
+
+.form-row-data {
+    padding: 1rem 0;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.form-row-data div {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 0 2rem;
+}
+
+.form-row-data div input {
+    padding: 0;
+    width: 100%;
+    height: 2.5rem;
+    
+}
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 25%;
+    margin: auto;
+}
+.form-buttons button {
+    width: 45%;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 8px;
+    background: #28a745;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
