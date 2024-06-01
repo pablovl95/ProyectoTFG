@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import './css/Shipping.css';
-import { IconCirclePlus, IconCircleX } from '@tabler/icons-react';
+import { IconCirclePlus } from '@tabler/icons-react';
+import AddressesForm from './AddressesForm';
 
 const Shipping = ({ setActiveComponent }) => {
     const [shippingMethod, setShippingMethod] = useState('express');
     const [addresses, setAddresses] = useState([
         {
             title: 'Casa',
-            FirstName: 'pablo',
-            LastName: 'vera lopez',
+            FirstName: 'Pablo',
+            LastName: 'Vera Lopez',
             Phone: '667218105',
             AddressLine: 'Real De Abajo 31',
             AddressNumber: 'A',
@@ -31,6 +32,7 @@ const Shipping = ({ setActiveComponent }) => {
         PostalCode: '',
     });
     const [isAddingAddress, setIsAddingAddress] = useState(false);
+    const [editingIndex, setEditingIndex] = useState(null);
 
     const handleShippingChange = (event) => {
         setShippingMethod(event.target.value);
@@ -38,14 +40,42 @@ const Shipping = ({ setActiveComponent }) => {
 
     const addNewAddress = () => {
         setIsAddingAddress(true);
+        setEmptyAddress({
+            title: '',
+            FirstName: '',
+            LastName: '',
+            Phone: '',
+            AddressLine: '',
+            AddressNumber: '',
+            City: '',
+            Country: '',
+            Province: '',
+            PostalCode: '',
+        });
+        setEditingIndex(null);
     };
-    const editAdresses = (address) => {
-        setIsAddingAddress(true);
 
+    const editAddresses = (index) => {
+        setIsAddingAddress(true);
+        setEmptyAddress(addresses[index]);
+        setEditingIndex(index);
     };
 
     const closeForm = () => {
         setIsAddingAddress(false);
+        setEmptyAddress({
+            title: '',
+            FirstName: '',
+            LastName: '',
+            Phone: '',
+            AddressLine: '',
+            AddressNumber: '',
+            City: '',
+            Country: '',
+            Province: '',
+            PostalCode: '',
+        });
+        setEditingIndex(null);
     };
 
     const handleFormSubmit = (e) => {
@@ -63,75 +93,28 @@ const Shipping = ({ setActiveComponent }) => {
             Country: formData.get('country'),
             PostalCode: formData.get('postalCode'),
         };
-        setAddresses([...addresses, newAddress]);
+
+        if (editingIndex !== null) {
+            const updatedAddresses = addresses.map((address, index) =>
+                index === editingIndex ? newAddress : address
+            );
+            setAddresses(updatedAddresses);
+        } else {
+            setAddresses([...addresses, newAddress]);
+        }
+
         closeForm();
     };
 
     return (
         <div className="shipping-container">
             {isAddingAddress && (
-                <div className="overlay">
-                    <div className="address-form">
-                        <div className="address-form-header" onClick={closeForm}>
-                            <h3>Añadir dirección</h3>
-                            <IconCircleX color='white' style={{ padding: "1rem" }}></IconCircleX>
-                        </div>
-                        <div className="address-form-container">
-                            <form onSubmit={handleFormSubmit}>
-                                <div className='form-title'>
-                                    <label htmlFor="title">Título de dirección</label>
-                                    <input type="text" id="title" name="title" required />
-                                </div>
-                                <div className='form-row-data'>
-                                    <div>
-                                        <label htmlFor="firstName">Nombre</label>
-                                        <input type="text" id="firstName" name="firstName" required />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="lastName">Apellido</label>
-                                        <input type="text" id="lastName" name="lastName" required />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="phone">Teléfono</label>
-                                        <input type="text" id="phone" name="phone" required />
-                                    </div>
-                                </div>
-                                <div className='form-row-data'>
-                                    <div>
-                                        <label htmlFor="addressLine">Dirección</label>
-                                        <input type="text" id="addressLine" name="addressLine" required />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="addressNumber">Número</label>
-                                        <input type="text" id="addressNumber" name="addressNumber" required />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="postalCode">Código Postal</label>
-                                        <input type="text" id="postalCode" name="postalCode" required />
-                                    </div>
-                                </div>
-                                <div className='form-row-data'>
-                                    <div>
-                                        <label htmlFor="city">Ciudad</label>
-                                        <input type="text" id="city" name="city" required />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="province">Provincia</label>
-                                        <input type="text" id="province" name="province" required />
-                                    </div>
-                                    <div>
-                                        <label htmlFor="country">País</label>
-                                        <input type="text" id="country" name="country" required />
-                                    </div>
-                                </div>
-                                <div className="form-buttons">
-                                    <button type="button" onClick={closeForm}>Cancelar</button>
-                                    <button type="submit">Guardar</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                <AddressesForm
+                    emptyAddress={emptyAddress}
+                    handleFormSubmit={handleFormSubmit}
+                    closeForm={closeForm}
+                    editingIndex={editingIndex}
+                />
             )}
             <div className="shipping-method">
                 <h3>¿A dónde enviamos tu pedido?</h3>
@@ -186,12 +169,12 @@ const Shipping = ({ setActiveComponent }) => {
                                         <p>Código Postal {address.PostalCode}</p>
                                         <p>País {address.Country}</p>
                                     </div>
-                                    <button onClick={editAdresses(address)}>Editar</button>
+                                    <button onClick={() => editAddresses(index)}>Editar</button>
                                 </div>
                             ))}
                             <div className="address-card add-address" onClick={addNewAddress}>
                                 <div className="address-details">
-                                    <IconCirclePlus color='green'></IconCirclePlus>
+                                    <IconCirclePlus color='green' />
                                     <p>Añadir dirección</p>
                                 </div>
                             </div>
@@ -208,7 +191,7 @@ const Shipping = ({ setActiveComponent }) => {
                     <p>Añade a tu cuenta hasta +0,65 € para tu siguiente compra.</p>
                     <input type="text" placeholder="¿Dispones de un cupón?" />
                     <button>Aplicar</button>
-                    <button>Siguiente paso</button>
+                    <button onClick={() => setActiveComponent('payment')}>Siguiente paso</button>
                 </div>
             </div>
         </div>

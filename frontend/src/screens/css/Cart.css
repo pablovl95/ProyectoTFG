@@ -162,6 +162,11 @@
 }
 
 @media (max-width: 768px) {
+  .cart-container {
+    width: 95%;
+    padding: 1rem 0;
+
+  }
   .cart-item {
     flex-direction: column;
     align-items: flex-start;

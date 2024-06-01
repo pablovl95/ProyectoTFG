@@ -20,17 +20,6 @@ const Cart = ({ changeCart }) => {
   }, []);
 
 
-  const Header = ({ setActiveComponent, activeComponent }) => {
-    return (
-      <div className="cart-header">
-        <a onClick={() => setActiveComponent('cart')} className={activeComponent === 'cart' ? 'active' : ''}>Carrito</a>
-        <div className="cart-header-separator"></div>
-        <a onClick={() => setActiveComponent('shipping')} className={activeComponent === 'shipping' ? 'active' : ''}>Envio</a>
-        <div className="cart-header-separator"></div>
-        <a onClick={() => setActiveComponent('payment')} className={activeComponent === 'payment' ? 'active' : ''}>Pago</a>
-      </div>
-    );
-  };
 
   const calculateCartTotal = (cart) => {
     return cart.reduce((total, item) => total + item.Price * item.quantity, 0).toFixed(2);
@@ -65,7 +54,13 @@ const Cart = ({ changeCart }) => {
 
   return (
     <div className="cart-container">
-      <Header setActiveComponent={setActiveComponent} activeComponent={activeComponent} />
+      <div className="cart-header">
+        <a onClick={() => setActiveComponent('cart')} className={activeComponent === 'cart' ? 'active' : ''}>Carrito</a>
+        <div className="cart-header-separator"></div>
+        <a onClick={() => setActiveComponent('shipping')} className={activeComponent === 'shipping' ? 'active' : ''}>Envio</a>
+        <div className="cart-header-separator"></div>
+        <a onClick={() => setActiveComponent('payment')} className={activeComponent === 'payment' ? 'active' : ''}>Pago</a>
+      </div>
       {activeComponent === 'cart' && (
         <>
           <h2>Carrito de Compras</h2>
