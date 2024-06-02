@@ -15,6 +15,7 @@ import Orders from "./screens/Orders";
 import Addresses from "./screens/Adresses";
 import Dashboard from "./screens/Dashboard";
 import Delivery from "./screens/Delivery";
+import Payment from "./screens/Payment";
 import { auth } from "./auth";
 
 import Images from "./screens/Images";
@@ -80,6 +81,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/orders" element={<Orders />} />
             <Route path="/profile/addresses" element={<Addresses />} />
+            <Route path="/profile/payment" element={<Payment />} />
           </>
         )}
         {userData?.UserType === "administrator" && (

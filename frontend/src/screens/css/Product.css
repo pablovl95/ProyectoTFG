@@ -171,7 +171,7 @@ margin:0
 .Opiniones .WidthPercentaje {
   width: 50%; 
   height: 100%;
-  border-radius: 1rem;
+  border-radius: 0.25rem  0 0 0.25rem ;
 }
 .WidthDiv {
   margin: 0 1rem 0 0;
@@ -179,7 +179,7 @@ margin:0
   background-color: rgb(255, 255, 255);
   height: 20px;
   border: 1px solid #000000;
-  border-radius: 1rem;
+  border-radius: 0.25rem;
 }
 
 /* Estilos específicos para cada cantidad de estrellas */
@@ -201,6 +201,58 @@ margin:0
 }
 .starsLine a {
   width:30%;
+}
+
+.product-tables {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: flex-start;
+
+}
+.additional-info {
+  width: 48%;
+  margin: 1rem;
+}
+/* Estilos generales para tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+td {
+  background-color: #fff;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Estilos específicos para la sección de información adicional */
+.additional-info {
+  width: 48%;
+  margin: 1rem;
+}
+.product-vote{
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
 }
 @media screen and (max-width: 768px) {
   .product-container-global {
@@ -271,5 +323,13 @@ margin:0
 
   .review-item h4 {
     text-align: center;
+  }
+  .product-tables {
+    flex-direction: column;
+  
+  }
+  .additional-info {
+    width: 95%;
+    margin: 0 1rem;
   }
 }

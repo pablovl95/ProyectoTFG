@@ -1,91 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { ClipLoader } from 'react-spinners';
-import ImageGallery from '../components/ImageGallery';
-import './css/Product.css';
-import {renderCardReviews } from '../utils/utils';
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
+import ImageGallery from "../components/ImageGallery";
+import "./css/Product.css";
+import { renderCardReviews, calculateStarsPercentage, renderStarsProductCard } from "../utils/utils";
 
-const Product = ({changeCart}) => {
+const Product = ({ changeCart }) => {
   const [showNav, setShowNav] = useState(window.innerWidth > 768);
   const [product, setProduct] = useState({});
   const [images, setImages] = useState([]);
-  const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
+  const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
   const [quantity, setQuantity] = useState(1);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const imageGalleryRef = React.createRef();
   const params = useParams();
 
-  const backendUrl = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:5000'
+  const backendUrl = process.env.NODE_ENV === "development"
+    ? "http://localhost:5000"
     : process.env.REACT_APP_BACKEND_URL;
 
-    const renderStars = (rating) => {
-      const totalStars = 5;
-      const filledStars = Math.floor(rating);
-      const halfStar = rating - filledStars >= 0.5 ? true : false;
-      const stars = [];
 
-      for (let i = 1; i <= totalStars; i++) {
-          if (i <= filledStars) {
-              stars.push(
-                  <span key={i} className='filled'>★</span>
-              );
-          } else if (i === filledStars + 1 && halfStar) {
-              stars.push(
-                  <span key={i} className='half-filled'>★</span>
-              );
-          } else {
-              stars.push(
-                  <span key={i}>★</span>
-              );
-          }
-      }
 
-      return stars;
-  };
-    
-  const calculateStarsPercentage = () => {
-    const totalReviews = product.TotalComments; // Total de valoraciones
-    const starsCount = {}; // Objeto para almacenar el recuento de estrellas
+  const totalStarsPercentaje = calculateStarsPercentage(product, reviews);
 
-    // Contar el número de valoraciones para cada cantidad de estrellas
-    reviews.forEach(review => {
-      const stars = review.AssignedRating;
-      starsCount[stars] = (starsCount[stars] || 0) + 1;
-    });
-
-    // Calcular el porcentaje para cada cantidad de estrellas
-    const starsPercentage = {};
-    for (let i = 1; i <= 5; i++) {
-      starsPercentage[i] = ((starsCount[i] || 0) / totalReviews) * 100;
-    }
-
-    return starsPercentage;
-  };
-
-  const totalStarsPercentaje = calculateStarsPercentage();
   const fetchProducts = async () => {
     setLoading(true);
     try {
       const productResponse = await fetch(`${backendUrl}/api/v1/products/${params.id}`);
       if (!productResponse.ok) {
-        throw new Error('Error fetching product data');
+        throw new Error("Error fetching product data");
       }
       const productData = await productResponse.json();
-      //console.log(productData);
       const urls = productData.map(product => product.ImageContent);
-      // console.log(urls);
       setImages(urls);
       setProduct(productData[0]);
       const reviewsResponse = await fetch(`${backendUrl}/api/v1/reviews/${params.id}`);
       if (!reviewsResponse.ok) {
-        throw new Error('Error fetching reviews data');
+        throw new Error("Error fetching reviews data");
       }
       const reviewsData = await reviewsResponse.json();
       setReviews(reviewsData);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     } finally {
       setLoading(false);
     }
@@ -95,9 +52,9 @@ const Product = ({changeCart}) => {
     const handleResize = () => {
       setShowNav(window.innerWidth > 768);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -111,11 +68,11 @@ const Product = ({changeCart}) => {
       const updatedCart = [...cart];
       updatedCart[existingProductIndex].quantity += parseInt(quantity, 10);
       setCart(updatedCart);
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
     } else {
       const updatedCart = [...cart, { ...product, quantity: parseInt(quantity, 10) }];
       setCart(updatedCart);
-      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
     changeCart();
   };
@@ -134,32 +91,62 @@ const Product = ({changeCart}) => {
     );
   }
 
+  // Static data for Product_Info
+  const productInfo = {
+    Dimensions: "30x20x10 cm",
+    Weight: 1.2,
+    Volume: 0.6,
+    Unit: "kg",
+    Units: 1,
+    Price_per_unit: 15.99,
+    Manufacturer: "Acme Corp",
+    Brand: "Acme",
+    Storage_instructions: "Keep in a cool, dry place",
+    Country_of_origin_ingredients: "Spain"
+  };
+
+  // Static data for Nutritional_Info
+  const nutritionalInfo = {
+    Calories: 250,
+    Total_fat: 10,
+    Saturated_fat: 3,
+    Trans_fat: 0,
+    Cholesterol: 30,
+    Sodium: 200,
+    Total_carbohydrates: 30,
+    Fiber: 5,
+    Sugars: 10,
+    Protein: 15,
+    Vitamins: "A, C, D",
+    Minerals: "Calcium, Iron"
+  };
+
   return (
-    <div className='product-container-global'>
+    <div className="product-container-global">
       <p className="breadcrumbs">
-        <Link to={`/search?PrincipalCategoryId=${product?.PrincipalCategoryID}`} style={{ textDecoration: 'none', color: 'green' }}>
-          {"Productos > "}{product?.PrincipalCategoryName} {product?.SecundaryCategoryName ? ' > ' : ''} {product?.SecundaryCategoryName} {product?.TertiaryCategoryName ? ' > ' : ''} {product?.TertiaryCategoryName}
+        <Link to={`/search?PrincipalCategoryId=${product?.PrincipalCategoryID}`} style={{ textDecoration: "none", color: "green" }}>
+          {"Productos > "}{product?.PrincipalCategoryName} {product?.SecundaryCategoryName ? " > " : ""} {product?.SecundaryCategoryName} {product?.TertiaryCategoryName ? " > " : ""} {product?.TertiaryCategoryName}
         </Link>
       </p>
       <div className="product-container">
         <div className="product-image">
-          <p>{product?.StockAvailability > 0 ? 'Disponible' : 'No disponible'}</p>
+          <p>{product?.StockAvailability > 0 ? "Disponible" : "No disponible"}</p>
           <ImageGallery imageUrls={images} />
         </div>
         <div className="product-details">
           <div className="product-header">
             <h2>{product?.ProductName}</h2>
             <p>
-              Visita la tienda de{' '}
-              <Link to={`/shop/${product?.ShopID}`} style={{ textDecoration: 'none', color: 'green' }}>
+              Visita la tienda de{" "}
+              <Link to={`/shop/${product?.ShopID}`} style={{ textDecoration: "none", color: "green" }}>
                 {product?.ShopName}
               </Link>
             </p>
             <div>
               <p>
-                {product?.Rating} {renderStars(product?.Rating)}
+                {product?.Rating} {renderStarsProductCard(product?.Rating)}
                 {" | "}
-                <a href="#comentarios" style={{ textDecoration: 'none', color: 'green' }}>
+                <a href="#comentarios" style={{ textDecoration: "none", color: "green" }}>
                   {product?.TotalComments} Valoraciones | Buscar en esta página
                 </a>
               </p>
@@ -192,19 +179,121 @@ const Product = ({changeCart}) => {
       <div>
         <h2>Información adicional sobre el producto</h2>
       </div>
+      <div className="product-tables">
+        <div className="additional-info">
+          <table>
+            <tbody>
+              <tr>
+                <td>Dimensiones</td>
+                <td>{productInfo.Dimensions}</td>
+              </tr>
+              <tr>
+                <td>Peso</td>
+                <td>{productInfo.Weight} kg</td>
+              </tr>
+              <tr>
+                <td>Volumen</td>
+                <td>{productInfo.Volume} L</td>
+              </tr>
+              <tr>
+                <td>Unidad</td>
+                <td>{productInfo.Unit}</td>
+              </tr>
+              <tr>
+                <td>Unidades</td>
+                <td>{productInfo.Units}</td>
+              </tr>
+              <tr>
+                <td>Precio por unidad</td>
+                <td>{productInfo.Price_per_unit} €</td>
+              </tr>
+              <tr>
+                <td>Fabricante</td>
+                <td>{productInfo.Manufacturer}</td>
+              </tr>
+              <tr>
+                <td>Marca</td>
+                <td>{productInfo.Brand}</td>
+              </tr>
+              <tr>
+                <td>Instrucciones de almacenamiento</td>
+                <td>{productInfo.Storage_instructions}</td>
+              </tr>
+              <tr>
+                <td>País de origen de los ingredientes</td>
+                <td>{productInfo.Country_of_origin_ingredients}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="additional-info">
+          <table>
+            <tbody>
+              <tr>
+                <td>Calorías</td>
+                <td>{nutritionalInfo.Calories} kcal</td>
+              </tr>
+              <tr>
+                <td>Grasa total</td>
+                <td>{nutritionalInfo.Total_fat} g</td>
+              </tr>
+              <tr>
+                <td>Grasa saturada</td>
+                <td>{nutritionalInfo.Saturated_fat} g</td>
+              </tr>
+              <tr>
+                <td>Grasa trans</td>
+                <td>{nutritionalInfo.Trans_fat} g</td>
+              </tr>
+              <tr>
+                <td>Colesterol</td>
+                <td>{nutritionalInfo.Cholesterol} mg</td>
+              </tr>
+              <tr>
+                <td>Sodio</td>
+                <td>{nutritionalInfo.Sodium} mg</td>
+              </tr>
+              <tr>
+                <td>Carbohidratos totales</td>
+                <td>{nutritionalInfo.Total_carbohydrates} g</td>
+              </tr>
+              <tr>
+                <td>Fibra</td>
+                <td>{nutritionalInfo.Fiber} g</td>
+              </tr>
+              <tr>
+                <td>Azúcares</td>
+                <td>{nutritionalInfo.Sugars} g</td>
+              </tr>
+              <tr>
+                <td>Proteínas</td>
+                <td>{nutritionalInfo.Protein} g</td>
+              </tr>
+              <tr>
+                <td>Vitaminas</td>
+                <td>{nutritionalInfo.Vitamins}</td>
+              </tr>
+              <tr>
+                <td>Minerales</td>
+                <td>{nutritionalInfo.Minerals}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div className="separator"></div>
-      {/* Renderizar las reseñas solo si hay comentarios */}
       {reviews.length > 0 && (
         <div id="comentarios" className="product-reviews">
           <div className="Opiniones">
-            <h3>Opiniones de clientes</h3>
+            <h2>Opiniones de clientes</h2>
             <div className="StarsTitle">
-              {renderStars(product?.Rating)} {product?.Rating} Estrellas de 5
+              {renderStarsProductCard(product?.Rating)} {product?.Rating} Estrellas de 5
             </div>
             {product?.TotalComments} Valoraciones totales
 
             {[5, 4, 3, 2, 1].map(stars => (
-
               <div key={stars} className="starsLine">
                 <a>{stars} Estrellas</a>
                 <div className="WidthDiv">
@@ -212,20 +301,42 @@ const Product = ({changeCart}) => {
                 </div>
                 {totalStarsPercentaje[stars]}%
               </div>
-
             ))}
 
+            <div className="product-vote">
+            <div className="separator"></div>
+              <h3>Valorar este producto</h3>
+              Comparte tu opinion con otros clientes
+              <button> Valorar </button>
+            </div>
           </div>
           <div className="Reseñas">
+            <h2>Reseñas con imagenes</h2>
             <h2>Principales Reseñas</h2>
             {renderCardReviews(reviews)}
           </div>
         </div>
       )}
-      {/* Si no hay comentarios, mostrar un mensaje */}
       {reviews.length === 0 && (
-        <div>
-          <p>No hay valoraciones disponibles</p>
+        <div id="comentarios" className="product-reviews">
+          <div className="Opiniones">
+            <h2>Opiniones de clientes</h2>
+
+            {[5, 4, 3, 2, 1].map(stars => (
+              <div key={stars} className="starsLine">
+                <a>{stars} Estrellas</a>
+                <div className="WidthDiv">
+                  <div className="WidthPercentaje" style={{ width: `${totalStarsPercentaje[stars]}%` }}></div>
+                </div>
+                {totalStarsPercentaje[stars]}%
+              </div>
+            ))}
+          </div>
+          <div className="Reseñas">
+            <h2>Reseñas con imagenes</h2>
+            <h2>Principales Reseñas</h2>
+            {renderCardReviews(reviews)}
+          </div>
         </div>
       )}
     </div>

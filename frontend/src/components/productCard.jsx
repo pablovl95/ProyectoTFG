@@ -1,34 +1,11 @@
 import React, { useState } from 'react';
 import './css/productCard.css';
 import { useNavigate } from 'react-router-dom';
+import { renderStarsProductCard } from '../utils/utils';
 
 const ProductCard = ({ product, changeCart }) => {
     const navigate = useNavigate();
     const imageUrl = product?.ImageContent;
-    const renderStars = (rating) => {
-        const totalStars = 5;
-        const filledStars = Math.floor(rating);
-        const halfStar = rating - filledStars >= 0.5 ? true : false;
-        const stars = [];
-
-        for (let i = 1; i <= totalStars; i++) {
-            if (i <= filledStars) {
-                stars.push(
-                    <span key={i} className='filled'>★</span>
-                );
-            } else if (i === filledStars + 1 && halfStar) {
-                stars.push(
-                    <span key={i} className='half-filled'>★</span>
-                );
-            } else {
-                stars.push(
-                    <span key={i}>★</span>
-                );
-            }
-        }
-
-        return stars;
-    };
 
     const addToCart = () => {
         const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -62,7 +39,7 @@ const ProductCard = ({ product, changeCart }) => {
             </div>
             <div className="product-card-rating-comments">
                 <div className="product-card-rating">
-                    {renderStars(product?.Rating)}
+                    {renderStarsProductCard(product?.Rating)}
                 </div>
                 <p>{product?.TotalComments}</p>
             </div>

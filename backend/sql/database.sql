@@ -152,3 +152,35 @@ CREATE TABLE OrderProducts (
   FOREIGN KEY (OrderID) REFERENCES Orders (OrderID),
   FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
 );
+
+CREATE TABLE Product_Info (
+    ProductID INTEGER PRIMARY KEY,
+    Dimensions TEXT,
+    Weight REAL,
+    Volume REAL,
+    Unit TEXT,
+    Units INTEGER,
+    Price_per_unit REAL,
+    Manufacturer TEXT,
+    Brand TEXT,
+    Storage_instructions TEXT,
+    Country_of_origin_ingredients TEXT,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+CREATE TABLE Nutritional_Info (
+    ProductID INTEGER PRIMARY KEY,
+    Calories INTEGER,
+    Total_fat REAL,
+    Saturated_fat REAL,
+    Trans_fat REAL,
+    Cholesterol REAL,
+    Sodium REAL,
+    Total_carbohydrates REAL,
+    Fiber REAL,
+    Sugars REAL,
+    Protein REAL,
+    Vitamins TEXT,
+    Minerals TEXT,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
