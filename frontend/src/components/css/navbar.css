@@ -48,7 +48,7 @@
     width: 2.5rem;
     height: 2rem;
 }
-.SearchBar-default{
+.navbar-SearchBar-default{
     position:relative;
     display: flex;
     align-items: center;
@@ -59,7 +59,7 @@
     background-color: #ffffff;
 
 }
-.SearchBar-default input {
+.navbar-SearchBar-default input {
     width: 100%;
     padding: 0.5rem 1rem;
     border: none;
@@ -115,7 +115,7 @@
   background-color: #17480d;
   padding-top:0.5rem;
 }
-.SearchBar-mobile{
+.navbar-SearchBar-mobile{
     display: none;
 }
 .user-menu {
@@ -228,11 +228,11 @@
         margin: 0.2rem 0; /* Ajustar el margen superior e inferior */
     }
 
-    .SearchBar-default {
+    .navbar-SearchBar-default {
         display: none;
     }
 
-    .SearchBar-mobile {
+    .navbar-SearchBar-mobile {
         display: flex;
         padding: 0.5rem ;
         position: relative;
@@ -243,7 +243,7 @@
         background-color: #ffffff;
     }
 
-    .SearchBar-mobile input {
+    .navbar-SearchBar-mobile input {
         width: 100%;
         border: none;
     }

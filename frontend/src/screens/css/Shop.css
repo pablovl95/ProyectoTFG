@@ -1,0 +1,74 @@
+.shop {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  .shop-header {
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+  }
+  
+  .shop-header nav ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .shop-header nav ul li {
+    display: inline;
+    margin: 0 10px;
+  }
+  
+  .shop-header nav ul li a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .product {
+    border: 1px solid #ddd;
+    margin: 10px;
+    padding: 10px;
+    width: 200px;
+  }
+  
+  .product img {
+    max-width: 100%;
+  }
+  
+  .news-section {
+    padding: 20px;
+  }
+  
+  .news-article {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+  }
+  
+  .shop-footer {
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+    margin-top: 20px;
+  }
+  
+  .shop-footer .social-media ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .shop-footer .social-media ul li {
+    display: inline;
+    margin: 0 10px;
+  }
+  
+  .shop-footer .social-media ul li a {
+    color: white;
+    text-decoration: none;
+  }
+  

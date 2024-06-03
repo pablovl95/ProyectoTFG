@@ -83,18 +83,37 @@ CREATE TABLE
     FOREIGN KEY (ShopID) REFERENCES Shops (ShopID)
   );
 
-CREATE TABLE
-  Reviews (
+CREATE TABLE Reviews (
     ReviewID TEXT PRIMARY KEY DEFAULT (
-      LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
+        LOWER(HEX(RANDOMBLOB(4))) || 
+        LOWER(HEX(RANDOMBLOB(2))) || 
+        SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
+        SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || 
+        SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
+        LOWER(HEX(RANDOMBLOB(6)))
     ),
     ProductID TEXT NOT NULL,
     Comment TEXT,
     UserID TEXT NOT NULL,
     AssignedRating INTEGER CHECK (AssignedRating BETWEEN 1 AND 5),
+    ContainsPhotos BOOLEAN NOT NULL DEFAULT 0,
     FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
     FOREIGN KEY (UserID) REFERENCES Users (UserID)
-  );
+);
+CREATE TABLE Review_Images (
+    ImageID TEXT PRIMARY KEY DEFAULT (
+        LOWER(HEX(RANDOMBLOB(4))) || 
+        LOWER(HEX(RANDOMBLOB(2))) || 
+        SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
+        SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || 
+        SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
+        LOWER(HEX(RANDOMBLOB(6)))
+    ),
+    ReviewID TEXT NOT NULL,
+    ImagePath TEXT NOT NULL,
+    FOREIGN KEY (ReviewID) REFERENCES Reviews (ReviewID)
+);
+
 
 CREATE TABLE
   Addresses (
@@ -124,7 +143,6 @@ ProductImages (
   ),
   ProductID TEXT NOT NULL,
   ImageContent TEXT NOT NULL,
-  Caption TEXT,
   UploadDate DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
 );

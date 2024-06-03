@@ -56,7 +56,7 @@ export default function Navbar({ loginView, user, changeCart }) {
           <Link to="/" className="title">
             EcoShop
           </Link>
-          <div className="SearchBar-default">
+          <div className="navbar-SearchBar-default">
             <select value={searchType} onChange={(e) => setSearchType(e.target.value)} className="search-selector">
               <option value="search">Productos</option>
               <option value="shops">Tiendas</option>
@@ -94,7 +94,7 @@ export default function Navbar({ loginView, user, changeCart }) {
           </div>
         </div>
         <div style={{ backgroundColor: "#1d640e", paddingBottom: "1rem", paddingLeft: "1rem" }}>
-          <div className="SearchBar-mobile">
+          <div className="navbar-SearchBar-mobile">
             <select value={searchType} onChange={(e) => setSearchType(e.target.value)} className="search-selector">
               <option value="productos">Productos</option>
               <option value="tiendas">Tiendas</option>
