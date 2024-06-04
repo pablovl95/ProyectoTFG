@@ -194,7 +194,7 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
 });
 
 app.post('/api/v1/users', async (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
   let { UserID, FirstName, LastName, Email, Phone } = req.body;
   //console.log(UserID,FirstName, LastName, Email, Phone);
   if (req.body.FirstName === undefined || req.body.LastName === undefined || req.body.Email === undefined || req.body.UserID === undefined || req.body.Phone === undefined) {

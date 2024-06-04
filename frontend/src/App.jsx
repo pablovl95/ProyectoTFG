@@ -6,6 +6,7 @@ import Navbar from "./components/navbar";
 import About from "./screens/About";
 import Home from "./screens/Home";
 import Search from "./screens/Search";
+import Security from "./screens/Security";
 import Product from "./screens/Product";
 import Footer from "./components/Footer";
 import Shop from "./screens/Shop";
@@ -16,6 +17,9 @@ import Addresses from "./screens/Adresses";
 import Dashboard from "./screens/Dashboard";
 import Delivery from "./screens/Delivery";
 import Payment from "./screens/Payment";
+import Workwithus from "./screens/Workwithus";
+import Contactus from "./screens/Contactus";
+
 import { auth } from "./auth";
 
 import Images from "./screens/Images";
@@ -30,37 +34,45 @@ function App() {
     : process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
-    // Verifica si el usuario está autenticado al cargar la aplicación
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setUser(user);
-      console.log(user);
+      //console.log(user);
       if (user) {
-        await fetch(`${backendUrl}/api/v1/users/${user.uid}`)
-          .then((response) => response.json())
-          .then((data) => {
-            setUserData(data[0]);
-            console.log("entrando", data[0]);
-          });
-      } if (userData === undefined) {
-        console.log("no hay datos");
-        await fetch(`${backendUrl}/api/v1/users`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            FirstName: user.displayName.split(' ')[0],
-            LastName: user.displayName.split(' ')[1] + (user.displayName.split(' ')[2] || ''),
-            Email: user.email,
-            UserID: user.uid,
-            Phone: user.phoneNumber || 'NULL',
-          }),
-        });
+        try {
+          await fetch(`${backendUrl}/api/v1/users/${user.uid}`)
+            .then((response) => response.json())
+            .then((data) => {
+              setUserData(data[0]);
+            });
+        } catch (error) {
+          if (userData === undefined || userData === null) {
+            console.log("no hay datos");
+            try {
+              const body = {
+                FirstName: user.displayName ? user.displayName?.split(' ')[0] : "NULL",
+                LastName: user.displayName ? user.displayName?.split(' ')[1] : "NULL" + (user.displayName ? user.displayName?.split(' ')[2] : ''),
+                Email: user ? user.email : "NULL",
+                UserID: user ? user.uid : "NULL",
+                Phone: user.phoneNumber || 'NULL',
+              };
+              await fetch(`${backendUrl}/api/v1/users`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body),
+              });
+              setUserData(body);
+            } catch (error) {
+              console.error('Error during Google login:', error);
+            }
+          }
+        }
       }
     });
 
     return () => unsubscribe(); // Se asegura de desuscribirse cuando se desmonta el componente
-  }, [backendUrl]);
+  }, [backendUrl, user]);
 
   const changeCart = () => {
     setChanger(!changer);
@@ -82,6 +94,9 @@ function App() {
             <Route path="/profile/orders" element={<Orders />} />
             <Route path="/profile/addresses" element={<Addresses />} />
             <Route path="/profile/payment" element={<Payment />} />
+            <Route path="/profile/security" element={<Security userData={userData} />} />
+            <Route path="/profile/workwithus" element={<Workwithus userData={userData} />} />
+            <Route path="/profile/contact" element={<Contactus userData={userData} />} />
           </>
         )}
         {userData?.UserType === "administrator" && (
@@ -95,7 +110,7 @@ function App() {
       <Footer />
       {loginView && !user && (
         <div className="overlay">
-          <Login onClose={() => setLoginView(false)} />
+          <Login onClose={() => setLoginView(false)} setUser={(user) => setUser(user)} />
         </div>
       )}
     </div>

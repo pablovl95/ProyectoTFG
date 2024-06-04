@@ -141,7 +141,6 @@ margin:0
   flex-direction: row;
 }
 
-/* Estilos para la sección de opiniones */
 .Opiniones {
   margin-top: 2rem;
   display: flex;
@@ -149,6 +148,7 @@ margin:0
   flex-direction: column;
   justify-content: left;
   align-items: flex-start;
+  margin-bottom: 10rem;
 }
 
 /* Estilos para la sección de reseñas */

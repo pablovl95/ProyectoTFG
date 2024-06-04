@@ -28,7 +28,7 @@ const items = [
   },
   {id:5,
     name: 'Trabaja con nosotros',
-    path: '/profile/work',
+    path: '/profile/workwithus',
     url: '/work.png',
     description:'Envianos una solicitud si lo que deseas es trabajar con nosotros',
   },

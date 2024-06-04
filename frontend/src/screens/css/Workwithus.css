@@ -1,0 +1,72 @@
+/* Workwithus.css */
+.workwithus-container {
+    width: 80%;
+    margin: 40px auto; 
+    padding: 30px;
+    background-color: #f8f8f8; /* Soft background color */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.workwithus-container h1 {
+    text-align: center;
+    margin:0;
+    margin-bottom: 30px;
+    color: #333; /* Dark text color */
+}
+
+.workwithus-container form {
+    display: flex;
+    flex-direction: column; 
+    gap: 15px; /* Spacing between form elements */
+}
+
+.workwithus-container input[type="text"],
+.workwithus-container input[type="email"],
+.workwithus-container select,
+.workwithus-container input[type="tel"],
+.workwithus-container textarea {
+    padding: 1rem;
+    margin:0;
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 4px;
+    box-sizing: border-box; 
+}
+
+.workwithus-container textarea {
+    min-height: 120px;
+    width: 100%;
+}
+
+.workwithus-container button[type="submit"] {
+    background-color: #0f9a00; /* Primary color */
+    color: white;
+    border: none;
+    
+    width: 100%;
+    margin:0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.workwithus-container button[type="submit"]:hover {
+    background-color: #0c7300; /* Darker shade on hover */
+}
+
+/* Image previews */
+.image-previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    box-sizing: border-box; 
+}
+
+.image-preview {
+    box-sizing: border-box; 
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+}

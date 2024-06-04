@@ -23,7 +23,7 @@ function Orders() {
     {
       OrderID: "x9y8z7",
       UserID: "user456",
-      ShopID: "shop789",
+      ShopName: "shop789",
       AddressID: "address123",
       OrderDate: "2024-06-05 10:30:00",
       OrderStatus: "shipped",
@@ -74,9 +74,8 @@ function Orders() {
         {orders.map(order => (
           shouldShowOrder(order) && (
             <div className="order-card" key={order.OrderID} onClick={() => handleCardClick(order.OrderID)}>
-              <h3>Order ID: {order.OrderID}</h3>
-              <p>User ID: {order.UserID}</p>
-              <p>Shop ID: {order.ShopID}</p>
+              <h3>ID del pedido:{order.OrderID}</h3>
+              <p>{order.ShopID}</p>
               <p>Address ID: {order.AddressID}</p>
               <p>Order Date: {order.OrderDate}</p>
               <p>Order Status: {order.OrderStatus}</p>

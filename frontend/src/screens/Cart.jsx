@@ -95,8 +95,8 @@ const Cart = ({ changeCart }) => {
           )}
         </>
       )}
-      {activeComponent === 'shipping' && <Shipping setActiveComponent={setActiveComponent} />}
-      {activeComponent === 'payment' && <Payment setActiveComponent={setActiveComponent} />}
+      {activeComponent === 'shipping' && <Shipping setActiveComponent={setActiveComponent} cartTotal={cartTotal} cart={cart}/>}
+      {activeComponent === 'payment' && <Payment setActiveComponent={setActiveComponent} cartTotal={cartTotal} cart={cart}/>}
     </div>
   );
 };

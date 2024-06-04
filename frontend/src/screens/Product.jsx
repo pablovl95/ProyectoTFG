@@ -332,11 +332,7 @@ const Product = ({ changeCart }) => {
               </div>
             ))}
           </div>
-          <div className="Reseñas">
-            <h2>Reseñas con imagenes</h2>
-            <h2>Principales Reseñas</h2>
-            {renderCardReviews(reviews)}
-          </div>
+
         </div>
       )}
     </div>

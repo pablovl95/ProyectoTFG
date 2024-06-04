@@ -146,7 +146,7 @@
     height: 100%;
     top: 0;
     left: 0;
-    background-color: rgb(241, 255, 240);
+    background-color: rgb(239, 239, 239);
     z-index: 1000;
     padding:1rem;
   }
@@ -190,7 +190,7 @@
   .filters {
     display: flex;
     position: fixed;
-    background-color: rgb(249, 255, 247);
+    background-color: rgb(247, 251, 255);
     color: #383838;
     cursor: pointer;
     padding: 0.3rem;
@@ -212,7 +212,7 @@
 
   .filters-content {
     display: flex;
-    background-color: rgb(249, 255, 247);
+    background-color: rgb(247, 251, 255);
     border: #9a9a9a 1px solid;
     color: #4f4f4f;
     cursor: pointer;

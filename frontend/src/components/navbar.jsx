@@ -130,7 +130,7 @@ export default function Navbar({ loginView, user, changeCart }) {
               <NavLink to="/profile">Perfil</NavLink>
             </li>
             <li>
-              <NavLink to="/orders">Mis pedidos</NavLink>
+              <NavLink to="/profile/orders">Mis pedidos</NavLink>
             </li>
             <li>
               <NavLink to="/cart">Carrito</NavLink>

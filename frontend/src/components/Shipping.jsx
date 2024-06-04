@@ -3,7 +3,7 @@ import './css/Shipping.css';
 import { IconCirclePlus } from '@tabler/icons-react';
 import AddressesForm from './AddressesForm';
 
-const Shipping = ({ setActiveComponent }) => {
+const Shipping = ({ setActiveComponent, cart, cartTotal }) => {
     const [shippingMethod, setShippingMethod] = useState('express');
     const [addresses, setAddresses] = useState([
         {
@@ -185,10 +185,10 @@ const Shipping = ({ setActiveComponent }) => {
             <div className="shipping-summary">
                 <h3>Resumen</h3>
                 <div className="summary-details">
-                    <p>Subtotal: 21,60 €</p>
+                    <p>Subtotal: {cartTotal} €</p>
                     <p>Gastos de envío: 2,90 €</p>
-                    <p>TOTAL: 24,50 € (IVA incluido)</p>
-                    <p>Añade a tu cuenta hasta +0,65 € para tu siguiente compra.</p>
+                    <p>TOTAL: {(cartTotal) + 2.90} (IVA incluido)</p>
+                    <p>Revisa los pedidos a los productores para ver si puedes ahorrarte algo en gastos de envio!!.</p>
                     <input type="text" placeholder="¿Dispones de un cupón?" />
                     <button>Aplicar</button>
                     <button onClick={() => setActiveComponent('payment')}>Siguiente paso</button>

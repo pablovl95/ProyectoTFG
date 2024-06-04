@@ -5,7 +5,7 @@ import {  GoogleAuthProvider,signInWithPopup, signInWithEmailAndPassword, create
 import { auth } from '../auth';
 import { IconX } from '@tabler/icons-react';
 
-function Login({ onClose }) {
+function Login({ onClose, setUser }) {
   const [isLogin, setIsLogin] = useState(true); // Estado para controlar si está en modo de login o registro
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -60,6 +60,8 @@ function Login({ onClose }) {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+      setUser(user);
+
     } catch (error) {
       console.error('Error during email login:', error);
     }
@@ -88,6 +90,7 @@ function Login({ onClose }) {
           Phone: Telephone
         }),
       });
+      setUser(user);
       // console.log('User registered:', user);
     } catch (error) {
       console.error('Error during email registration:', error);

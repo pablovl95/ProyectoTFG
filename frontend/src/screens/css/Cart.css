@@ -171,7 +171,12 @@
     flex-direction: column;
     align-items: flex-start;
   }
-
+  .cart-item-info h3 {
+    margin-left: 1rem;
+  }
+  .cart-item-info p {
+    margin-left: 1rem;
+  }
   .cart-item-image {
     width: 80px;
     height: 80px;
@@ -185,7 +190,8 @@
   }
 
   .cart-item-actions {
-    width: 50%;
+    width: 95%;
+    justify-content: right;
   }
 
   .cart-total {

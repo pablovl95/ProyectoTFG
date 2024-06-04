@@ -1,0 +1,77 @@
+/* Contactus.css */
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    /* Evita que el contenido se desborde */
+    margin: auto;
+}
+
+.message-list {
+    flex: 1;
+    /* Ocupa el espacio disponible */
+    overflow-y: auto;
+    /* Permite el scroll vertical */
+    padding: 15px;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 20px;
+    max-width: 70%;
+    /* Limita el ancho del mensaje */
+}
+.message.right {
+    margin-right: 0;   /* Mensajes "recibidos" a la izquierda */
+    margin-right: auto;
+  }
+
+.message.received {
+    background-color: #f0f0f0;
+    align-self: flex-start;
+    /* Alinea a la izquierda */
+}
+
+.message.sent {
+    background-color: #0084ff;
+    /* Color azul */
+    color: white;
+    align-self: flex-end;
+    /* Alinea a la derecha */
+}
+
+.sender {
+    font-weight: bold;
+    margin-bottom: 3px;
+    display: block;
+    /* Ocupa todo el ancho */
+}
+
+.input-area {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+.input-area input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    /* Borde redondeado solo en la izquierda */
+}
+
+.input-area button {
+    padding: 8px 15px;
+    background-color: #0084ff;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    /* Borde redondeado solo en la derecha */
+    cursor: pointer;
+}

@@ -5,7 +5,6 @@ import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import { IconCirclePlus } from '@tabler/icons-react';
 
 const Payment = () => {
-    const [selectedPayment, setSelectedPayment] = useState(null);
     const [paymentMethods, setPaymentMethods] = useState([
         {
             id: "asdk",
@@ -17,11 +16,22 @@ const Payment = () => {
             name: "John Doe"
         },
         {
+            id: "ades",
+            type: "creditCard",
+            label: "Tarjeta de crédito",
+            number: "1234 5678 1234 5678",
+            expiry: "12/23",
+            cvc: "123",
+            name: "John Doe"
+        },
+        {
+            id: "sdadsa",
             type: "paypal",
             label: "PayPal",
             email: "example@example.com"
         },
         {
+            id: "adsfsas",
             type: "debitCard",
             label: "Tarjeta de débito",
             number: "4321 8765 4321 8765",
@@ -35,7 +45,7 @@ const Payment = () => {
             phoneNumber: "123456789"
         }
     ]);
-
+    const [selectedPayment, setSelectedPayment] = useState(paymentMethods[0] || "null");
     const handlePaymentSelection = (method) => {
         setSelectedPayment(method);
     };
