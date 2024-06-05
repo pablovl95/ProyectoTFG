@@ -3,7 +3,6 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import multer from 'multer'; // Middleware para manejar la subida de archivos
-import path from 'path';
 
 const upload = multer(); // Eliminamos el directorio de destino para que los archivos se manejen en memoria
 
@@ -356,8 +355,7 @@ app.post('/api/v1/productImages/:productId', upload.single('image'), async (req,
   try {
     const productId = req.params.productId;
     const image = req.file.buffer; // Accedemos al buffer del archivo en memoria
-    const caption = req.body.caption; // El título de la imagen
-    await db.execute(`INSERT INTO ProductImages (ProductID, ImageContent, Caption) VALUES ('${productId}', '${image.toString('base64')}', '${caption}')`);
+    await db.execute(`INSERT INTO ProductImages (ProductID, ImageContent) VALUES ('${productId}', '${image.toString('base64')}')`);
     res.status(200).send('Imagen subida correctamente');
   } catch (error) {
     console.error('Error al subir imagen:', error);
@@ -385,7 +383,97 @@ app.get('/api/v1/producto', async (req, res) => {
     res.status(500).send('Error al obtener las categorías de la base de datos');
   }
 });
+/////////////////////////////////////////  ORDERS /////////////////////////////////////////////////////////////////
+// GET para obtener todos los pedidos
+app.get('/api/v1/orders/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const query = `SELECT Orders.*, 
+    OrderProducts.*, 
+    Products.ProductName, 
+    ProductImages.ImageContent, 
+    Addresses.AddressTitle 
+FROM OrderProducts 
+LEFT JOIN Orders ON OrderProducts.OrderID = Orders.OrderID 
+LEFT JOIN Products ON OrderProducts.ProductID = Products.ProductID 
+LEFT JOIN ProductImages ON Products.ImageDefaultID = ProductImages.ImageID 
+LEFT JOIN Addresses ON Addresses.AddressID = Orders.AddressID 
+WHERE Orders.UserID ='${id}';`
+    const data = await db.execute(query);
+    res.status(200).send(data.rows);
+  } catch (error) {
+    console.error('Error al consultar la base de datos:', error);
+    res.status(500).send('Error al obtener los pedidos de la base de datos');
+  }
+});
 
+// POST para crear un nuevo pedido
+app.post('/api/v1/orders', async (req, res) => {
+  try {
+    const { UserID, AddressID, Total } = req.body;
+    const query = `INSERT INTO Orders (UserID, AddressID, Total) VALUES ('${UserID}', '${AddressID}', ${Total})`;
+    await db.execute(query);
+    res.status(201).send('Pedido creado correctamente');
+  } catch (error) {
+    console.error('Error al insertar en la base de datos:', error);
+    res.status(500).send('Error al crear el pedido en la base de datos');
+  }
+});
+
+// PUT para actualizar el estado de un pedido por su ID
+app.put('/api/v1/orders/:id', async (req, res) => {
+  try {
+    const { OrderStatus } = req.body;
+    const orderId = req.params.id;
+    const query = `UPDATE Orders SET OrderStatus = '${OrderStatus}' WHERE OrderID = '${orderId}'`;
+    await db.execute(query);
+    res.status(200).send('Estado del pedido actualizado correctamente');
+  } catch (error) {
+    console.error('Error al actualizar el estado del pedido en la base de datos:', error);
+    res.status(500).send('Error al actualizar el estado del pedido en la base de datos');
+  }
+});
+
+// GET para obtener todos los productos de un pedido por su ID
+app.get('/api/v1/orderProducts/:orderID', async (req, res) => {
+  try {
+    const orderId = req.params.orderID;
+    const data = await db.execute(`SELECT * FROM OrderProducts WHERE OrderProductsID = '${orderId}'`);
+    res.status(200).send(data.rows);
+  } catch (error) {
+    console.error('Error al consultar la base de datos:', error);
+    res.status(500).send('Error al obtener los productos del pedido de la base de datos');
+  }
+});
+
+// POST para agregar productos a un pedido
+app.post('/api/v1/orderProducts', async (req, res) => {
+  try {
+    const { OrderProductsID, ShopID, AddressID, Products } = req.body;
+    const query = `INSERT INTO OrderProducts (OrderProductsID, ShopID, AddressID, Products) VALUES ('${OrderProductsID}', '${ShopID}', '${AddressID}', '${Products}')`;
+    await db.execute(query);
+    res.status(201).send('Productos agregados al pedido correctamente');
+  } catch (error) {
+    console.error('Error al insertar en la base de datos:', error);
+    res.status(500).send('Error al agregar los productos al pedido en la base de datos');
+  }
+});
+
+// PUT para actualizar el estado de una orden de productos por su ID
+app.put('/api/v1/orderProducts/:id', async (req, res) => {
+  try {
+    const { AddressStatus } = req.body;
+    const orderProductsId = req.params.id;
+    const query = `UPDATE OrderProducts SET AddressStatus = '${AddressStatus}' WHERE OrderProductsID = '${orderProductsId}'`;
+    await db.execute(query);
+    res.status(200).send('Estado de la orden de productos actualizado correctamente');
+  } catch (error) {
+    console.error('Error al actualizar el estado de la orden de productos en la base de datos:', error);
+    res.status(500).send('Error al actualizar el estado de la orden de productos en la base de datos');
+  }
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Inicia el servidor
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);

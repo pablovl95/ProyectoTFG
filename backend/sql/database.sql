@@ -83,14 +83,10 @@ CREATE TABLE
     FOREIGN KEY (ShopID) REFERENCES Shops (ShopID)
   );
 
-CREATE TABLE Reviews (
+CREATE TABLE
+  Reviews (
     ReviewID TEXT PRIMARY KEY DEFAULT (
-        LOWER(HEX(RANDOMBLOB(4))) || 
-        LOWER(HEX(RANDOMBLOB(2))) || 
-        SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
-        SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || 
-        SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
-        LOWER(HEX(RANDOMBLOB(6)))
+      LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
     ),
     ProductID TEXT NOT NULL,
     Comment TEXT,
@@ -99,21 +95,17 @@ CREATE TABLE Reviews (
     ContainsPhotos BOOLEAN NOT NULL DEFAULT 0,
     FOREIGN KEY (ProductID) REFERENCES Products (ProductID),
     FOREIGN KEY (UserID) REFERENCES Users (UserID)
-);
-CREATE TABLE Review_Images (
+  );
+
+CREATE TABLE
+  Review_Images (
     ImageID TEXT PRIMARY KEY DEFAULT (
-        LOWER(HEX(RANDOMBLOB(4))) || 
-        LOWER(HEX(RANDOMBLOB(2))) || 
-        SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
-        SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || 
-        SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
-        LOWER(HEX(RANDOMBLOB(6)))
+      LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
     ),
     ReviewID TEXT NOT NULL,
     ImagePath TEXT NOT NULL,
     FOREIGN KEY (ReviewID) REFERENCES Reviews (ReviewID)
-);
-
+  );
 
 CREATE TABLE
   Addresses (
@@ -134,44 +126,66 @@ CREATE TABLE
     FOREIGN KEY (UserID) REFERENCES Users (UserID)
   );
 
+CREATE TABLE
+  ProductImages (
+    ImageID TEXT PRIMARY KEY DEFAULT (
+      LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
+    ),
+    ProductID TEXT NOT NULL,
+    ImageContent TEXT NOT NULL,
+    UploadDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
+  );
 
-CREATE TABLE 
-ProductImages (
-  ImageID TEXT PRIMARY KEY DEFAULT (
-    LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
-    SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
-  ),
-  ProductID TEXT NOT NULL,
-  ImageContent TEXT NOT NULL,
-  UploadDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
-);
+CREATE TABLE
+  Orders (
+    OrderID TEXT PRIMARY KEY DEFAULT (
+      LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
+    ),
+    UserID TEXT NOT NULL,
+    AddressID TEXT NOT NULL,
+    OrderDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    OrderStatus TEXT CHECK (
+      OrderStatus IN (
+        'pending',
+        'processing',
+        'shipped',
+        'delivered',
+        'cancelled'
+      )
+    ) NOT NULL DEFAULT 'pending',
+    TOTAL REAL NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES Users (UserID),
+    FOREIGN KEY (AddressID) REFERENCES Addresses (AddressID)
+  );
 
-CREATE TABLE Orders (
-  OrderID TEXT PRIMARY KEY DEFAULT (
-    LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
-    SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
-  ),
-  UserID TEXT NOT NULL,
-  ShopID TEXT NOT NULL,
-  AddressID TEXT NOT NULL,
-  OrderDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-  OrderStatus TEXT CHECK (OrderStatus IN ('pending', 'processing', 'shipped', 'delivered', 'cancelled')) NOT NULL DEFAULT 'pending',
-  CarrierID TEXT DEFAULT NULL,
-  FOREIGN KEY (UserID) REFERENCES Users (UserID),
-  FOREIGN KEY (ShopID) REFERENCES Shops (ShopID)
-);
+CREATE TABLE
+  OrderProducts (
+    OrderProductsID TEXT DEFAULT (
+      LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
+    ),
+    OrderID TEXT NOT NULL,
+    ShopID TEXT NOT NULL,
+    AddressID TEXT NOT NULL,
+    OrderStatus TEXT CHECK (
+      OrderStatus IN (
+        'pending',
+        'processing',
+        'shipped',
+        'delivered',
+        'cancelled'
+      )
+    ) NOT NULL DEFAULT 'pending',
+    ProductID TEXT NOT NULL,
+    Quantity INTEGER NOT NULL,
+    PRIMARY KEY (OrderProductsID),
+    FOREIGN KEY (ShopID) REFERENCES Shops (ShopID),
+    FOREIGN KEY (OrderID) REFERENCES Orders (OrderID),
+    FOREIGN KEY (AddressID) REFERENCES Addresses (AddressID)
+  );
 
-CREATE TABLE OrderProducts (
-  OrderID TEXT NOT NULL,
-  ProductID TEXT NOT NULL,
-  Quantity INTEGER NOT NULL CHECK (Quantity > 0),
-  PRIMARY KEY (OrderID, ProductID),
-  FOREIGN KEY (OrderID) REFERENCES Orders (OrderID),
-  FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
-);
-
-CREATE TABLE Product_Info (
+CREATE TABLE
+  Product_Info (
     ProductID INTEGER PRIMARY KEY,
     Dimensions TEXT,
     Weight REAL,
@@ -183,10 +197,11 @@ CREATE TABLE Product_Info (
     Brand TEXT,
     Storage_instructions TEXT,
     Country_of_origin_ingredients TEXT,
-    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
-);
+    FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
+  );
 
-CREATE TABLE Nutritional_Info (
+CREATE TABLE
+  Nutritional_Info (
     ProductID INTEGER PRIMARY KEY,
     Calories INTEGER,
     Total_fat REAL,
@@ -200,5 +215,5 @@ CREATE TABLE Nutritional_Info (
     Protein REAL,
     Vitamins TEXT,
     Minerals TEXT,
-    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
-);
+    FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
+  );

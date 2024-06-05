@@ -5,7 +5,7 @@ import Shipping from '../components/Shipping';
 import Payment from '../components/Payment';
 import './css/Cart.css';
 
-const Cart = ({ changeCart }) => {
+const Cart = ({ changeCart, userData }) => {
   const [cart, setCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [activeComponent, setActiveComponent] = useState('cart');
@@ -20,6 +20,7 @@ const Cart = ({ changeCart }) => {
   }, []);
 
 
+  
 
   const calculateCartTotal = (cart) => {
     return cart.reduce((total, item) => total + item.Price * item.quantity, 0).toFixed(2);
@@ -95,8 +96,8 @@ const Cart = ({ changeCart }) => {
           )}
         </>
       )}
-      {activeComponent === 'shipping' && <Shipping setActiveComponent={setActiveComponent} cartTotal={cartTotal} cart={cart}/>}
-      {activeComponent === 'payment' && <Payment setActiveComponent={setActiveComponent} cartTotal={cartTotal} cart={cart}/>}
+      {activeComponent === 'shipping' && <Shipping setActiveComponent={setActiveComponent} cartTotal={cartTotal} cart={cart} userData={userData}/>}
+      {activeComponent === 'payment' && <Payment setActiveComponent={setActiveComponent} cartTotal={cartTotal} cart={cart} userData={userData}/>}
     </div>
   );
 };

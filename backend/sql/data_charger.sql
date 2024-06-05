@@ -85,149 +85,47 @@ VALUES
 INSERT INTO
   Addresses (
     AddressID,
-    AddressType,
     UserID,
-    StreetAddress,
-    StreetNumber,
-    FLOOR,
-    Staircase,
-    City,
-    State,
+    AddressTitle,
+    FirstName,
+    LastName,
+    Phone,
+    AddressLine,
+    AdressNumber,
     PostalCode,
-    Country
+    Country,
+    Province,
+    City
   )
 VALUES
   (
     '9f6f21f1356d4d1abb89049e7a9d0aa0',
-    'Home',
     'c8892c2ada205bf893b69d8243181a3',
+    'Home',
+    'Carlos',
+    'López',
+    '667323456',
     'Calle de Alcalá',
     '123',
-    '3',
-    'NO',
-    'Madrid',
-    'Madrid',
     '28001',
-    'España'
+    'España',
+    'Madrid',
+    'Madrid'
   ),
   (
     'be2242d856264f568f961d4b2d9984db',
-    'Work',
     'c8892c2ada205bf893b69d8243181a3',
+    'Work',
+    'Carlos',
+    'López',
+    '667323456',
     'Avenida de América',
     '45',
-    '7',
-    'YES',
-    'Madrid',
-    'Madrid',
     '28002',
-    'España'
-  ),
-  (
-    '162a7a7a14fb4f3e925958748e87d720',
-    'Home',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Calle de Serrano',
-    '89',
-    '5',
-    'NO',
+    'España',
     'Madrid',
-    'Madrid',
-    '28006',
-    'España'
-  ),
-  (
-    '1e43b9b9116842678f9f9c19d234dbf1',
-    'Work',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Gran Vía',
-    '12',
-    '10',
-    'YES',
-    'Madrid',
-    'Madrid',
-    '28013',
-    'España'
-  ),
-  (
-    'a2be9b6e2d9044a2bded9a146d27dd36',
-    'Home',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Carrer de Balmes',
-    '200',
-    '1',
-    'NO',
-    'Barcelona',
-    'Cataluña',
-    '08006',
-    'España'
-  ),
-  (
-    'e3edc29b29a4499a8b491b448ef1c4d3',
-    'Work',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Passeig de Gràcia',
-    '50',
-    '2',
-    'YES',
-    'Barcelona',
-    'Cataluña',
-    '08007',
-    'España'
-  ),
-  (
-    '6e2cda5235854e92bad9ebd011a2a7f5',
-    'Home',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Calle Mayor',
-    '15',
-    '4',
-    'NO',
-    'Valencia',
-    'Comunidad Valenciana',
-    '46001',
-    'España'
-  ),
-  (
-    '0e6494584b0744ffb5ab5c31eb50030',
-    'Work',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Avenida del Puerto',
-    '23',
-    '3',
-    'YES',
-    'Valencia',
-    'Comunidad Valenciana',
-    '46021',
-    'España'
-  ),
-  (
-    '0ef3d78d707d498f9d3556a43c7781b3',
-    'Home',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Calle Larios',
-    '10',
-    '2',
-    'NO',
-    'Málaga',
-    'Andalucía',
-    '29015',
-    'España'
-  ),
-  (
-    '511128f5c5484e39af273b4b2b3a8e4e',
-    'Work',
-    'c8892c2ada205bf893b69d8243181a3',
-    'Avenida de Andalucía',
-    '33',
-    '8',
-    'YES',
-    'Málaga',
-    'Andalucía',
-    '29006',
-    'España'
+    'Madrid'
   );
-
 
 INSERT INTO
   Shops (
@@ -263,33 +161,19 @@ VALUES
   );
 
 -- Productos
-INSERT INTO
-  Products (
-    ProductID,
-    ProductName,
-    ProductDescription,
-    PrincipalCategoryId,
-    SecundaryCategoryId,
-    Price,
-    Rating,
-    StockAvailability,
-    TotalSales,
-    TotalComments,
-    ImageDefaultId,
-    ShopID
-  )
+INSERT INTO Products (ProductID, ProductName, ProductDescription, PrincipalCategoryID, SecundaryCategoryID, Price, Rating, StockAvailability, TotalSales, TotalComments, ImageDefaultID, ShopID)
 VALUES
   (
     '21fcc4998068710985641ca3c58fd77',
     'Manzana Orgánica',
     'Manzanas frescas y orgánicas cultivadas con cuidado',
-    1,
+    '1',
     NULL,
     2.99,
     4,
     100,
     0,
-    5,
+    0,
     NULL,
     'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
   ),
@@ -297,13 +181,13 @@ VALUES
     '21fcc4998068710985641ca3c58fd78',
     'Plátano Orgánico',
     'Plátanos orgánicos frescos y llenos de sabor',
-    1,
+    '1',
     NULL,
     1.99,
     5,
     250,
     0,
-    1,
+    0,
     NULL,
     'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
   ),
@@ -311,7 +195,7 @@ VALUES
     '21fcc4998068710985641ca3c58fd79',
     'Zanahoria Orgánica',
     'Zanahorias frescas y orgánicas, perfectas para tus recetas saludables',
-    2,
+    '2',
     NULL,
     0.99,
     3,
@@ -325,13 +209,13 @@ VALUES
     '21fcc4998068710985641ca3c58fd80',
     'Tomate Orgánico',
     'Tomates orgánicos maduros y jugosos, directamente del huerto',
-    2,
+    '2',
     NULL,
     1.49,
     4,
     22,
     0,
-    2,
+    0,
     NULL,
     'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
   ),
@@ -339,7 +223,7 @@ VALUES
     '21fcc4998068710985641ca3c58fd81',
     'Naranja Orgánica',
     'Naranjas frescas y jugosas, llenas de vitamina C y sabor natural',
-    1,
+    '1',
     NULL,
     2.49,
     4,
@@ -353,7 +237,7 @@ VALUES
     '21fcc4998068710985641ca3c58fd82',
     'Espinaca Orgánica',
     'Espinacas frescas y orgánicas, ideales para ensaladas y platos saludables',
-    2,
+    '2',
     NULL,
     1.99,
     5,
@@ -367,7 +251,7 @@ VALUES
     '21fcc4998068710985641ca3c58fd83',
     'Fresa Orgánica',
     'Fresas frescas y orgánicas, llenas de sabor y antioxidantes',
-    1,
+    '1',
     NULL,
     3.99,
     4,
@@ -381,7 +265,7 @@ VALUES
     '21fcc4998068710985641ca3c58fd84',
     'Brócoli Orgánico',
     'Brócoli fresco y orgánico, rico en nutrientes y sabor',
-    2,
+    '2',
     NULL,
     1.79,
     3,
@@ -395,7 +279,7 @@ VALUES
     '21fcc4998068710985641ca3c58fd85',
     'Piña Orgánica',
     'Piñas dulces y refrescantes, perfectas para disfrutar en cualquier momento',
-    1,
+    '1',
     NULL,
     4.99,
     5,
@@ -409,7 +293,7 @@ VALUES
     '21fcc4998068710985641ca3c58fd86',
     'Pepino Orgánico',
     'Pepinos frescos y orgánicos, perfectos para ensaladas y snacks saludables',
-    2,
+    '2',
     NULL,
     1.29,
     4,
@@ -419,6 +303,7 @@ VALUES
     NULL,
     'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
   );
+
 
 -- Tabla de revisiones
 INSERT INTO

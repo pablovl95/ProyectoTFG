@@ -1,10 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./css/Orders.css";
 
 function Orders() {
   const navigate = useNavigate();
+  const [ordersv2, setOrders] = useState([]);
+  const [groupedOrders, setGroupedOrders] = useState({});
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const response = await fetch('http://localhost:5000/api/v1/orders/iS3FZuqtKYYs12UmGaZYcL2dgqj1');
+      const data = await response.json();
+      const groupedData = groupOrdersByOrderID(data);
+      setGroupedOrders(groupedData);
+      console.log(groupedData);
+    };
+    fetchOrders();
+  }, []);
+
+  function groupOrdersByOrderID(orders) {
+    return orders.reduce((groupedOrders, order) => {
+      const { OrderID } = order;
+      if (!groupedOrders[OrderID]) {
+        groupedOrders[OrderID] = [];
+      }
+      groupedOrders[OrderID].push(order);
+      return groupedOrders;
+    }, {});
+  }
   const orders = [
     {
       OrderID: "a1b2c3",
@@ -134,54 +157,61 @@ function Orders() {
         <a className={filter === "archived" ? "active" : ""} onClick={() => handleFilterClick("archived")}>Archivados</a>
       </div>
       <div className="orders-list">
-        {orders.map(order => (
-          shouldShowOrder(order) && (
-            <div className="order-card" key={order.OrderID}>
-              <div className="order-info-header">
-                <div className="order-info-tags">
-                  <div className="order-info-subheader">
-                    Pedido realizado:
-                    <p>{new Date(order.OrderDate).toLocaleDateString()}</p>
-                  </div>
-                  <div className="order-info-subheader">
-                    Total:
-                    <p>{order.Total} €</p>
-                  </div>
-                  <div className="order-info-subheader">
-                    Enviar a:
-                    <p>{order.AddressTitle}</p>
-                  </div>
-                </div>
-                <div className="order-info-subheader">
-                  <h5>ID: {order.OrderID}</h5>
-                  <p>{order.OrderStatus}</p>
-                </div>
-              </div>
-              <div className="order-transport-info">
-                {order.OrderStatus === 'completed' && <h3>Entregado el: {new Date(order.DeliveryDate).toLocaleDateString()}</h3>}
-                {order.OrderStatus === 'completed' && <a>{order.transportInfo}</a>}
-              </div>
-              <div className="order-info-details">
-                <div className="order-products">
-                  {order.Products.map(product => (
-                    <div key={product.ProductID} className="order-product-item">
-                      <img src={product.ImageDefault} alt={product.Name} className="order-product-image" />
-                      <div className="order-product-details">
-                        <p>{product.Name}</p>
-                        <p>Cantidad: {product.Quantity}</p>
-                        <div className='order-buy-button'>Comprarlo de nuevo</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                {renderOrderButtons(order.OrderStatus)}
-              </div>
-              <div className="separator"></div>
-              <a>Archivar</a>
-            </div>
-          )
+        {Object.entries(groupedOrders).map(([orderID, orderList]) => {
+          const order = orderList[0]; // Assuming all items in orderList have the same order details except for product specifics
 
-        ))}
+          return (
+            shouldShowOrder(order) && (
+              <div className="order-card" key={orderID}>
+                <div className="order-info-header">
+                  <div className="order-info-tags">
+                    <div className="order-info-subheader">
+                      Pedido realizado:
+                      <p>{new Date(order.OrderDate).toLocaleDateString()}</p>
+                    </div>
+                    <div className="order-info-subheader">
+                      Total:
+                      <p>{order.Total} €</p>
+                    </div>
+                    <div className="order-info-subheader">
+                      Enviar a:
+                      <p>{order.AddressTitle}</p>
+                    </div>
+                  </div>
+                  <div className="order-info-subheader">
+                    <h5>ID: {order.OrderID}</h5>
+                    <p>{order.OrderStatus}</p>
+                  </div>
+                </div>
+                <div className="order-transport-info">
+                  {order.OrderStatus === 'completed' && <h3>Entregado el: {new Date(order.DeliveryDate).toLocaleDateString()}</h3>}
+                  {order.OrderStatus === 'completed' && <a>{order.transportInfo}</a>}
+                </div>
+                <div className="order-info-details">
+                  <div className="order-products">
+                    {orderList.map(product => (
+                      <div key={product.ProductID} className="order-product-item">
+                        <img src={`data:image/jpeg;base64,${product.ImageContent}`} alt={product.ProductName} className="order-product-image" />
+                        <div className="order-product-details">
+                          <p>{product.ProductName}</p>
+                          <p>Cantidad: {product.Quantity}</p>
+                          <div className='order-buy-button'>Comprarlo de nuevo</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="order-detail-mobile">
+                    {">"}
+                  </div>
+                  {renderOrderButtons(order.OrderStatus)}
+                </div>
+                <div className="separator"></div>
+                <a>Archivar</a>
+              </div>
+            )
+          );
+        })}
+
 
       </div>
     </div>

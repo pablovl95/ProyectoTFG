@@ -36,36 +36,38 @@ function App() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setUser(user);
-      //console.log(user);
+      console.log(user);
       if (user) {
         try {
           await fetch(`${backendUrl}/api/v1/users/${user.uid}`)
             .then((response) => response.json())
             .then((data) => {
               setUserData(data[0]);
+              console.log(data[0]);
             });
         } catch (error) {
-          if (userData === undefined || userData === null) {
-            console.log("no hay datos");
-            try {
-              const body = {
-                FirstName: user.displayName ? user.displayName?.split(' ')[0] : "NULL",
-                LastName: user.displayName ? user.displayName?.split(' ')[1] : "NULL" + (user.displayName ? user.displayName?.split(' ')[2] : ''),
-                Email: user ? user.email : "NULL",
-                UserID: user ? user.uid : "NULL",
-                Phone: user.phoneNumber || 'NULL',
-              };
-              await fetch(`${backendUrl}/api/v1/users`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(body),
-              });
-              setUserData(body);
-            } catch (error) {
-              console.error('Error during Google login:', error);
-            }
+
+        }
+        if (userData === undefined || userData === null) {
+          console.log("no hay datos");
+          try {
+            const body = {
+              FirstName: user.displayName ? user.displayName?.split(' ')[0] : "NULL",
+              LastName: user.displayName ? user.displayName?.split(' ')[1] : "NULL" + (user.displayName ? user.displayName?.split(' ')[2] : ''),
+              Email: user ? user.email : "NULL",
+              UserID: user ? user.uid : "NULL",
+              Phone: user.phoneNumber || 'NULL',
+            };
+            await fetch(`${backendUrl}/api/v1/users`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(body),
+            });
+            setUserData(body);
+          } catch (error) {
+            console.error('Error during Google login:', error);
           }
         }
       }
@@ -87,7 +89,7 @@ function App() {
         <Route path="/product/:id" element={<Product changeCart={changeCart} />} />
         <Route path="/search" element={<Search changeCart={changeCart} />} />
         <Route path="/shop/:id" element={<Shop />} />
-        <Route path="/cart" element={<Cart changeCart={changeCart} />} />
+        <Route path="/cart" element={<Cart changeCart={changeCart} userData={userData} />} />
         {userData && (
           <>
             <Route path="/profile" element={<Profile />} />
