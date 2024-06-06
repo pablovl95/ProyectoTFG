@@ -13,7 +13,7 @@
   .main-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Escala la imagen para cubrir todo el contenedor */
+    object-fit: cover; 
   }
   
   .thumbnails {
@@ -28,6 +28,7 @@
     cursor: pointer;
     border: 2px solid transparent;
     padding: 0.15rem;
+    object-fit: cover; 
   }
   
   .thumbnails img.active {

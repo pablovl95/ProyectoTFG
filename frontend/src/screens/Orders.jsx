@@ -4,7 +4,6 @@ import "./css/Orders.css";
 
 function Orders() {
   const navigate = useNavigate();
-  const [ordersv2, setOrders] = useState([]);
   const [groupedOrders, setGroupedOrders] = useState({});
 
   useEffect(() => {
@@ -28,58 +27,7 @@ function Orders() {
       return groupedOrders;
     }, {});
   }
-  const orders = [
-    {
-      OrderID: "a1b2c3",
-      UserID: "user123",
-      ShopID: "shop456",
-      AddressID: "address789",
-      OrderDate: "2024-06-04 12:00:00",
-      Total: 100,
-      AddressTitle: "Casa",
-      OrderStatus: "pending",
-      transportInfo: "",
-      Products: [
-        { ProductID: "product1", Name: "Product 1", Quantity: 2, ImageDefault: "/apple.jpg" },
-        { ProductID: "product2", Name: "Product 2", Quantity: 1, ImageDefault: "/apple.jpg" }
-      ]
-    },
-    {
-      OrderID: "adasdsada",
-      UserID: "user123",
-      ShopID: "shop456",
-      AddressID: "address789",
-      OrderDate: "2024-06-04 12:00:00",
-      Total: 100,
-      AddressTitle: "Casa",
-      OrderStatus: "completed",
-      transportInfo: "El paquete se ha dejado en la puerta de su casa",
-      DeliveryDate: "2024-06-04 12:00:00",
-      Products: [
-        { ProductID: "product1", Name: "Product 1", Quantity: 2, ImageDefault: "/apple.jpg" },
-        { ProductID: "product2", Name: "Product 2", Quantity: 1, ImageDefault: "/apple.jpg" }
-      ]
-    },
-    {
-      OrderID: "x9y8z7",
-      UserID: "user456",
-      ShopID: "shop789",
-      AddressID: "address123",
-      OrderDate: "2024-06-05 10:30:00",
-      AddressTitle: "Trabajo",
-      Total: 120,
-      OrderStatus: "shipped",
-      transportInfo: "",
-      Products: [
-        { ProductID: "product3", Name: "Product 3", Quantity: 3, ImageDefault: "/apple.jpg" },
-        { ProductID: "product4", Name: "Product 4", Quantity: 1, ImageDefault: "/apple.jpg" },
-        { ProductID: "product2", Name: "Product 2", Quantity: 3, ImageDefault: "/apple.jpg" },
-        { ProductID: "product1", Name: "Product 1", Quantity: 1, ImageDefault: "/apple.jpg" }
-      ]
-    }
-  ];
-
-  const [filter, setFilter] = useState("all");
+   const [filter, setFilter] = useState("all");
 
   const handleFilterClick = (filterValue) => {
     setFilter(filterValue);
@@ -176,6 +124,12 @@ function Orders() {
                     <div className="order-info-subheader">
                       Enviar a:
                       <p>{order.AddressTitle}</p>
+                    </div>
+                  </div>
+                  <div className="order-info-tags-mobile">
+                    <div className="order-info-subheader">
+                      Pedido realizado:
+                      <p>{new Date(order.OrderDate).toLocaleDateString()}</p>
                     </div>
                   </div>
                   <div className="order-info-subheader">
