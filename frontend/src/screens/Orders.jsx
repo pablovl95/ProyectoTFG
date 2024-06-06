@@ -5,10 +5,13 @@ import "./css/Orders.css";
 function Orders() {
   const navigate = useNavigate();
   const [groupedOrders, setGroupedOrders] = useState({});
-
+  const backendUrl = process.env.NODE_ENV === "development"
+    ? "http://localhost:5000"
+    : process.env.REACT_APP_BACKEND_URL;
+  
   useEffect(() => {
     const fetchOrders = async () => {
-      const response = await fetch('http://localhost:5000/api/v1/orders/iS3FZuqtKYYs12UmGaZYcL2dgqj1');
+      const response = await fetch(`${backendUrl}/api/v1/orders/iS3FZuqtKYYs12UmGaZYcL2dgqj1`);
       const data = await response.json();
       const groupedData = groupOrdersByOrderID(data);
       setGroupedOrders(groupedData);
