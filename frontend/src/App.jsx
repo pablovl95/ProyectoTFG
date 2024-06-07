@@ -13,6 +13,7 @@ import Shop from "./screens/Shop";
 import Cart from "./screens/Cart";
 import Profile from "./screens/Profile";
 import Orders from "./screens/Orders";
+import OrdersDetails from "./screens/OrdersDetails";
 import Addresses from "./screens/Adresses";
 import Dashboard from "./screens/Dashboard";
 import Delivery from "./screens/Delivery";
@@ -29,9 +30,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
   const [changer, setChanger] = useState(false);
-  const backendUrl = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:5000'
-    : process.env.REACT_APP_BACKEND_URL;
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -93,7 +92,8 @@ function App() {
         {userData && (
           <>
             <Route path="/profile" element={<Profile />} />
-            <Route path="/profile/orders" element={<Orders />} />
+            <Route path="/profile/orders" element={<Orders userData={userData}/>} />
+            <Route path="/profile/orders/:id" element={<OrdersDetails userData={userData}/>} />
             <Route path="/profile/addresses" element={<Addresses />} />
             <Route path="/profile/payment" element={<Payment />} />
             <Route path="/profile/security" element={<Security userData={userData} />} />

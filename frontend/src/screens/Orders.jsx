@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./css/Orders.css";
 
-function Orders() {
+function Orders({userData}) {
   const navigate = useNavigate();
   const [groupedOrders, setGroupedOrders] = useState({});
-  const backendUrl = process.env.NODE_ENV === "development"
-    ? "http://localhost:5000"
-    : process.env.REACT_APP_BACKEND_URL;
-  
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+  //const backendUrl = process.env.NODE_ENV === "development"
+  //? "http://localhost:5000"
+  //: process.env.REACT_APP_BACKEND_URL;
+
   useEffect(() => {
     const fetchOrders = async () => {
-      const response = await fetch(`${backendUrl}/api/v1/orders/iS3FZuqtKYYs12UmGaZYcL2dgqj1`);
+      const response = await fetch(`${backendUrl}/api/v1/orders/${userData.UserID}`);
       const data = await response.json();
       const groupedData = groupOrdersByOrderID(data);
       setGroupedOrders(groupedData);
@@ -47,12 +49,22 @@ function Orders() {
     navigate(`/profile/orders/${orderId}`);
   };
 
-  const renderOrderButtons = (orderStatus) => {
+  const renderOrderButtons = (orderStatus, orderId) => {
+    const handleActionButtonClick = (action) => {
+      if (action === "Cancelar") {
+        alert(`Cancelar pedido ${orderId}`);
+      } else if (action === "Eliminar") {
+        alert(`Eliminar pedido ${orderId}`);
+      } else if (action === "Archivar") {
+        alert(`Archivar pedido ${orderId}`);
+      }
+    };
+
     if (orderStatus === "completed") {
       return (
         <div className="order-actions">
           <div className="order-action-button">Escribir una opinión</div>
-          <div className="order-action-button">Detalles del pedido</div>
+          <div className="order-action-button" onClick={() => handleCardClick(orderId)}>Detalles del pedido</div>
         </div>
       );
     }
@@ -60,16 +72,14 @@ function Orders() {
       return (
         <div className="order-actions">
           <div className="order-action-button">Localiza tu paquete</div>
-          <div className="order-action-button">Detalles del pedido</div>
+          <div className="order-action-button" onClick={() => handleCardClick(orderId)}>Detalles del pedido</div>
         </div>
       );
     }
     if (orderStatus === "pending") {
       return (
         <div className="order-actions">
-          <div className="order-action-button">Localiza tu paquete</div>
-          <div className="order-action-button">Detalles del pedido</div>
-          <div className="order-action-button">Cancelar pedido</div>
+          <div className="order-action-button" onClick={() => handleActionButtonClick("Cancelar")}>Cancelar pedido</div>
           <div className="order-action-button">Cambiar dirección de envío</div>
         </div>
       );
@@ -77,8 +87,8 @@ function Orders() {
     if (orderStatus === "cancelled") {
       return (
         <div className="order-actions">
-          <div className="order-action-button">Eliminar pedido</div>
-          <div className="order-action-button">Detalles del pedido</div>
+          <div className="order-action-button" onClick={() => handleActionButtonClick("Eliminar")}>Eliminar pedido</div>
+          <div className="order-action-button" onClick={() => handleCardClick(orderId)}>Detalles del pedido</div>
           <div className="order-action-button">Contactar soporte</div>
         </div>
       );
@@ -88,7 +98,7 @@ function Orders() {
         <div className="order-actions">
           <div className="order-action-button">Restaurar pedido</div>
           <div className="order-action-button">Detalles del pedido</div>
-          <div className="order-action-button">Eliminar permanentemente</div>
+          <div className="order-action-button" onClick={() => handleActionButtonClick("Eliminar")}>Eliminar permanentemente</div>
         </div>
       );
     }
@@ -150,29 +160,28 @@ function Orders() {
                       <div key={product.ProductID} className="order-product-item">
                         <img src={`data:image/jpeg;base64,${product.ImageContent}`} alt={product.ProductName} className="order-product-image" />
                         <div className="order-product-details">
-                          <p>{product.ProductName}</p>
-                          <p>Cantidad: {product.Quantity}</p>
-                          <div className='order-buy-button'>Comprarlo de nuevo</div>
-                        </div>
-                      </div>
-                    ))}
+                          <p>{
+                      product.ProductName}</p>
+                      <p>Cantidad: {product.Quantity}</p>
+                      <div className='order-buy-button'>Comprarlo de nuevo</div>
+                    </div>
                   </div>
-                  <div className="order-detail-mobile">
-                    {">"}
-                  </div>
-                  {renderOrderButtons(order.OrderStatus)}
-                </div>
-                <div className="separator"></div>
-                <a>Archivar</a>
+                ))}
               </div>
-            )
-          );
-        })}
-
-
-      </div>
-    </div>
-  );
+              <div className="order-detail-mobile">
+                {">"}
+              </div>
+              {renderOrderButtons(order.OrderStatus, orderID)}
+            </div>
+            <div className="separator"></div>
+            <a>Archivar</a>
+          </div>
+        )
+      );
+    })}
+  </div>
+</div>
+);
 }
 
 export default Orders;
