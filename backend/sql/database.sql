@@ -63,10 +63,9 @@ CREATE TABLE
     FOREIGN KEY (AssociatedStoreID) REFERENCES Shops (ShopID)
   );
 
-CREATE TABLE
-  Products (
+CREATE TABLE Products (
     ProductID TEXT PRIMARY KEY DEFAULT (
-      LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
+        LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
     ),
     ProductName TEXT NOT NULL,
     ProductDescription TEXT,
@@ -79,9 +78,11 @@ CREATE TABLE
     TotalComments INTEGER DEFAULT 0,
     ImageDefaultID TEXT,
     ShopID TEXT NOT NULL,
+    SelfShipping BOOLEAN DEFAULT FALSE, 
     FOREIGN KEY (PrincipalCategoryID) REFERENCES Categories (CategoryID),
     FOREIGN KEY (ShopID) REFERENCES Shops (ShopID)
-  );
+);
+
 
 CREATE TABLE
   Reviews (

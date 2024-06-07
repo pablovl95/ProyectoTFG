@@ -407,6 +407,28 @@ WHERE Orders.UserID ='${id}';`
   }
 });
 
+app.get('/api/v1/orders/:UserId/:OrderId', async (req, res) => {
+  try {
+    const UserID = req.params.UserId;
+    const OrderID = req.params.UserId;
+    const query = `SELECT Orders.*, 
+    OrderProducts.*, 
+    Products.ProductName, 
+    ProductImages.ImageContent, 
+    Addresses.AddressTitle 
+FROM OrderProducts 
+LEFT JOIN Orders ON OrderProducts.OrderID = Orders.OrderID 
+LEFT JOIN Products ON OrderProducts.ProductID = Products.ProductID 
+LEFT JOIN ProductImages ON Products.ImageDefaultID = ProductImages.ImageID 
+LEFT JOIN Addresses ON Addresses.AddressID = Orders.AddressID 
+WHERE Orders.UserID ='${UserID}' AND Orders;`
+    const data = await db.execute(query);
+    res.status(200).send(data.rows);
+  } catch (error) {
+    console.error('Error al consultar la base de datos:', error);
+    res.status(500).send('Error al obtener los pedidos de la base de datos');
+  }
+});
 // POST para crear un nuevo pedido
 app.post('/api/v1/orders', async (req, res) => {
   try {
@@ -431,6 +453,30 @@ app.put('/api/v1/orders/:id', async (req, res) => {
   } catch (error) {
     console.error('Error al actualizar el estado del pedido en la base de datos:', error);
     res.status(500).send('Error al actualizar el estado del pedido en la base de datos');
+  }
+});
+app.get('/api/v1/orderDetails/:userId/:orderId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const orderId = req.params.orderId;
+    const query = `
+      SELECT Orders.*, 
+             OrderProducts.*, 
+             Products.ProductName, 
+             ProductImages.ImageContent, 
+             Addresses.AddressTitle 
+      FROM OrderProducts 
+      LEFT JOIN Orders ON OrderProducts.OrderID = Orders.OrderID 
+      LEFT JOIN Products ON OrderProducts.ProductID = Products.ProductID 
+      LEFT JOIN ProductImages ON Products.ImageDefaultID = ProductImages.ImageID 
+      LEFT JOIN Addresses ON Addresses.AddressID = Orders.AddressID 
+      WHERE Orders.UserID ='${userId}' AND Orders.OrderID ='${orderId}';`;
+      
+    const data = await db.execute(query);
+    res.status(200).send(data.rows);
+  } catch (error) {
+    console.error('Error al consultar la base de datos:', error);
+    res.status(500).send('Error al obtener los detalles del pedido de la base de datos');
   }
 });
 
