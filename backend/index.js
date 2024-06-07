@@ -192,6 +192,32 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
   }
 });
 
+app.post('/api/v1/reviews', upload.array('images', 4), async (req, res) => {
+  try {
+    const { Comment, rating, productId, userId, containsPhoto } = req.body;
+    const images = req.files;
+    console.log(req.body);
+    console.log(req.files);
+    const query = `
+      INSERT INTO Reviews (Comment, AssignedRating, ProductID, UserID, ContainsPhotos) 
+      VALUES ('${Comment}', '${rating}', '${productId}', '${userId}', '${containsPhoto}')
+    `;
+    await db.execute(query);
+    if (containsPhoto === '1') {
+      //const ReviewId = await db.execute(`SELECT ReviewID FROM Reviews WHERE Comment = '${Comment}' AND Rating = '${rating}' AND ProductID = '${productId}' AND UserID = '${userId}'`);
+      //console.log(ReviewId.rows[0].ReviewID);
+      // for (const image of images) {
+      //   const querysnap = `INSERT INTO ReviewImages (ReviewID, ImageContent) VALUES ('${ReviewId.rows[0].ReviewID}', '${image.buffer.toString('base64')}')`
+      //  // await db.execute(querysnap);
+      // }
+    }
+    res.status(201).send('Reseña agregada correctamente');
+  } catch (error) {
+    console.error('Error al insertar en la base de datos:', error);
+    res.status(500).send('Error al agregar la reseña a la base de datos');
+  }
+});
+
 app.post('/api/v1/users', async (req, res) => {
   console.log(req.body);
   let { UserID, FirstName, LastName, Email, Phone } = req.body;
@@ -367,13 +393,13 @@ app.post('/api/v1/productImages/:productId', upload.single('image'), async (req,
 app.get('/api/v1/producto', async (req, res) => {
   try {
     const query = `
-    CREATE TRIGGER SetDefaultImageAfterInsert AFTER INSERT ON ProductImages FOR EACH ROW WHEN NEW.ProductID IS NOT NULL BEGIN
-    UPDATE Products
-    SET
-      ImageDefaultID = NEW.ImageID
-    WHERE
-      ProductID = NEW.ProductID
-      AND ImageDefaultID IS NULL;
+    CREATE TRIGGER UpdateOrderProductDeliveredDate
+    AFTER UPDATE OF OrderStatus ON OrderProducts
+    WHEN NEW.OrderStatus = 'delivered'
+    BEGIN
+        UPDATE OrderProducts
+        SET OrderDeliveredDate = CURRENT_TIMESTAMP
+        WHERE OrderProductsID = NEW.OrderProductsID;
     END;
     `;
     const data = await db.execute(query);
@@ -383,8 +409,7 @@ app.get('/api/v1/producto', async (req, res) => {
     res.status(500).send('Error al obtener las categorías de la base de datos');
   }
 });
-/////////////////////////////////////////  ORDERS /////////////////////////////////////////////////////////////////
-// GET para obtener todos los pedidos
+
 app.get('/api/v1/orders/:id', async (req, res) => {
   try {
     const id = req.params.id;
@@ -398,7 +423,7 @@ LEFT JOIN Orders ON OrderProducts.OrderID = Orders.OrderID
 LEFT JOIN Products ON OrderProducts.ProductID = Products.ProductID 
 LEFT JOIN ProductImages ON Products.ImageDefaultID = ProductImages.ImageID 
 LEFT JOIN Addresses ON Addresses.AddressID = Orders.AddressID 
-WHERE Orders.UserID ='${id}';`
+WHERE Orders.UserID ='${id}' AND Orders.OrderStatus != 'deleted';` // Aquí se agrega la condición para excluir los pedidos con estado 'deleted'
     const data = await db.execute(query);
     res.status(200).send(data.rows);
   } catch (error) {
@@ -407,54 +432,57 @@ WHERE Orders.UserID ='${id}';`
   }
 });
 
-app.get('/api/v1/orders/:UserId/:OrderId', async (req, res) => {
+app.put('/api/v1/orders/:id', async (req, res) => {
   try {
-    const UserID = req.params.UserId;
-    const OrderID = req.params.UserId;
-    const query = `SELECT Orders.*, 
-    OrderProducts.*, 
-    Products.ProductName, 
-    ProductImages.ImageContent, 
-    Addresses.AddressTitle 
-FROM OrderProducts 
-LEFT JOIN Orders ON OrderProducts.OrderID = Orders.OrderID 
-LEFT JOIN Products ON OrderProducts.ProductID = Products.ProductID 
-LEFT JOIN ProductImages ON Products.ImageDefaultID = ProductImages.ImageID 
-LEFT JOIN Addresses ON Addresses.AddressID = Orders.AddressID 
-WHERE Orders.UserID ='${UserID}' AND Orders;`
-    const data = await db.execute(query);
-    res.status(200).send(data.rows);
+    const orderId = req.params.id;
+    const updates = req.body;
+
+    // Construir la consulta de actualización dinámicamente
+    let updateOrderQuery = 'UPDATE Orders SET';
+    const updateValues = [];
+    for (const key in updates) {
+      if (Object.hasOwnProperty.call(updates, key)) {
+        updateValues.push(`${key} = '${updates[key]}'`);
+      }
+    }
+    updateOrderQuery += ` ${updateValues.join(', ')} WHERE OrderID = '${orderId}'`;
+
+    console.log(updateOrderQuery);
+    await db.execute(updateOrderQuery);
+
+    res.status(200).send({ message: `Pedido ${orderId} actualizado exitosamente.` });
   } catch (error) {
-    console.error('Error al consultar la base de datos:', error);
-    res.status(500).send('Error al obtener los pedidos de la base de datos');
+    console.error("Error al actualizar el pedido:", error);
+    res.status(500).send({ error: "Error interno del servidor." });
   }
 });
 // POST para crear un nuevo pedido
 app.post('/api/v1/orders', async (req, res) => {
   try {
-    const { UserID, AddressID, Total } = req.body;
-    const query = `INSERT INTO Orders (UserID, AddressID, Total) VALUES ('${UserID}', '${AddressID}', ${Total})`;
-    await db.execute(query);
-    res.status(201).send('Pedido creado correctamente');
+    const { UserID, AddressID, OrderDate, TOTAL, Products } = req.body;
+    const parseProducts = JSON.parse(Products);
+    console.log(TOTAL)
+    const insertOrderQuery = `INSERT INTO Orders (UserID, AddressID, OrderDate, TOTAL) VALUES ('${UserID}', '${AddressID}', '${OrderDate}', '${TOTAL}')`;
+    await db.execute(insertOrderQuery);
+
+    const selectOrderQuery = `SELECT OrderID FROM Orders WHERE UserID = '${UserID}' AND AddressID = '${AddressID}' AND OrderDate = '${OrderDate}' AND TOTAL = '${TOTAL}'`;
+    const orderData = await db.execute(selectOrderQuery);
+    const orderId = orderData.rows[0].OrderID;
+
+    // Insertar todos los productos del pedido
+    for (const product of parseProducts) {
+      const { ProductID, ShopID, Quantity } = product;
+      await db.execute(`INSERT INTO OrderProducts (OrderID, ShopID, ProductID, AddressID, Quantity) VALUES ('${orderId}', '${ShopID}', '${ProductID}', '${AddressID}', '${Quantity}')`);
+    }
+
+    res.status(200).send({ message: "Orden creada exitosamente." });
   } catch (error) {
-    console.error('Error al insertar en la base de datos:', error);
-    res.status(500).send('Error al crear el pedido en la base de datos');
+    console.error("Error al procesar la solicitud:", error);
+    res.status(500).send({ error: "Error interno del servidor." });
   }
 });
 
-// PUT para actualizar el estado de un pedido por su ID
-app.put('/api/v1/orders/:id', async (req, res) => {
-  try {
-    const { OrderStatus } = req.body;
-    const orderId = req.params.id;
-    const query = `UPDATE Orders SET OrderStatus = '${OrderStatus}' WHERE OrderID = '${orderId}'`;
-    await db.execute(query);
-    res.status(200).send('Estado del pedido actualizado correctamente');
-  } catch (error) {
-    console.error('Error al actualizar el estado del pedido en la base de datos:', error);
-    res.status(500).send('Error al actualizar el estado del pedido en la base de datos');
-  }
-});
+
 app.get('/api/v1/orderDetails/:userId/:orderId', async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -471,7 +499,7 @@ app.get('/api/v1/orderDetails/:userId/:orderId', async (req, res) => {
       LEFT JOIN ProductImages ON Products.ImageDefaultID = ProductImages.ImageID 
       LEFT JOIN Addresses ON Addresses.AddressID = Orders.AddressID 
       WHERE Orders.UserID ='${userId}' AND Orders.OrderID ='${orderId}';`;
-      
+
     const data = await db.execute(query);
     res.status(200).send(data.rows);
   } catch (error) {
@@ -491,6 +519,7 @@ app.get('/api/v1/orderProducts/:orderID', async (req, res) => {
     res.status(500).send('Error al obtener los productos del pedido de la base de datos');
   }
 });
+
 
 // POST para agregar productos a un pedido
 app.post('/api/v1/orderProducts', async (req, res) => {
@@ -519,8 +548,7 @@ app.put('/api/v1/orderProducts/:id', async (req, res) => {
   }
 });
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Inicia el servidor
+
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });

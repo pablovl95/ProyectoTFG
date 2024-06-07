@@ -104,7 +104,7 @@ CREATE TABLE
       LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
     ),
     ReviewID TEXT NOT NULL,
-    ImagePath TEXT NOT NULL,
+    ImageContent TEXT NOT NULL,
     FOREIGN KEY (ReviewID) REFERENCES Reviews (ReviewID)
   );
 
@@ -124,6 +124,7 @@ CREATE TABLE
     Country TEXT NOT NULL,
     Province TEXT NOT NULL,
     City TEXT NOT NULL,
+    DefaultAddress BOOLEAN DEFAULT 0,
     FOREIGN KEY (UserID) REFERENCES Users (UserID)
   );
 
@@ -146,13 +147,15 @@ CREATE TABLE
     UserID TEXT NOT NULL,
     AddressID TEXT NOT NULL,
     OrderDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    OrderDeliveredDate DATETIME,
     OrderStatus TEXT CHECK (
       OrderStatus IN (
         'pending',
-        'processing',
         'shipped',
         'delivered',
-        'cancelled'
+        'archived',
+        'cancelled',
+        'deleted'
       )
     ) NOT NULL DEFAULT 'pending',
     TOTAL REAL NOT NULL,
@@ -160,30 +163,38 @@ CREATE TABLE
     FOREIGN KEY (AddressID) REFERENCES Addresses (AddressID)
   );
 
-CREATE TABLE
-  OrderProducts (
+CREATE TABLE OrderProducts (
     OrderProductsID TEXT DEFAULT (
-      LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
+      LOWER(HEX(RANDOMBLOB(4))) || 
+      LOWER(HEX(RANDOMBLOB(2))) || 
+      SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
+      SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || 
+      SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
+      LOWER(HEX(RANDOMBLOB(6)))
     ),
     OrderID TEXT NOT NULL,
     ShopID TEXT NOT NULL,
     AddressID TEXT NOT NULL,
+    OrderDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    OrderDeliveredDate DATETIME,
     OrderStatus TEXT CHECK (
       OrderStatus IN (
         'pending',
-        'processing',
         'shipped',
         'delivered',
-        'cancelled'
+        'archived',
+        'cancelled',
+        'deleted'
       )
     ) NOT NULL DEFAULT 'pending',
     ProductID TEXT NOT NULL,
     Quantity INTEGER NOT NULL,
+    Carrier TEXT DEFAULT NULL,
     PRIMARY KEY (OrderProductsID),
     FOREIGN KEY (ShopID) REFERENCES Shops (ShopID),
     FOREIGN KEY (OrderID) REFERENCES Orders (OrderID),
     FOREIGN KEY (AddressID) REFERENCES Addresses (AddressID)
-  );
+);
 
 CREATE TABLE
   Product_Info (

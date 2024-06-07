@@ -30,12 +30,12 @@ function App() {
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
   const [changer, setChanger] = useState(false);
-  const backendUrl = process.env.REACT_APP_BACKEND_URL;
-
+  const backendUrl = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:5000'
+  : process.env.REACT_APP_BACKEND_URL;
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setUser(user);
-      console.log(user);
       if (user) {
         try {
           await fetch(`${backendUrl}/api/v1/users/${user.uid}`)

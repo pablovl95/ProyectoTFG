@@ -5,7 +5,9 @@ import "./css/OrdersDetails.css";
 function OrdersDetails({userData}) {
   const { id } = useParams();
   const [orderDetails, setOrderDetails] = useState(null);
-  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const backendUrl = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:5000'
+  : process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     const fetchOrderDetails = async () => {

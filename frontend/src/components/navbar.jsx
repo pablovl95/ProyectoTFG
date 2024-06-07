@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+// Navbar.js
+import React, { useEffect, useState, useRef } from "react";
 import "./css/navbar.css";
 import { Link, NavLink } from "react-router-dom";
 import { IconShoppingCart, IconUsers, IconSearch } from '@tabler/icons-react';
 import { auth } from "../auth";
+import UserMenu from "./UserMenu"; // Importa el componente UserMenu
 
 export default function Navbar({ loginView, user, changeCart }) {
   const PrincipalCategories = [
@@ -21,6 +23,7 @@ export default function Navbar({ loginView, user, changeCart }) {
   const [cart, setCart] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchType, setSearchType] = useState('search');
+  const rootRef = useRef(null);
 
   useEffect(() => {
     updateCart();
@@ -41,12 +44,27 @@ export default function Navbar({ loginView, user, changeCart }) {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       setCart(JSON.parse(storedCart));
+    } else {
+      setCart([]);
     }
   };
 
+  const handleClickOutside = (event) => {
+    if (rootRef.current && !rootRef.current.contains(event.target)) {
+      setUserMenuOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <>
-      <nav>
+      <nav ref={rootRef}>
         <div className="nav">
           <div className="menu" onClick={() => setMenuOpen(!menuOpen)}>
             <span></span>
@@ -75,21 +93,7 @@ export default function Navbar({ loginView, user, changeCart }) {
             </NavLink>
             <IconUsers onClick={Modals} style={{ marginRight: '1rem' }} size={40} />
             {userMenuOpen && user && (
-              <div className="user-menu">
-                <div className="user-menu-bubble">
-                  <li><NavLink to="/profile">Mi perfil</NavLink></li>
-                  <li><NavLink to="/profile/orders">Mis pedidos</NavLink></li>
-                  <li><NavLink to="/profile/addresses">Direcciones</NavLink></li>
-                  {user && user.UserType === "administrator" &&
-                    <>
-                      <li><NavLink to="/dashboard">Dashboard de Gestion</NavLink></li>
-                    </>
-                  }
-                  {user && user.type === "Seller" && <li><NavLink to="/ordersto">Pedidos para recogida</NavLink></li>}
-                  <li onClick={handleLogout} style={{ color: 'black' }}>Cerrar sesión</li>
-                  <div className="bubble-pointer"></div>
-                </div>
-              </div>
+              <UserMenu user={user} handleLogout={handleLogout} setUserMenuOpen={setUserMenuOpen} />
             )}
           </div>
         </div>

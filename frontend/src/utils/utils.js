@@ -1,5 +1,33 @@
 // utils.js
 import "./utils.css"
+
+function generateCustomSequence() {
+  // Genera una secuencia de bytes aleatorios y conviértela a una cadena hexadecimal en minúsculas
+  function randomHexBytes(n) {
+      const bytes = new Uint8Array(n);
+      crypto.getRandomValues(bytes);
+      return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
+  }
+
+  // Genera la cuarta parte de la secuencia basada en la especificación
+  function generatePart4() {
+      const chars = '89ab';
+      const randomIndex = Math.floor(Math.random() * 4);
+      return chars[randomIndex];
+  }
+
+  // Construye la secuencia
+  const part1 = randomHexBytes(4);
+  const part2 = randomHexBytes(2);
+  const part3 = randomHexBytes(2).substring(1); // Quita el primer carácter
+  const part4 = generatePart4(); // Generar el cuarto segmento basado en la especificación
+  const part5 = randomHexBytes(2).substring(1); // Quita el primer carácter
+  const part6 = randomHexBytes(6);
+
+  // Combinar todas las partes
+  return part1 + part2 + part3 + part4 + part5 + part6;
+}
+
 const buildURLSearchParams = (filters) => {
   const searchParams = new URLSearchParams(filters);
   return Array.from(searchParams.entries())
@@ -87,4 +115,4 @@ const calculateStarsPercentage = (product, reviews) => {
   return starsPercentage;
 };
 
-export { buildURLSearchParams, renderStars, renderStarsProductCard, renderCardReviews, calculateStarsPercentage };  
+export { buildURLSearchParams, renderStars, renderStarsProductCard, renderCardReviews, calculateStarsPercentage, generateCustomSequence };  

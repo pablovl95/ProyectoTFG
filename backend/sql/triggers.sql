@@ -9,6 +9,17 @@ WHERE
 
 END;
 
+-- Cambia los estados de todos los subenvios del envio
+CREATE TRIGGER UpdateOrderProductsStatus
+AFTER UPDATE OF OrderStatus ON Orders
+FOR EACH ROW
+BEGIN
+    UPDATE OrderProducts
+    SET OrderStatus = NEW.OrderStatus
+    WHERE OrderID = NEW.OrderID;
+END;
+
+
 -- Actualiza ventas del producto y stock
 CREATE TRIGGER update_product_sales
 AFTER INSERT ON OrderProducts

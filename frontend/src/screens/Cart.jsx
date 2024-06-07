@@ -9,7 +9,7 @@ const Cart = ({ changeCart, userData }) => {
   const [cart, setCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [activeComponent, setActiveComponent] = useState('cart');
-
+  const [AddressID, setAddressID] = useState('');
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
@@ -18,9 +18,6 @@ const Cart = ({ changeCart, userData }) => {
       setCartTotal(total);
     }
   }, []);
-
-
-  
 
   const calculateCartTotal = (cart) => {
     return cart.reduce((total, item) => total + item.Price * item.quantity, 0).toFixed(2);
@@ -96,8 +93,8 @@ const Cart = ({ changeCart, userData }) => {
           )}
         </>
       )}
-      {activeComponent === 'shipping' && <Shipping setActiveComponent={setActiveComponent} cartTotal={cartTotal} cart={cart} userData={userData}/>}
-      {activeComponent === 'payment' && <Payment setActiveComponent={setActiveComponent} cartTotal={cartTotal} cart={cart} userData={userData}/>}
+      {activeComponent === 'shipping' && <Shipping setActiveComponent={setActiveComponent} cartTotal={cartTotal} cart={cart} userData={userData} setAddress={(AddressID) => setAddressID(AddressID)}/>}
+      {activeComponent === 'payment' && <Payment setActiveComponent={setActiveComponent} cartTotal={cartTotal} cart={cart} userData={userData} AddressID={AddressID} changeCart={changeCart}/>}
     </div>
   );
 };

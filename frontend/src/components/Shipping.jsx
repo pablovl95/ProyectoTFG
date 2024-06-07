@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import './css/Shipping.css';
 import { IconCirclePlus } from '@tabler/icons-react';
 import AddressesForm from './AddressesForm';
+import { generateCustomSequence } from "../utils/utils";
 
-const Shipping = ({ setActiveComponent, cart, cartTotal }) => {
+const Shipping = ({ setActiveComponent, cart, cartTotal, setAddress }) => {
     const [shippingMethod, setShippingMethod] = useState('express');
     const [addresses, setAddresses] = useState([
         {
+            AddressID: "9f6f21f1356d4d1abb89049e7a9d0aa0",
             title: 'Casa',
             FirstName: 'Pablo',
             LastName: 'Vera Lopez',
@@ -17,9 +19,12 @@ const Shipping = ({ setActiveComponent, cart, cartTotal }) => {
             Country: 'España',
             Province: 'Huelva',
             PostalCode: '21600',
+            DefaultAddress: 1,
         }
     ]);
+
     const [emptyAddress, setEmptyAddress] = useState({
+        AddressID: generateCustomSequence(),
         title: '',
         FirstName: '',
         LastName: '',
@@ -31,8 +36,12 @@ const Shipping = ({ setActiveComponent, cart, cartTotal }) => {
         Province: '',
         PostalCode: '',
     });
+
     const [isAddingAddress, setIsAddingAddress] = useState(false);
     const [editingIndex, setEditingIndex] = useState(null);
+    const [selectedAddressID, setSelectedAddressID] = useState(
+        addresses.find(address => address.DefaultAddress === 1)?.AddressID || ''
+    );
 
     const handleShippingChange = (event) => {
         setShippingMethod(event.target.value);
@@ -41,6 +50,7 @@ const Shipping = ({ setActiveComponent, cart, cartTotal }) => {
     const addNewAddress = () => {
         setIsAddingAddress(true);
         setEmptyAddress({
+            AddressID: generateCustomSequence(), // Generate a new ID for the new address
             title: '',
             FirstName: '',
             LastName: '',
@@ -57,13 +67,23 @@ const Shipping = ({ setActiveComponent, cart, cartTotal }) => {
 
     const editAddresses = (index) => {
         setIsAddingAddress(true);
-        setEmptyAddress(addresses[index]);
+        setEmptyAddress(addresses[index]); // Load the existing address into the form
         setEditingIndex(index);
+    };
+
+    const handleClickPayment = () => {
+        if (selectedAddressID) {
+            setAddress(selectedAddressID);
+            setActiveComponent('payment');
+        } else {
+            console.error("No se ha seleccionado ninguna dirección.");
+        }
     };
 
     const closeForm = () => {
         setIsAddingAddress(false);
         setEmptyAddress({
+            AddressID: generateCustomSequence(),
             title: '',
             FirstName: '',
             LastName: '',
@@ -82,6 +102,7 @@ const Shipping = ({ setActiveComponent, cart, cartTotal }) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const newAddress = {
+            AddressID: emptyAddress.AddressID, // Preserve the AddressID
             title: formData.get('title'),
             FirstName: formData.get('firstName'),
             LastName: formData.get('lastName'),
@@ -92,6 +113,7 @@ const Shipping = ({ setActiveComponent, cart, cartTotal }) => {
             Province: formData.get('province'),
             Country: formData.get('country'),
             PostalCode: formData.get('postalCode'),
+            DefaultAddress: editingIndex !== null ? addresses[editingIndex].DefaultAddress : 0, // Maintain DefaultAddress if editing
         };
 
         if (editingIndex !== null) {
@@ -104,6 +126,10 @@ const Shipping = ({ setActiveComponent, cart, cartTotal }) => {
         }
 
         closeForm();
+    };
+
+    const handleAddressSelect = (addressID) => {
+        setSelectedAddressID(addressID);
     };
 
     return (
@@ -158,16 +184,21 @@ const Shipping = ({ setActiveComponent, cart, cartTotal }) => {
                         <h3>Direcciones actuales</h3>
                         <div className="current-address">
                             {addresses.map((address, index) => (
-                                <div className="address-card" key={index}>
+                                <div
+                                    className={`address-card ${address.AddressID === selectedAddressID ? 'selected' : ''} ${address.DefaultAddress === 1 ? 'default-address' : ''}`}
+                                    key={address.AddressID}
+                                    onClick={() => handleAddressSelect(address.AddressID)}
+                                >
                                     <div className="address-details">
                                         <h4>{address.title}</h4>
-                                        <p>Nombre {address.FirstName + " " + address.LastName}</p>
-                                        <p>Teléfono {address.Phone}</p>
-                                        <p>Dirección {address.AddressLine + "," + address.AddressNumber}</p>
-                                        <p>Población {address.City}</p>
-                                        <p>Provincia {address.Province}</p>
-                                        <p>Código Postal {address.PostalCode}</p>
-                                        <p>País {address.Country}</p>
+                                        <p>Nombre: {address.FirstName + " " + address.LastName}</p>
+                                        <p>Teléfono: {address.Phone}</p>
+                                        <p>Dirección: {address.AddressLine + ", " + address.AddressNumber}</p>
+                                        <p>Población: {address.City}</p>
+                                        <p>Provincia: {address.Province}</p>
+                                        <p>Código Postal: {address.PostalCode}</p>
+                                        <p>País: {address.Country}</p>
+                                        {address.DefaultAddress === 1 && <p>(Dirección por defecto)</p>}
                                     </div>
                                     <button onClick={() => editAddresses(index)}>Editar</button>
                                 </div>
@@ -188,10 +219,10 @@ const Shipping = ({ setActiveComponent, cart, cartTotal }) => {
                     <p>Subtotal: {cartTotal} €</p>
                     <p>Gastos de envío: 2,90 €</p>
                     <p>TOTAL: {(cartTotal) + 2.90} (IVA incluido)</p>
-                    <p>Revisa los pedidos a los productores para ver si puedes ahorrarte algo en gastos de envio!!.</p>
+                    <p>Revisa los pedidos a los productores para ver si puedes ahorrarte algo en gastos de envío!!</p>
                     <input type="text" placeholder="¿Dispones de un cupón?" />
                     <button>Aplicar</button>
-                    <button onClick={() => setActiveComponent('payment')}>Siguiente paso</button>
+                    <button onClick={handleClickPayment}>Siguiente paso</button>
                 </div>
             </div>
         </div>

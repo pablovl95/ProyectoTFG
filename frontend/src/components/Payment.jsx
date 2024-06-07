@@ -1,86 +1,61 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
-const Payment = ({ setActiveComponent, user, cartTotal}) => {
+const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCart }) => {
+    const navigate = useNavigate();
     const backendUrl = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:5000'
-    : process.env.REACT_APP_BACKEND_URL;
+        ? 'http://localhost:5000'
+        : process.env.REACT_APP_BACKEND_URL;
 
-    function separateProductsByShop() {
-        const productsByShop = {};
-        const products = JSON.parse(localStorage.getItem('cart'));
-        products.forEach(product => {
-            const shopId = product.ShopID;
-            const productInfo = {
-                ProductID: product.ProductID,
-                Quantity: product.quantity
-            };
 
-            if (productsByShop.hasOwnProperty(shopId)) {
-                productsByShop[shopId].push(productInfo);
-            } else {
-                productsByShop[shopId] = [productInfo];
-            }
-        });
-
-        return productsByShop;
-    }
-
+    useEffect(() => {
+        // console.log(AddressID);
+        //console.log(userData);
+    }, [AddressID]);
     const handleCheckout = () => {
-        const productsByShop = separateProductsByShop();
-        console.log(productsByShop);
-        // const orderData = {
-        //     UserID: user.uid,
-        //     Total: cartTotal,
-        //     OrderStatus: 'pending'
-        // };
+        const cart = JSON.parse(localStorage.getItem('cart'));
+        const datav2 = cart.map((item) => {
+            return {
+                ProductID: item.ProductID,
+                ShopID: item.ShopID,
+                AddressID: AddressID,
+                Quantity: item.quantity,
+            };
+        });
+        const datav1 = {
+            UserID: userData.UserID,
+            AddressID: AddressID,
+            OrderDate: new Date().toISOString(),
+            TOTAL: cartTotal,
+            Products: JSON.stringify(datav2),
+        }
 
-        // fetch(`${backendUrl}/api/v1/orders`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify(orderData)
-        // }).then(response => {
-        //     if (response.ok) {
-        //         return response.json();
-        //     } else {
-        //         throw new Error('Error al crear la orden');
-        //     }
-        // }).then(order => {
-        //     // Ahora que tenemos el ID de la orden, creamos los registros de productos
-        //     const productPromises = [];
-        //     for (const shopId in productsByShop) {
-        //         const products = productsByShop[shopId];
-        //         const productData = {
-        //             ShopID: shopId,
-        //             Products: products.map(product => ({
-        //                 ProductID: product.ProductID,
-        //                 Quantity: product.Quantity
-        //             })),
-        //             OrderID: order.OrderID,
-        //             AddressID: order.AddressID,
-        //             AddressStatus: 'pending'
-        //         };
+        fetch(`${backendUrl}/api/v1/orders`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(datav1),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    // Parseamos la respuesta como JSON y devolvemos la promesa
+                    return response.json();
+                } else {
+                    console.error('Failed to create order');
+                    throw new Error('Failed to create order');
+                }
+            })
+            .then(async () => {
+                localStorage.removeItem('cart');
+                changeCart();
+                navigate('/profile/orders');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
 
-        //         productPromises.push(fetch(`${backendUrl}/api/v1/order-products`, {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json'
-        //             },
-        //             body: JSON.stringify(productData)
-        //         }));
-        //     }
 
-        //     // Esperamos a que todas las promesas de productos se completen antes de continuar
-        //     return Promise.all(productPromises);
-        // }).then(() => {
-        //     // Si todos los productos se crearon correctamente, limpiamos el carrito y redirigimos
-        //     localStorage.removeItem('cart');
-        //     setActiveComponent('orders');
-        // }).catch(error => {
-        //     console.error(error);
-        //     // Manejar el error de alguna manera
-        // });
     };
 
     return (
