@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./css/Orders.css";
 import { ClipLoader } from "react-spinners";
-import WriteReview from '../components/WriteReview'; // Importar el componente de escritura de opinión
+import WriteReview from './WriteReview'; // Importar el componente de escritura de opinión
 
-function Orders({ userData }) {
+function Orders({ userData, recents }) {
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState("recent");
-  const [groupedOrders, setGroupedOrders] = useState({});
+  const [OrdersData, setOrdersData] = useState({});
   const [loading, setLoading] = useState(true);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -18,10 +18,11 @@ function Orders({ userData }) {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`${backendUrl}/api/v1/orders/${userData.UserID}`);
+        const ss = recents ? "?recents=true" : "";
+        const response = await fetch(`${backendUrl}/api/v1/orders/${userData.UserID}` + ss);
         const data = await response.json();
-        const groupedData = groupOrdersByOrderID(data);
-        setGroupedOrders(groupedData);
+        setOrdersData(data);
+
       } catch (error) {
         console.error("Error fetching orders:", error);
       } finally {
@@ -29,21 +30,24 @@ function Orders({ userData }) {
       }
     };
     fetchOrders();
-  }, []);
-  const handleSortChange = (event) => {
-    setSortBy(event.target.value); // Actualizar el tipo de filtro de ordenación al cambiar el valor del selector
-  };
 
-  function groupOrdersByOrderID(orders) {
-    return orders.reduce((groupedOrders, order) => {
-      const { OrderID } = order;
-      if (!groupedOrders[OrderID]) {
-        groupedOrders[OrderID] = [];
-      }
-      groupedOrders[OrderID].push(order);
-      return groupedOrders;
-    }, {});
-  }
+  }, []);
+
+  const handleSortChange = (event) => {
+    const selectedSortOption = event.target.value;
+    let sortedOrders = {};
+
+    if (selectedSortOption === "recent") {
+      sortedOrders = Object.values(OrdersData).sort((a, b) => new Date(b.OrderDate) - new Date(a.OrderDate));
+    } else if (selectedSortOption === "oldest") {
+      sortedOrders = Object.values(OrdersData).sort((a, b) => new Date(a.OrderDate) - new Date(b.OrderDate));
+    } else if (selectedSortOption === "priceLowToHigh") {
+      sortedOrders = Object.values(OrdersData).sort((a, b) => a.TOTAL - b.TOTAL);
+    }
+
+    setOrdersData(sortedOrders);
+    setSortBy(selectedSortOption);
+  };
 
   function StatusTranslation(status) {
     switch (status) {
@@ -67,15 +71,18 @@ function Orders({ userData }) {
     setFilter(filterValue);
   };
   const shouldShowOrder = (order) => {
-    if (filter === "all") {
-      return true;
+    if (filter === "archived") {
+      return order?.OrderStatus === "archived";
+    } else if (filter === "all") {
+      return order?.OrderStatus !== "archived";
     } else {
-      return order.OrderStatus === filter;
+      return order?.OrderStatus === filter;
     }
   };
+  
 
   const handleCardClick = (orderId) => {
-    navigate(`/profile/orders/${orderId}`);
+    navigate(`/profile/mis-pedidos/${orderId}`);
   };
   const cancelOrder = async (orderId, status) => {
     try {
@@ -88,8 +95,6 @@ function Orders({ userData }) {
       });
       if (response.ok) {
         console.log(`Pedido ${orderId} cancelado exitosamente.`);
-        // Actualizar el estado local de los pedidos para reflejar el cambio de estado
-        // Esto es opcional y depende de cómo manejes los datos en tu aplicación
       } else {
         console.error(`Error al cancelar el pedido ${orderId}.`);
       }
@@ -97,12 +102,12 @@ function Orders({ userData }) {
       console.error("Error al cancelar el pedido:", error);
     }
   };
-  const handleActionButtonClick = (action, orderId) => {
-    console.log(orderId)
+  const handleActionButtonClick = (action, orderId, idx) => {
     if (action === "Cancelar") {
       const confirmCancel = window.confirm("¿Estás seguro de que quieres cancelar este pedido?");
       if (confirmCancel) {
         cancelOrder(orderId, "cancelled");
+        window.location.reload();
       } else {
         console.log("Cancelación de pedido cancelada por el usuario.");
       }
@@ -110,6 +115,7 @@ function Orders({ userData }) {
       const confirmCancel = window.confirm("¿Estás seguro de que quieres eliminar este pedido?");
       if (confirmCancel) {
         cancelOrder(orderId, "deleted");
+        window.location.reload();
       } else {
         console.log("Cancelación de pedido eliminar por el usuario.");
       }
@@ -118,16 +124,18 @@ function Orders({ userData }) {
       const confirmCancel = window.confirm("¿Estás seguro de que quieres archivar este pedido?");
       if (confirmCancel) {
         cancelOrder(orderId, "archived");
+        window.location.reload();
       } else {
         console.log("Cancelación de pedido cancelada por el usuario.");
       }
     }
   };
-  const renderOrderButtons = (orderStatus, orderId) => {
+  const renderOrderButtons = (orderStatus, orderId, idx) => {
     if (orderStatus === "delivered") {
       return (
         <div className="order-actions">
-          <div className="order-action-button" onClick={() => { setSelectedOrder(groupedOrders[orderId]); setShowReviewForm(true); }}>Escribir una opinión</div>
+          {/* <div className="order-action-button" onClick={() => { setSelectedOrder(OrdersData[idx]); setShowReviewForm(true); }}>Escribir una opinión</div> */}
+          <div className="order-action-button" onClick={async () => { setSelectedOrder(OrdersData[idx]); setShowReviewForm(true); }}>Escribir una opinión</div>
           <div className="order-action-button" onClick={() => handleCardClick(orderId)}>Detalles del pedido</div>
         </div>
       );
@@ -162,8 +170,8 @@ function Orders({ userData }) {
       return (
         <div className="order-actions">
           <div className="order-action-button">Restaurar pedido</div>
-          <div className="order-action-button">Detalles del pedido</div>
-          <div className="order-action-button" onClick={() => handleActionButtonClick("Eliminar")}>Eliminar permanentemente</div>
+          <div className="order-action-button" onClick={() => handleCardClick(orderId)}>Detalles del pedido</div>
+          <div className="order-action-button" onClick={() => handleActionButtonClick("Eliminar", orderId)}>Eliminar permanentemente</div>
         </div>
       );
     }
@@ -171,7 +179,7 @@ function Orders({ userData }) {
   };
   if (loading) {
     return (
-      <div style={{ padding: "10rem", paddingBottom: "20rem" }}>
+      <div style={{ padding: "10rem", paddingBottom: "20rem", width: "10%", margin: "auto" }}>
         <ClipLoader
           color={"green"}
           loading={loading}
@@ -185,7 +193,7 @@ function Orders({ userData }) {
 
   return (
     <div className="orders-container">
-      <h2>Mis pedidos</h2>
+
       <div className="orders-header">
         <a className={filter === "all" ? "active" : ""} onClick={() => handleFilterClick("all")}>Todos</a>
         <a className={filter === "delivered" ? "active" : ""} onClick={() => handleFilterClick("delivered")}>Completados</a>
@@ -200,80 +208,73 @@ function Orders({ userData }) {
         <option value="priceLowToHigh">Precio de menor a mayor</option>
       </select>
       <div className="orders-list">
-        {Object.entries(groupedOrders)
-          .sort((a, b) => {
-            // Ordenar los pedidos según el tipo de filtro seleccionado
-            if (sortBy === "recent") {
-              return new Date(b[1][0].OrderDate) - new Date(a[1][0].OrderDate);
-            } else if (sortBy === "oldest") {
-              return new Date(a[1][0].OrderDate) - new Date(b[1][0].OrderDate);
-            } else if (sortBy === "priceLowToHigh") {
-              const totalPriceA = a[1].reduce((acc, curr) => acc + curr.TOTAL, 0);
-              const totalPriceB = b[1].reduce((acc, curr) => acc + curr.TOTAL, 0);
-              return totalPriceA - totalPriceB;
-            }
-            return 0;
-          }).map(([orderID, orderList]) => {
-            const order = orderList[0]; // Assuming all items in orderList have the same order details except for product specifics
+        {Object.values(OrdersData).map((order, idx) => {
+          const orderID = order.OrderID;
+          const orderList = order.OrderProducts;
 
-            return (
-              shouldShowOrder(order) && (
-                <div className="order-card" key={orderID}>
-                  <div className="order-info-header">
-                    <div className="order-info-tags">
-                      <div className="order-info-subheader">
-                        Pedido realizado:
-                        <p>{new Date(order.OrderDate).toLocaleDateString()}</p>
-                      </div>
-                      <div className="order-info-subheader">
-                        Total:
-                        <p>{order.TOTAL} €</p>
-                      </div>
-                      <div className="order-info-subheader">
-                        Enviar a:
-                        <p>{order.AddressTitle}</p>
-                      </div>
-                    </div>
-                    <div className="order-info-tags-mobile">
-                      <div className="order-info-subheader">
-                        Pedido realizado:
-                        <p>{new Date(order.OrderDate).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                    <div className="order-info-subheader">
-                      <h5>ID: {order.OrderID}</h5>
-                      <p>{StatusTranslation(order.OrderStatus)}</p>
-                    </div>
+          return shouldShowOrder(order) && (
+
+            <div className="order-card" key={idx}>
+              <div className="order-info-header">
+                <div className="order-info-tags">
+                  <div className="order-info-subheader">
+                    Pedido realizado:
+                    <p>{new Date(order?.OrderDate).toLocaleDateString()}</p>
                   </div>
-                  <div className="order-transport-info">
-                    {order.OrderStatus === 'delivered' && <h3>Entregado el {new Date(order.OrderDeliveredDate).toLocaleDateString()} a las {new Date(order.OrderDeliveredDate).getHours()}:{new Date(order.OrderDeliveredDate).getMinutes()}</h3>}
-                    {order.OrderStatus === 'delivered' && <a>{order.transportInfo}</a>}
+                  <div className="order-info-subheader">
+                    Total:
+                    <p>{order?.TOTAL} €</p>
                   </div>
-                  <div className="order-info-details">
-                    <div className="order-products">
-                      {orderList.map(product => (
-                        <div key={product.ProductID} className="order-product-item">
-                          <img src={`data:image/jpeg;base64,${product.ImageContent}`} alt={product.ProductName} className="order-product-image" />
-                          <div className="order-product-details">
-                            <p>{
-                              product.ProductName}</p>
-                            <p>Cantidad: {product.Quantity}</p>
-                            <div className='order-buy-button'>Comprarlo de nuevo</div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="order-detail-mobile" onClick={() => handleCardClick(orderID)}>
-                      {">"}
-                    </div>
-                    {renderOrderButtons(order.OrderStatus, orderID)}
+                  <div className="order-info-subheader">
+                    Enviar a:
+                    <p>{order?.AddressTitle}</p>
                   </div>
-                  <div className="separator"></div>
-                  <a>Archivar</a>
                 </div>
-              )
-            );
-          })}
+                <div className="order-info-tags-mobile">
+                  <div className="order-info-subheader">
+                    Pedido realizado:
+                    <p>{new Date(order?.OrderDate).toLocaleDateString()}</p>
+                  </div>
+                </div>
+                <div className="order-info-subheader">
+                  <h5>ID: {order?.OrderID}</h5>
+                  <p>{StatusTranslation(order?.OrderStatus)}</p>
+                </div>
+              </div>
+              <div className="order-transport-info">
+                {order?.OrderStatus === 'delivered' && <h3>Entregado el {new Date(order?.OrderDeliveredDate).toLocaleDateString()} a las {new Date(order?.OrderDeliveredDate).getHours()}:{new Date(order?.OrderDeliveredDate).getMinutes()}</h3>}
+                {order?.OrderStatus === 'delivered' && <a>{order?.transportInfo}</a>}
+              </div>
+              <div className="order-info-details">
+                <div className="order-products">
+                  {orderList.map(product => (
+                    <div key={product.ProductID} className="order-product-item">
+                      <img src={`data:image/jpeg;base64,${product.ImageContent}`} alt={product.ProductName} className="order-product-image" />
+                      <div className="order-product-details">
+                        <p>{
+                          product.ProductName}</p>
+                        <p>Cantidad: {product.Quantity}</p>
+                        <div className='order-buy-button'>Comprarlo de nuevo</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="order-detail-mobile" onClick={() => handleCardClick(orderID)}>
+                  {">"}
+                </div>
+                {renderOrderButtons(order?.OrderStatus, orderID, idx)}
+              </div>
+
+              {order.OrderStatus != "archived" ?
+                <div className='order-card-archive-button'>
+                  <div className="separator"></div>
+                  <a onClick={() => handleActionButtonClick("Archivar", order?.OrderID)}>Archivar</a>
+                </div>
+                : null}
+            </div>
+
+          )
+        })}
       </div>
       {showReviewForm && (
         <WriteReview

@@ -18,8 +18,8 @@ const AddressesForm = ({
                 <div className="address-form-container">
                     <form onSubmit={handleFormSubmit}>
                         <div className='form-title'>
-                            <label htmlFor="title">Título de dirección</label>
-                            <input type="text" id="title" name="title" required defaultValue={emptyAddress.title} />
+                            <label htmlFor="AddressTitle">Título de dirección</label>
+                            <input type="text" id="AddressTitle" name="AddressTitle" required defaultValue={emptyAddress.AddressTitle} />
                         </div>
                         <div className='form-row-data'>
                             <div>
@@ -42,7 +42,7 @@ const AddressesForm = ({
                             </div>
                             <div>
                                 <label htmlFor="addressNumber">Número</label>
-                                <input type="text" id="addressNumber" name="addressNumber" required defaultValue={emptyAddress.AddressNumber} />
+                                <input type="text" id="addressNumber" name="addressNumber" required defaultValue={emptyAddress.AdressNumber} />
                             </div>
                             <div>
                                 <label htmlFor="postalCode">Código Postal</label>

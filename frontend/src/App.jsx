@@ -6,24 +6,18 @@ import Navbar from "./components/navbar";
 import About from "./screens/About";
 import Home from "./screens/Home";
 import Search from "./screens/Search";
-import Security from "./screens/Security";
 import Product from "./screens/Product";
 import Footer from "./components/Footer";
 import Shop from "./screens/Shop";
 import Cart from "./screens/Cart";
 import Profile from "./screens/Profile";
-import Orders from "./screens/Orders";
-import OrdersDetails from "./screens/OrdersDetails";
-import Addresses from "./screens/Adresses";
 import Dashboard from "./screens/Dashboard";
 import Delivery from "./screens/Delivery";
-import Payment from "./screens/Payment";
-import Workwithus from "./screens/Workwithus";
-import Contactus from "./screens/Contactus";
+import Images from "./screens/Images";
+import Workwithus from './screens/Workwithus';
 
 import { auth } from "./auth";
 
-import Images from "./screens/Images";
 
 function App() {
   const [loginView, setLoginView] = useState(false);
@@ -89,16 +83,12 @@ function App() {
         <Route path="/search" element={<Search changeCart={changeCart} />} />
         <Route path="/shop/:id" element={<Shop />} />
         <Route path="/cart" element={<Cart changeCart={changeCart} userData={userData} />} />
+        <Route path="/work-with-us" element={<Workwithus/>}/>
         {userData && (
           <>
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/profile/orders" element={<Orders userData={userData}/>} />
-            <Route path="/profile/orders/:id" element={<OrdersDetails userData={userData}/>} />
-            <Route path="/profile/addresses" element={<Addresses />} />
-            <Route path="/profile/payment" element={<Payment />} />
-            <Route path="/profile/security" element={<Security userData={userData} />} />
-            <Route path="/profile/workwithus" element={<Workwithus userData={userData} />} />
-            <Route path="/profile/contact" element={<Contactus userData={userData} />} />
+            <Route path="/profile" element={<Profile userData={userData} changeUserData={(udata) =>{ setUserData(udata);console.log(udata)}}/>} />
+            <Route path="/profile/:id/:id2" element={<Profile userData={userData} changeUserData={(udata) => setUserData(udata)}/>}/>
+            <Route path="/profile/:id" element={<Profile userData={userData} changeUserData={(udata) => setUserData(udata)}/>}/>
           </>
         )}
         {userData?.UserType === "administrator" && (

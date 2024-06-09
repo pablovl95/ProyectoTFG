@@ -1,0 +1,47 @@
+.profile-details-address {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.profile-details-address-details {
+  flex: 0 0 calc(30% - 1rem);
+  margin: 0 0 1rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  padding: 10px;
+}
+
+
+.profile-details-address h4 {
+  margin-bottom: 10px;
+}
+
+
+.profile-details-addresses-edit-button:hover {
+  background-color: #085c00;
+}
+
+.profile-details-addresses-edit-button {
+  margin-left: auto;
+  width: 50%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  background-color: #0d7100;
+  color: white;
+}
+
+.profile-details-address-details h4 {
+  margin-bottom: 5px;
+}
+
+.profile-details-address-details p {
+  margin: 5px 0;
+}
+
+.profile-details-add-address {
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+

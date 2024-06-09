@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './css/WriteReview.css';
 
 function WriteReview({ order, onClose, userData }) {
     const [Comment, setComment] = useState('');
@@ -12,10 +13,16 @@ function WriteReview({ order, onClose, userData }) {
         : process.env.REACT_APP_BACKEND_URL;
 
     useEffect(() => {
-        if (order.length > 0) {
-            setSelectedProductID(order[0].ProductID); // Inicializa con el primer producto si no se ha seleccionado ninguno
+        if (order.OrderProducts.length > 0) {  
+            setSelectedProductID(order.OrderProducts[0].ProductID); // Inicializa con el primer producto si no se ha seleccionado ninguno
         }
     }, [order]);
+
+    useEffect(() => {
+        return () => {
+            imagePreviews.forEach(preview => URL.revokeObjectURL(preview));
+        };
+    }, [imagePreviews]);
 
     const handleReviewSubmit = async () => {
         try {
@@ -65,53 +72,53 @@ function WriteReview({ order, onClose, userData }) {
         setImagePreviews(previews);
     };
 
-    useEffect(() => {
-        return () => {
-            // Liberar memoria de las vistas previas cuando el componente se desmonta
-            imagePreviews.forEach(preview => URL.revokeObjectURL(preview));
-        };
-    }, [imagePreviews]);
+    const handleClose = () => {
+        onClose();
+    };
 
     return (
-        <div className="write-review-container">
-            <h3>Elige el producto para el que quieres escribir una opinión</h3>
-            <select 
-                id='select'
-                value={selectedProductID} // Establece el valor seleccionado en el select
-                onChange={(e) => setSelectedProductID(e.target.value)} // Actualiza el estado cuando cambia la selección
-            >
-                {order.map((product) => (
-                    <option key={product.ProductID} value={product.ProductID}>
-                        {product.ProductName}
-                    </option>
-                ))}
-            </select>
-            <h3>Calificación</h3>
-            <input
-                type="number"
-                min="1"
-                max="5"
-                value={rating}
-                onChange={(e) => setRating(parseInt(e.target.value, 10))}
-            />
-            <textarea
-                value={Comment}
-                onChange={(e) => setComment(e.target.value)}
-                placeholder="Escribe tu opinión aquí..."
-            />
-            <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleImageChange}
-            />
-            <div className="image-previews">
-                {imagePreviews.map((preview, index) => (
-                    <img key={index} src={preview} alt={`Preview ${index}`} />
-                ))}
+        <div className='write-review-overlay' onClick={handleClose}>
+            <div className="write-review-container" onClick={(e) => e.stopPropagation()}>
+                <button className="close-btn" onClick={handleClose}>X</button>
+                <h3>Elige el producto para el que quieres escribir una opinión</h3>
+                <select 
+                    id='select'
+                    value={selectedProductID} // Establece el valor seleccionado en el select
+                    onChange={(e) => setSelectedProductID(e.target.value)} // Actualiza el estado cuando cambia la selección
+                >
+                    {order.OrderProducts.map((product) => (
+                        <option key={product.ProductID} value={product.ProductID}>
+                            {product.ProductName}
+                        </option>
+                    ))}
+                </select>
+                <h3>Calificación</h3>
+                <input
+                    type="number"
+                    min="1"
+                    max="5"
+                    value={rating}
+                    onChange={(e) => setRating(parseInt(e.target.value, 10))}
+                />
+                <textarea
+                    value={Comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder="Escribe tu opinión aquí..."
+                />
+                <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleImageChange}
+                />
+                <div className="image-previews">
+                    {imagePreviews.map((preview, index) => (
+                        <img key={index} src={preview} alt={`Preview ${index}`} />
+                    ))}
+                </div>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                <button onClick={handleReviewSubmit}>Enviar Opinión</button>
             </div>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <button onClick={handleReviewSubmit}>Enviar Opinión</button>
         </div>
     );
 }

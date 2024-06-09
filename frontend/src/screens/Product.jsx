@@ -80,7 +80,7 @@ const Product = ({ changeCart }) => {
 
   if (loading) {
     return (
-      <div style={{ padding: "10rem", paddingBottom: "20rem" }}>
+      <div style={{ padding: "10rem", paddingBottom: "20rem",width:"10%",margin:"auto" }}>
         <ClipLoader
           color={"green"}
           loading={loading}
@@ -145,7 +145,7 @@ const Product = ({ changeCart }) => {
             </p>
             <div>
               <p>
-                {product?.Rating} {renderStarsProductCard(product?.Rating)}
+                {product?.Rating.toFixed(2)} {renderStarsProductCard(product?.Rating)}
                 {" | "}
                 <a href="#comentarios" style={{ textDecoration: "none", color: "green" }}>
                   {product?.TotalComments} Valoraciones | Buscar en esta página
@@ -291,7 +291,7 @@ const Product = ({ changeCart }) => {
             <div className="product-opiniones-header">
               <h2>Opiniones de clientes</h2>
               <div className="StarsTitle">
-                {renderStarsProductCard(product?.Rating)} {product?.Rating} Estrellas de 5
+                {renderStarsProductCard(product?.Rating)} {product?.Rating.toFixed(2)} Estrellas de 5
               </div>
               {product?.TotalComments} Valoraciones totales
             </div>

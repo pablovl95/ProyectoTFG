@@ -25,13 +25,13 @@ export default function UserMenu({ user, handleLogout, setUserMenuOpen }) {
     <div className="user-menu" ref={rootRef}>
       <div className="user-menu-bubble">
         <li><NavLink to="/profile" onClick={handleLinkClick}>Mi perfil</NavLink></li>
-        <li><NavLink to="/profile/orders" onClick={handleLinkClick}>Mis pedidos</NavLink></li>
-        <li><NavLink to="/profile/addresses" onClick={handleLinkClick}>Direcciones</NavLink></li>
+        <li><NavLink to="/profile/mis-pedidos" onClick={handleLinkClick}>Mis pedidos</NavLink></li>
+        <li><NavLink to="/work-with-us">Trabaja con nosotros</NavLink></li>
         {user && user.UserType === "administrator" &&
           <li><NavLink to="/dashboard" onClick={handleLinkClick}>Dashboard de Gestion</NavLink></li>
         }
         {user && user.type === "Seller" && <li><NavLink to="/ordersto" onClick={handleLinkClick}>Pedidos para recogida</NavLink></li>}
-        <li onClick={() => {handleLogout(); handleLinkClick();}} style={{ color: 'black' }}>Cerrar sesión</li>
+        <li onClick={() => { handleLogout(); handleLinkClick(); }} style={{ color: 'black' }}>Cerrar sesión</li>
         <div className="bubble-pointer"></div>
       </div>
     </div>

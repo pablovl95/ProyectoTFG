@@ -131,7 +131,7 @@ CREATE TABLE
     LastName TEXT NOT NULL,
     Phone TEXT NOT NULL,
     AddressLine TEXT NOT NULL,
-    AdressNumber TEXT NOT NULL,
+    AddressNumber TEXT NOT NULL,
     PostalCode TEXT NOT NULL,
     Country TEXT NOT NULL,
     Province TEXT NOT NULL,

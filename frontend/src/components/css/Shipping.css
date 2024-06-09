@@ -43,38 +43,10 @@
     justify-content: flex-start;
 }
 
-.current-address {
-    margin-top: 16px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-}
 
-.address-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    width: 30%;
-}
 
-.address-details p {
-    margin: 4px 0;
-}
 
-.add-address {
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f9f9f9;
-}
 
-.add-address p {
-    margin: 0;
-    color: #039e00;
-}
 
 .shipping-summary {
     width: 25%;
@@ -106,14 +78,7 @@
     font-size: 16px;
     cursor: pointer;
 }
-.selected-address {
-    background-color: lightgray;
-  }
-  
-  .address-card.selected {
-    background-color: lightblue;
-  }
-  
+
 @media (max-width: 768px) {
     .shipping-container {
         flex-direction: column;
@@ -128,17 +93,6 @@
         padding: 0;
         margin-right: 0;
         margin-bottom: 16px;
-    }
-
-    .current-address {
-        flex-direction: column;
-        gap: 8px;
-        padding:0;
-    }
-
-    .address-card {
-        width: 100%;
-        padding:0;
     }
 
     .shipping-summary {

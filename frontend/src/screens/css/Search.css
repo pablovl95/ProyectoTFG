@@ -24,12 +24,16 @@
   display: none;
 }
 
-.pagination {
+.search-pagination {
   margin-top: 0.5rem;
   margin-bottom: 1rem;
+  margin: 2rem auto;
+  width: 50%;
+  display: flex;  
+  justify-content: center;
 }
 
-.pagination button {
+.search-pagination button {
   padding: 5px 10px;
   margin-right: 5px;
   background-color: #248311;

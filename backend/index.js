@@ -49,6 +49,32 @@ app.get('/api/v1/users/:id', async (req, res) => {
   }
 });
 
+app.put('/api/v1/users/:id', async (req, res) => {
+  const id = req.params.id; 
+  console.log(req.body)
+  const { FirstName, LastName, email, Phone } = req.body;
+  if (!FirstName || !LastName ) {
+    return res.status(400).send('Por favor, proporcione todos los campos requeridos (nombre, apellidos, email).');
+  }
+  try {
+    const updateQuery = `
+      UPDATE Users 
+      SET FirstName = '${FirstName}', LastName = '${LastName}', Phone = '${Phone || 'NULL'}'
+      WHERE UserID = '${id}'
+    `;
+    await db.execute(updateQuery);
+    res.status(200).send('Usuario actualizado correctamente');
+  } catch (error) {
+    console.error('Error al actualizar el usuario en la base de datos:', error);
+    res.status(500).send('Error al actualizar el usuario en la base de datos');
+  }
+});
+
+
+// Endpoint para eliminar un usuario por su ID
+app.delete('/api/v1/users/:id', (req, res) => {
+
+});
 
 app.get('/api/v1/products', async (req, res) => {
   let AND = "";
@@ -182,7 +208,7 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
     `;
     const reviewsData = await db.execute(query);
     if (reviewsData.rows.length === 0) {
-      res.sendStatus(404); 
+      res.sendStatus(404);
     } else {
       // Iterar sobre cada revisión para comprobar si contiene una foto
       for (let review of reviewsData.rows) {
@@ -193,13 +219,13 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
             WHERE ReviewID = '${review.ReviewID}'
           `;
           const imageData = await db.execute(imageQuery);
-          response.push({ ...review, images: imageData.rows});
+          response.push({ ...review, images: imageData.rows });
         }
         else {
           response.push(review);
         }
       }
-      
+
       res.status(200).send(response); // Enviar los datos modificados
     }
   } catch (error) {
@@ -296,15 +322,7 @@ app.post('/api/v1/users', async (req, res) => {
   }
 
 });
-// Endpoint para actualizar información de un usuario por su ID
-app.put('/api/v1/users/:id', (req, res) => {
 
-});
-
-// Endpoint para eliminar un usuario por su ID
-app.delete('/api/v1/users/:id', (req, res) => {
-
-});
 app.get('/api/v1/addresses/:id', async (req, res) => {
   try {
     const data = await db.execute(`SELECT * FROM Addresses WHERE UserID = '${req.params.id}'`);
@@ -338,94 +356,43 @@ app.delete('/api/v1/addresses/:addressId', async (req, res) => {
   }
 });
 
-// Ruta PUT para actualizar una dirección existente
-app.put('/api/v1/addresses/:addressId', async (req, res) => {
+app.put('/api/v1/addresses/:id', async (req, res) => {
+  const { AddressTitle, FirstName, LastName, Phone, AddressLine, AddressNumber, PostalCode, Country, Province, City } = req.body;
+  const { id } = req.params;
   try {
-    const addressId = req.params.addressId;
-    const {
-      AddressType,
-      StreetAddress,
-      StreetNumber,
-      Floor,
-      Staircase,
-      City,
-      State,
-      PostalCode,
-      Country
-    } = req.body;
-
-    // Verificar que al menos uno de los campos a actualizar esté presente en la solicitud
-    if (!AddressType && !StreetAddress && !StreetNumber && !Floor && !Staircase && !City && !State && !PostalCode && !Country) {
-      return res.status(400).send('Al menos un campo para actualizar debe estar presente');
-    }
-
-    let updates = [];
-
-    if (AddressType) updates.push(`AddressType = '${AddressType}'`);
-    if (StreetAddress) updates.push(`StreetAddress = '${StreetAddress}'`);
-    if (StreetNumber) updates.push(`StreetNumber = '${StreetNumber}'`);
-    if (Floor) updates.push(`Floor = '${Floor}'`);
-    if (Staircase) updates.push(`Staircase = '${Staircase}'`);
-    if (City) updates.push(`City = '${City}'`);
-    if (State) updates.push(`State = '${State}'`);
-    if (PostalCode) updates.push(`PostalCode = '${PostalCode}'`);
-    if (Country) updates.push(`Country = '${Country}'`);
-
-    const query = `
+    const updateQuery = `
       UPDATE Addresses
-      SET ${updates.join(', ')}
-      WHERE AddressID = '${addressId}'
+      SET AddressTitle = '${AddressTitle}', FirstName = '${FirstName}', LastName = '${LastName}', Phone = '${Phone}',
+          AddressLine = '${AddressLine}', AdressNumber = '${AddressNumber}', PostalCode = '${PostalCode}',
+          Country = '${Country}', Province = '${Province}', City = '${City}'
+      WHERE AddressID = '${id}'
     `;
-    await db.execute(query);
-    res.status(200).send('Dirección actualizada correctamente');
+    
+    await db.execute(updateQuery);
+    
+    res.status(200);
   } catch (error) {
-    console.error('Error al actualizar dirección en la base de datos:', error);
+    console.error('Error al actualizar la dirección en la base de datos:', error);
     res.status(500).send('Error al actualizar la dirección en la base de datos');
   }
 });
 
-app.post('/api/v1/addresses/:id', async (req, res) => {
+app.post('/api/v1/addresses', async (req, res) => {
+  const { UserID,AddressTitle, FirstName, LastName, Phone, AddressLine, AddressNumber, PostalCode, Country, Province, City } = req.body;
   try {
-    const {
-      AddressType,
-      StreetAddress,
-      StreetNumber,
-      Floor,
-      Staircase,
-      City,
-      State,
-      PostalCode,
-      Country
-    } = req.body;
-    console.log(req.body)
-    // Verificar que todos los campos necesarios estén presentes en la solicitud
-    if (!AddressType || !StreetAddress || !City || !State || !PostalCode || !Country) {
-      return res.status(400).send('Todos los campos obligatorios deben estar presentes');
-    }
-
-    const query = `
-      INSERT INTO Addresses (
-        AddressType,
-        UserID,
-        StreetAddress,
-        StreetNumber,
-        Floor,
-        Staircase,
-        City,
-        State,
-        PostalCode,
-        Country
-      ) VALUES ('${AddressType}', '${req.params.id}', '${StreetAddress}', '${StreetNumber}', '${Floor}', '${Staircase}', '${City}','${State}','${PostalCode}','${Country}')
+    const insertQuery = `
+      INSERT INTO Addresses (UserID, AddressTitle, FirstName, LastName, Phone, AddressLine, AdressNumber, PostalCode, Country, Province, City)
+      VALUES ('${UserID}','${AddressTitle}', '${FirstName}', '${LastName}', '${Phone}', '${AddressLine}', '${AddressNumber}', '${PostalCode}', '${Country}', '${Province}', '${City}')
     `;
-    console.log(query);
-    await db.execute(query);
-
-    res.status(201).send('Dirección agregada correctamente');
+    await db.execute(insertQuery);
+    
+    res.status(201).send('Dirección creada exitosamente');
   } catch (error) {
-    console.error('Error al insertar en la base de datos:', error);
-    res.status(500).send('Error al agregar la dirección a la base de datos');
+    console.error('Error al crear la dirección en la base de datos:', error);
+    res.status(500).send('Error al crear la dirección en la base de datos');
   }
 });
+
 app.get('/api/v1/productImages/:productId', upload.single('image'), async (req, res) => {
   try {
     const data = await db.execute(`SELECT * FROM ProductImages WHERE ProductID = '${req.params.productId}'`);
@@ -472,19 +439,28 @@ END;
 app.get('/api/v1/orders/:id', async (req, res) => {
   try {
     const id = req.params.id;
-    const query = `SELECT Orders.*, 
-    OrderProducts.*, 
-    Products.ProductName, 
-    ProductImages.ImageContent, 
+    let query = `SELECT Orders.*,   
     Addresses.AddressTitle 
-FROM OrderProducts 
-LEFT JOIN Orders ON OrderProducts.OrderID = Orders.OrderID 
-LEFT JOIN Products ON OrderProducts.ProductID = Products.ProductID 
-LEFT JOIN ProductImages ON Products.ImageDefaultID = ProductImages.ImageID 
-LEFT JOIN Addresses ON Addresses.AddressID = Orders.AddressID 
-WHERE Orders.UserID ='${id}' AND Orders.OrderStatus != 'deleted';` // Aquí se agrega la condición para excluir los pedidos con estado 'deleted'
+    FROM Orders 
+    LEFT JOIN Addresses ON Addresses.AddressID = Orders.AddressID 
+    WHERE Orders.UserID ='${id}' AND Orders.OrderStatus != 'deleted' 
+    ORDER BY Orders.OrderDate DESC`;
+
+    const recents = req.query.recents === 'true'; // Convertir a booleano
+    if (recents) {
+      query += " LIMIT 3;"; // Cambiar 10 al número deseado de pedidos recientes
+    }
+
     const data = await db.execute(query);
-    res.status(200).send(data.rows);
+    const result = await Promise.all(data.rows.map(async (order) => {
+      const ordersProducts = await db.execute(`
+        SELECT OrderProducts.*, Products.ProductName,ProductImages.ImageContent FROM OrderProducts 
+        JOIN Products ON OrderProducts.ProductID = Products.ProductID 
+        JOIN ProductImages ON Products.ImageDefaultID = ProductImages.ImageID 
+        WHERE OrderID = '${order.OrderID}'`);
+      return { ...order, "OrderProducts": ordersProducts.rows };
+    }));
+    res.status(200).send(result);
   } catch (error) {
     console.error('Error al consultar la base de datos:', error);
     res.status(500).send('Error al obtener los pedidos de la base de datos');

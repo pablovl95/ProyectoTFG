@@ -1,65 +1,117 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import Security from "../components/Security";
+import Orders from "../components/Orders";
+import OrdersDetails from "../components/OrdersDetails";
+import ProfileDetails from "../components/ProfileDetails";
+import Payment from "../components/Payment";
+import Workwithus from "./Workwithus";
+import Contactus from "../components/Contactus";
 import './css/Profile.css';
 
-const userItems = [
-  { id: 1, name: 'Mis pedidos', path: '/profile/orders', url: '/orders.png', description: 'Rastrear, devolver, cancelar un pedido, descargar la factura o volver a comprar' },
-  { id: 2, name: 'Inicio de sesión y seguridad', path: '/profile/security', url: '/security.png', description: 'Editar el nombre, el número de teléfono móvil, el correo electrónico y la contraseña' },
-  { id: 3, name: 'Mis direcciones', path: '/profile/addresses', url: '/adresses.png', description: 'Editar, eliminar o configurar la dirección predeterminada' },
-  { id: 4, name: 'Mis métodos de pago', path: '/profile/payment', url: '/payments.png', description: 'Administrar o añadir métodos de pago y ver tus transacciones' },
-  { id: 5, name: 'Trabaja con nosotros', path: '/profile/workwithus', url: '/work.png', description: 'Envíanos una solicitud si lo que deseas es trabajar con nosotros' },
-  { id: 6, name: 'Contáctanos', path: '/profile/contact', url: '/contact.png', description: 'Explorar las opciones de autoservicio, los artículos de ayuda o contactarnos' },
-];
+const Profile = ({ userData, changeUserData }) => {
+  const [selectedScreen, setSelectedScreen] = useState('resumen');
+  const { id, id2 } = useParams();
 
-const transportItems = [
-  { id: 13, name: 'Mis entregas', path: '/profile/deliveries', url: '/deliveries.png', description: 'Ver y gestionar las entregas asignadas' },
-  { id: 14, name: 'Seleccionar pedido', path: '/profile/select-order', url: '/select-order.png', description: 'Seleccionar un nuevo pedido para entregar' },
-  { id: 15, name: 'Historial de entregas', path: '/profile/delivery-history', url: '/delivery-history.png', description: 'Revisar el historial de todas las entregas realizadas' },
-];
+  // Actualiza la pantalla seleccionada al cambiar el id
+  useEffect(() => {
+    setSelectedScreen(id || 'resumen');
+  }, [id]);
 
-const storeItems = [
-  { id: 7, name: 'Mis productos', path: '/shop/products', url: '/products.png', description: 'Añadir, editar o eliminar productos' },
-  { id: 8, name: 'Gestionar tienda', path: '/shop/manage-store', url: '/manage-store.png', description: 'Administrar la configuración general de la tienda' },
-  { id: 9, name: 'Gestionar noticias', path: '/shop/manage-news', url: '/manage-news.png', description: 'Añadir, editar o eliminar noticias' },
-  { id: 10, name: 'Gestionar sección de noticias', path: '/shop/manage-news-section', url: '/manage-news-section.png', description: 'Organizar y configurar la sección de noticias' },
-  { id: 11, name: 'Pedidos de la tienda', path: '/shop/store-orders', url: '/store-orders.png', description: 'Ver y gestionar los pedidos realizados en la tienda' },
-  { id: 12, name: 'Solicitudes de transportistas', path: '/shop/transport-requests', url: '/transport-requests.png', description: 'Revisar y gestionar las solicitudes de los transportistas' },
-];
+  // Función para actualizar la pantalla seleccionada
+  const handleScreenSelect = (screen) => {
+    setSelectedScreen(screen);
+  };
 
-function ItemProfile({ item }) {
+  const getNombre = (id) => {
+    switch (id) {
+      case 'resumen':
+        return "Resumen";
+      case 'mis-pedidos':
+        return "Mis pedidos";
+      case 'seguimiento-de-pedidos':
+        return "Seguimiento de pedidos";
+      case 'mis-cupones':
+        return "Mis cupones";
+      case 'mis-datos':
+        return "Mis datos";
+      case 'contactanos':
+        return "Contactanos";
+      default:
+        return "Resumen";
+    }
+  };
+
   return (
-    <Link to={item.path} className="item-profile">
-      <img src={item.url} alt={item.name} />
-      <div className="item-profile-info">
-        <h2>{item.name}</h2>
-        <p>{item.description}</p>
-      </div>
-    </Link>
-  );
-}
-
-function ProfileSection({ title, items }) {
-  return (
-    <div className="profile-section">
-      <h2  className='profile-text-left'>{title}</h2>
-      <div className="profile-items">
-        {items.map((item) => (
-          <ItemProfile key={item.id} item={item} />
-        ))}
+    <div className="profile-container">
+      <Sidebar selectedScreen={selectedScreen} onSelect={handleScreenSelect} /> {/* Pasamos la función de selección al Sidebar */}
+      <div className="profile-content">
+        <a className='link-active'>Mi cuenta </a>{">"} <a className={id2 ? "link-no-active" : "link-active"} >{getNombre(selectedScreen)}</a> {id2 ? " > " + "Detalles del pedido" : ""}
+        {selectedScreen === 'resumen' && <><h2>Ultimos pedidos</h2> <Resumen userData={userData} /></>}
+        {selectedScreen === 'mis-pedidos' && <><h2>Mis pedidos</h2><Orders userData={userData} /></>}
+        {selectedScreen === 'seguimiento-de-pedidos' && <SeguimientoPedidos />}
+        {selectedScreen === 'mis-cupones' && <MisCupones />}
+        {selectedScreen === 'mis-datos' && <><h2>Mis datos</h2> <ProfileDetails userData={userData} changeUserData={changeUserData}/></>}
+        {selectedScreen === 'contactanos' && <Contactus />}
       </div>
     </div>
   );
-}
+};
 
-function Profile() {
-  return (
-    <div className="profile-content">
-      <h1 className='profile-text-left'>Mi cuenta</h1>
-      <ProfileSection title="Usuario" items={userItems} />
-      <ProfileSection title="Tienda" items={storeItems} />
-      <ProfileSection title="Transporte" items={transportItems} />
+const Sidebar = ({ selectedScreen, onSelect }) => (
+  <div className="sidebar">
+    <Link to={`/profile/resumen`} className={selectedScreen === 'resumen' ? 'active' : ''} onClick={() => onSelect('resumen')}>Resumen</Link>
+    <Link to={`/profile/mis-pedidos`} className={selectedScreen === 'mis-pedidos' ? 'active' : ''} onClick={() => onSelect('mis-pedidos')}>Mis pedidos</Link>
+    <Link to={`/profile/seguimiento-de-pedidos`} className={selectedScreen === 'seguimiento-de-pedidos' ? 'active' : ''} onClick={() => onSelect('seguimiento-de-pedidos')}>Seguimiento de pedidos</Link>
+    <Link to={`/profile/mis-cupones`} className={selectedScreen === 'mis-cupones' ? 'active' : ''} onClick={() => onSelect('mis-cupones')}>Mis cupones</Link>
+    <Link to={`/profile/mis-datos`} className={selectedScreen === 'mis-datos' ? 'active' : ''} onClick={() => onSelect('mis-datos')}>Mis datos</Link>
+    <Link to={`/profile/contactanos`} className={selectedScreen === 'contactanos' ? 'active' : ''} onClick={() => onSelect('contactanos')}>Contactanos</Link>
+    <button className="logout-button">Cerrar sesión</button>
+  </div>
+);
+
+const Resumen = ({ userData }) => (
+
+  <div className='profile-resume-content'>
+    <Orders userData={userData} recents={true} />
+    <div className="profile-details">
+      <h2>Mis datos</h2>
+
+      <div className="user-info">
+        <h4>Datos de usuario</h4>
+        <div className="separator"></div>
+        <p>NOMBRE: {userData.FirstName}</p>
+        <p>APELLIDOS: {userData.LastName}</p>
+        <p>EMAIL:  {userData.Email}</p>
+        <p>TELÉFONO: {userData.Phone == "NULL" ? "No hay datos" : userData.Phone}</p>
+        <button className="edit-button">Editar</button>
+      </div>
+      <div className="shipping-info">
+        <h4>Datos de envío</h4>
+        <div className="separator"></div>
+        <p>DESTINATARIO: pablo vera lopez</p>
+        <p>DIRECCIÓN: Real De Abajo, 31, 21600 Valverde Del Camino, Huelva, España</p>
+        <button className="edit-button">Editar</button>
+      </div>
     </div>
-  );
-}
+  </div>
+);
+
+const SeguimientoPedidos = () => (
+  <div>
+    <h2>Seguimiento de Pedidos</h2>
+    <p>Información sobre el seguimiento de pedidos...</p>
+  </div>
+);
+
+const MisCupones = () => (
+  <div>
+    <h2>Mis Cupones</h2>
+    <p>Lista de cupones disponibles para el usuario...</p>
+  </div>
+);
+
+
+
 
 export default Profile;

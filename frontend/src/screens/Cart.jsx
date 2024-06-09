@@ -19,6 +19,7 @@ const Cart = ({ changeCart, userData }) => {
     }
   }, []);
 
+
   const calculateCartTotal = (cart) => {
     return cart.reduce((total, item) => total + item.Price * item.quantity, 0).toFixed(2);
   };
@@ -85,7 +86,7 @@ const Cart = ({ changeCart, userData }) => {
                 </div>
               ))}
               <div className="cart-total">
-                <h3>Total del Carrito: ${cartTotal}</h3>
+                <h3>Total del Carrito: {cartTotal} €</h3>
                 <button className="checkout-button" onClick={() => setActiveComponent('shipping')}>Tramitar pedido</button>
               </div>
               <Link to="/" className="back-to-shop-link">Volver a la Tienda</Link>
@@ -93,7 +94,7 @@ const Cart = ({ changeCart, userData }) => {
           )}
         </>
       )}
-      {activeComponent === 'shipping' && <Shipping setActiveComponent={setActiveComponent} cartTotal={cartTotal} cart={cart} userData={userData} setAddress={(AddressID) => setAddressID(AddressID)}/>}
+      {activeComponent === 'shipping' && <Shipping setActiveComponent={setActiveComponent}  cartTotal={cartTotal} cart={cart} userData={userData} setAddress={(AddressID) => {setAddressID(AddressID)}}/>}
       {activeComponent === 'payment' && <Payment setActiveComponent={setActiveComponent} cartTotal={cartTotal} cart={cart} userData={userData} AddressID={AddressID} changeCart={changeCart}/>}
     </div>
   );

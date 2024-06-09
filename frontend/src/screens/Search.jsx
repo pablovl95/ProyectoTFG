@@ -107,7 +107,7 @@ const Search = ({ changeCart }) => {
   return (
     <>
       {loading ? (
-        <div style={{ padding: "10rem", paddingBottom: "20rem" }}>
+        <div style={{ padding: "10rem", paddingBottom: "20rem",width:"10%",margin:"auto" }}>
           <ClipLoader
             color={"green"}
             loading={loading}
@@ -146,11 +146,11 @@ const Search = ({ changeCart }) => {
                 </select>
               </div>
               <div className="filter">
-                <label>Shop ID</label>
+                <label>Categoría Secundaria</label>
                 <input
-                  type="number"
-                  name="ShopID"
-                  value={filters.ShopID}
+                  type="text"
+                  name="SecundaryCategoryId"
+                  value={filters.SecundaryCategoryId}
                   onChange={handleFilterChange}
                 />
               </div>
@@ -178,15 +178,7 @@ const Search = ({ changeCart }) => {
                   {renderStars(filters.MinRating, handleStarClick)}
                 </div>
               </div>
-              <div className="filter">
-                <label>Categoría Secundaria</label>
-                <input
-                  type="number"
-                  name="SecundaryCategoryId"
-                  value={filters.SecundaryCategoryId}
-                  onChange={handleFilterChange}
-                />
-              </div>
+
               <button onClick={applyFilters}>Aplicar Filtros</button>
               <button className="close-modal" onClick={() => setFilterVisible(false)}>
                 <IconX />
@@ -206,7 +198,7 @@ const Search = ({ changeCart }) => {
             </div>
             <a>{productCount} productos</a>
           </div>
-          <div className="pagination">
+          <div className="search-pagination">
             {Array.from({ length: totalPages }, (_, i) => (
               <button key={i + 1} onClick={() => handlePageChange(i +1)}>{i + 1}</button>
             ))}
