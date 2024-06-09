@@ -172,6 +172,7 @@ app.get('/api/v1/shops/:id', async (req, res) => {
   }
 });
 app.get('/api/v1/reviews/:id', async (req, res) => {
+  const response = [];
   try {
     const query = `
       SELECT Reviews.*, Users.FirstName, Users.ProfileImageUrl
@@ -179,13 +180,44 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
       INNER JOIN Users ON Reviews.UserID = Users.UserID
       WHERE Reviews.ProductID='${req.params.id}'
     `;
-    //console.log(query);
-    const data = await db.execute(query);
-    if (data.rows.length === 0) {
-      res.sendStatus(404); // Si no hay resultados, enviar 404
+    const reviewsData = await db.execute(query);
+    if (reviewsData.rows.length === 0) {
+      res.sendStatus(404); 
     } else {
-      res.status(200).send(data.rows); // Si hay resultados, enviar los datos
+      // Iterar sobre cada revisión para comprobar si contiene una foto
+      for (let review of reviewsData.rows) {
+        if (review.ContainsPhotos === 1) {
+          const imageQuery = `
+            SELECT *
+            FROM Review_Images
+            WHERE ReviewID = '${review.ReviewID}'
+          `;
+          const imageData = await db.execute(imageQuery);
+          response.push({ ...review, images: imageData.rows});
+        }
+        else {
+          response.push(review);
+        }
+      }
+      
+      res.status(200).send(response); // Enviar los datos modificados
     }
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send([]);
+  }
+});
+
+
+
+app.get('/api/v1/reviewsImages/:id', async (req, res) => {
+  try {
+    const query = `
+      SELECT * FROM Review_Images
+      WHERE ReviewID='${req.params.id}'
+    `;
+    const data = await db.execute(query);
+    res.status(200).send(data.rows);
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send([]);
@@ -194,24 +226,50 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
 
 app.post('/api/v1/reviews', upload.array('images', 4), async (req, res) => {
   try {
-    const { Comment, rating, productId, userId, containsPhoto } = req.body;
+    //console.log(req.body);
+    const { Comment, ProductID, Rating, UserID, containsPhoto } = req.body;
     const images = req.files;
-    console.log(req.body);
-    console.log(req.files);
-    const query = `
-      INSERT INTO Reviews (Comment, AssignedRating, ProductID, UserID, ContainsPhotos) 
-      VALUES ('${Comment}', '${rating}', '${productId}', '${userId}', '${containsPhoto}')
-    `;
-    await db.execute(query);
-    if (containsPhoto === '1') {
-      //const ReviewId = await db.execute(`SELECT ReviewID FROM Reviews WHERE Comment = '${Comment}' AND Rating = '${rating}' AND ProductID = '${productId}' AND UserID = '${userId}'`);
-      //console.log(ReviewId.rows[0].ReviewID);
-      // for (const image of images) {
-      //   const querysnap = `INSERT INTO ReviewImages (ReviewID, ImageContent) VALUES ('${ReviewId.rows[0].ReviewID}', '${image.buffer.toString('base64')}')`
-      //  // await db.execute(querysnap);
-      // }
+
+    // Validar datos básicos
+    if (!Comment || !Rating || !ProductID || !UserID) {
+      return res.status(400).send('Todos los campos son obligatorios.');
     }
-    res.status(201).send('Reseña agregada correctamente');
+    const date = new Date();
+
+    // Inserción de la reseña
+    const reviewQuery = `
+      INSERT INTO Reviews (ProductID, Comment, AssignedRating, UserID, UploadDate, ContainsPhotos) 
+      VALUES ('${ProductID}', '${Comment}', ${Rating}, '${UserID}', '${date.toISOString()}', ${containsPhoto})
+    `;
+
+    await db.execute(reviewQuery);
+
+    // Obtener el ID de la reseña recién insertada
+    const reviewResult = await db.execute(`
+      SELECT ReviewID FROM Reviews 
+      WHERE Comment = '${Comment}'
+        AND AssignedRating = ${Rating} 
+        AND UploadDate = '${date.toISOString()}'
+        AND ProductID = '${ProductID}' 
+        AND UserID = '${UserID}'
+    `);
+
+    const ReviewID = reviewResult.rows[0].ReviewID; // Ajustar según cómo tu DB devuelve resultados
+    console.log(ReviewID);
+    if (containsPhoto === '1' && images.length > 0) {
+      for (const image of images) {
+        const base64Image = Buffer.from(image.buffer).toString('base64');
+
+        const imageInsertQuery = `
+          INSERT INTO Review_Images (ReviewID, ImageContent) 
+          VALUES ('${ReviewID}', '${base64Image}')
+        `;
+
+        await db.execute(imageInsertQuery);
+      }
+    }
+
+    res.status(200).send('Reseña agregada correctamente');
   } catch (error) {
     console.error('Error al insertar en la base de datos:', error);
     res.status(500).send('Error al agregar la reseña a la base de datos');
@@ -393,14 +451,15 @@ app.post('/api/v1/productImages/:productId', upload.single('image'), async (req,
 app.get('/api/v1/producto', async (req, res) => {
   try {
     const query = `
-    CREATE TRIGGER UpdateOrderProductDeliveredDate
-    AFTER UPDATE OF OrderStatus ON OrderProducts
-    WHEN NEW.OrderStatus = 'delivered'
-    BEGIN
-        UPDATE OrderProducts
-        SET OrderDeliveredDate = CURRENT_TIMESTAMP
-        WHERE OrderProductsID = NEW.OrderProductsID;
-    END;
+CREATE TRIGGER UpdateProductRatingAndComments
+AFTER INSERT ON Reviews
+FOR EACH ROW
+BEGIN
+    UPDATE Products
+    SET Rating = (SELECT AVG(AssignedRating) FROM Reviews WHERE ProductID = NEW.ProductID),
+        TotalComments = (SELECT COUNT(*) FROM Reviews WHERE ProductID = NEW.ProductID)
+    WHERE ProductID = NEW.ProductID;
+END;
     `;
     const data = await db.execute(query);
     res.status(200).send(data);

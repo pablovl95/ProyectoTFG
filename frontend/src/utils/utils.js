@@ -1,19 +1,18 @@
-// utils.js
 import "./utils.css"
 
 function generateCustomSequence() {
   // Genera una secuencia de bytes aleatorios y conviértela a una cadena hexadecimal en minúsculas
   function randomHexBytes(n) {
-      const bytes = new Uint8Array(n);
-      crypto.getRandomValues(bytes);
-      return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
+    const bytes = new Uint8Array(n);
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
   }
 
   // Genera la cuarta parte de la secuencia basada en la especificación
   function generatePart4() {
-      const chars = '89ab';
-      const randomIndex = Math.floor(Math.random() * 4);
-      return chars[randomIndex];
+    const chars = '89ab';
+    const randomIndex = Math.floor(Math.random() * 4);
+    return chars[randomIndex];
   }
 
   // Construye la secuencia
@@ -77,24 +76,6 @@ const renderStarsProductCard = (rating) => {
 };
 
 
-const renderCardReviews = (reviews) => {
-  return reviews.map(review => (
-    <div key={review.ReviewID} className="review-item">
-      <div className="header-comment">
-
-        <img src={review.ProfileImageUrl} alt="User Profile" />
-        <h4>{review.FirstName}</h4>
-
-      </div>
-      <div className="product-card-rating">
-            {renderStarsProductCard(review.AssignedRating)}
-        </div>
-      <div>
-        <p>{review.Comment}</p>
-      </div>
-    </div>
-  ));
-}
 
 const calculateStarsPercentage = (product, reviews) => {
   const totalReviews = product.TotalComments; // Total de valoraciones
@@ -109,10 +90,13 @@ const calculateStarsPercentage = (product, reviews) => {
   // Calcular el porcentaje para cada cantidad de estrellas
   const starsPercentage = {};
   for (let i = 1; i <= 5; i++) {
-    starsPercentage[i] = ((starsCount[i] || 0) / totalReviews) * 100;
+    starsPercentage[i] = Math.round(((starsCount[i] || 0) / totalReviews) * 100);
   }
 
   return starsPercentage;
 };
 
-export { buildURLSearchParams, renderStars, renderStarsProductCard, renderCardReviews, calculateStarsPercentage, generateCustomSequence };  
+
+
+
+export { buildURLSearchParams, renderStars, renderStarsProductCard, calculateStarsPercentage, generateCustomSequence };  

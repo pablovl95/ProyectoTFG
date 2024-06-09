@@ -5,19 +5,41 @@ function WriteReview({ order, onClose, userData }) {
     const [selectedImages, setSelectedImages] = useState([]);
     const [imagePreviews, setImagePreviews] = useState([]);
     const [error, setError] = useState(null);
+    const [rating, setRating] = useState(0);
+    const [selectedProductID, setSelectedProductID] = useState(order[0]?.ProductID || '');
     const backendUrl = process.env.NODE_ENV === "development"
-    ? "http://localhost:5000"
-    : process.env.REACT_APP_BACKEND_URL;
+        ? "http://localhost:5000"
+        : process.env.REACT_APP_BACKEND_URL;
+
+    useEffect(() => {
+        if (order.length > 0) {
+            setSelectedProductID(order[0].ProductID); // Inicializa con el primer producto si no se ha seleccionado ninguno
+        }
+    }, [order]);
+
     const handleReviewSubmit = async () => {
         try {
+            // Validar campos antes de enviar
+            if (rating < 1 || rating > 5) {
+                setError('La calificación debe estar entre 1 y 5.');
+                return;
+            }
+            if (!Comment.trim()) {
+                setError('El comentario no puede estar vacío.');
+                return;
+            }
+
             const formData = new FormData();
-            const containsPhoto = selectedImages.length > 0 ? 1 : 0;
-            const selectedProductID = document.querySelector('select').value;
             formData.append('Comment', Comment);
             formData.append('ProductID', selectedProductID);
-            formData.append('Rating', parseInt(document.querySelector('input[type="number"]').value),10);
+            formData.append('Rating', rating);
             formData.append('UserID', userData.UserID);
-            formData.append('containsPhoto', containsPhoto);
+            formData.append('containsPhoto', selectedImages.length > 0 ? '1' : '0');
+
+            // Agregar imágenes a formData
+            selectedImages.forEach((image) => {
+                formData.append('images', image);
+            });
 
             const response = await fetch(`${backendUrl}/api/v1/reviews`, {
                 method: 'POST',
@@ -28,63 +50,67 @@ function WriteReview({ order, onClose, userData }) {
                 throw new Error('Error al enviar la reseña.');
             }
 
-            // Lógica para manejar el éxito de la operación
-            onClose();
+            onClose(); // Cerrar el formulario tras el éxito
         } catch (error) {
             setError(error.message);
         }
     };
 
-
     const handleImageChange = (e) => {
-        const files = e.target.files;
-        const imagesArray = Array.from(files).slice(0, 4); // Seleccionar hasta 4 imágenes
+        const files = Array.from(e.target.files).slice(0, 4); // Seleccionar hasta 4 imágenes
+        setSelectedImages(files);
 
-        // Convertir imágenes a base64
-        Promise.all(imagesArray.map(fileToBase64))
-            .then((base64Images) => {
-                setSelectedImages(base64Images);
-                setImagePreviews(base64Images);
-            })
-            .catch((error) => console.error('Error al convertir imágenes a base64:', error));
+        // Crear vistas previas de las imágenes
+        const previews = files.map(file => URL.createObjectURL(file));
+        setImagePreviews(previews);
     };
 
-    const fileToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = (error) => reject(error);
-        });
-    };
     useEffect(() => {
-        console.log(order);
-    }, [order]);
+        return () => {
+            // Liberar memoria de las vistas previas cuando el componente se desmonta
+            imagePreviews.forEach(preview => URL.revokeObjectURL(preview));
+        };
+    }, [imagePreviews]);
 
     return (
         <div className="write-review-container">
             <h3>Elige el producto para el que quieres escribir una opinión</h3>
-            <select >
+            <select 
+                id='select'
+                value={selectedProductID} // Establece el valor seleccionado en el select
+                onChange={(e) => setSelectedProductID(e.target.value)} // Actualiza el estado cuando cambia la selección
+            >
                 {order.map((product) => (
                     <option key={product.ProductID} value={product.ProductID}>
                         {product.ProductName}
                     </option>
                 ))}
             </select>
-            <h3>Calificacion</h3>
-            <input type="number" min="1" max="5" />
+            <h3>Calificación</h3>
+            <input
+                type="number"
+                min="1"
+                max="5"
+                value={rating}
+                onChange={(e) => setRating(parseInt(e.target.value, 10))}
+            />
             <textarea
                 value={Comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="Escribe tu opinión aquí..."
             />
-            <input type="file" accept="image/*" multiple onChange={handleImageChange} />
+            <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageChange}
+            />
             <div className="image-previews">
                 {imagePreviews.map((preview, index) => (
                     <img key={index} src={preview} alt={`Preview ${index}`} />
                 ))}
             </div>
-            {error && <p>{error}</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <button onClick={handleReviewSubmit}>Enviar Opinión</button>
         </div>
     );

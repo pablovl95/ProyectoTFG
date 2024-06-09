@@ -1,0 +1,100 @@
+/* Estilos base */
+.card-review-item {
+  padding: 1.5rem;
+  width: 75%;
+  margin:auto;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.card-review-header {
+  display: flex;
+  align-items: center;
+}
+
+.card-review-header h4 {
+  margin: 0 1rem 0 0;
+  font-size: 18px;
+}
+
+.card-review-date {
+  color: #666;
+  display: flex;
+  align-items: center;
+  flex-direction: left;
+  text-align: left;
+}
+
+.card-review-date p {
+  margin: 0 0 1rem 0;
+  text-align: left;
+}
+
+.card-review-images {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card-review-images img {
+  max-width: 150px;
+  max-height: 150px;
+  margin:0 1rem 1rem 0;
+  border-radius: 0.5rem;
+}
+
+.card-review-comment {
+  display: flex;
+  align-items: left;
+  flex-direction: left;
+  text-align: left; 
+}
+
+.card-review-comment p {
+  margin: 0;
+  align-items: left;
+  flex-direction: left;
+  text-align: left; 
+}
+.filled {
+  color: #ffc107;
+  /* Color de las estrellas llenas */
+}
+
+.half-filled {
+  position: relative;
+  color: #d3d3d3;
+  /* Color de las estrellas medio llenas */
+}
+
+.half-filled::before {
+  content: '★';
+  color: #ffc107;
+  /* Color de las estrellas vacías */
+  position: absolute;
+  left: 0;
+  width: 50%;
+  overflow: hidden;
+}
+
+/* Media query para dispositivos con menos de 768px de ancho */
+@media (max-width: 767px) {
+  .card-reviews-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+  }
+  .card-review-item {
+    width: 100%;
+    padding:0;
+  }
+
+
+  .card-review-images img {
+    width: 30%; 
+    margin:0 0.5rem 1rem 0; 
+  }
+}

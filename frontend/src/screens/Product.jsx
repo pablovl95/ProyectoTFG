@@ -3,7 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import ImageGallery from "../components/ImageGallery";
 import "./css/Product.css";
-import { renderCardReviews, calculateStarsPercentage, renderStarsProductCard } from "../utils/utils";
+import CardReviews from "../components/CardReviews";
+import ImageReviewsSlider from "../components/ImageReviewsSlider";
+import { calculateStarsPercentage, renderStarsProductCard } from "../utils/utils";
 
 const Product = ({ changeCart }) => {
   const [showNav, setShowNav] = useState(window.innerWidth > 768);
@@ -13,7 +15,6 @@ const Product = ({ changeCart }) => {
   const [quantity, setQuantity] = useState(1);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const imageGalleryRef = React.createRef();
   const params = useParams();
 
   const backendUrl = process.env.NODE_ENV === "development"
@@ -287,12 +288,13 @@ const Product = ({ changeCart }) => {
       {reviews.length > 0 && (
         <div id="comentarios" className="product-reviews">
           <div className="Opiniones">
-            <h2>Opiniones de clientes</h2>
-            <div className="StarsTitle">
-              {renderStarsProductCard(product?.Rating)} {product?.Rating} Estrellas de 5
+            <div className="product-opiniones-header">
+              <h2>Opiniones de clientes</h2>
+              <div className="StarsTitle">
+                {renderStarsProductCard(product?.Rating)} {product?.Rating} Estrellas de 5
+              </div>
+              {product?.TotalComments} Valoraciones totales
             </div>
-            {product?.TotalComments} Valoraciones totales
-
             {[5, 4, 3, 2, 1].map(stars => (
               <div key={stars} className="starsLine">
                 <a>{stars} Estrellas</a>
@@ -302,18 +304,12 @@ const Product = ({ changeCart }) => {
                 {totalStarsPercentaje[stars]}%
               </div>
             ))}
-
-            <div className="product-vote">
-            <div className="separator"></div>
-              <h3>Valorar este producto</h3>
-              Comparte tu opinion con otros clientes
-              <button> Valorar </button>
-            </div>
           </div>
           <div className="Reseñas">
             <h2>Reseñas con imagenes</h2>
+            <ImageReviewsSlider Reviews={reviews} />
             <h2>Principales Reseñas</h2>
-            {renderCardReviews(reviews)}
+            <CardReviews Reviews={reviews} />
           </div>
         </div>
       )}
@@ -321,7 +317,6 @@ const Product = ({ changeCart }) => {
         <div id="comentarios" className="product-reviews">
           <div className="Opiniones">
             <h2>Opiniones de clientes</h2>
-
             {[5, 4, 3, 2, 1].map(stars => (
               <div key={stars} className="starsLine">
                 <a>{stars} Estrellas</a>

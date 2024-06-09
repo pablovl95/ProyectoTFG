@@ -1,15 +1,15 @@
 -- Tabla de Imagenes
-CREATE TRIGGER SetDefaultImageAfterInsert AFTER INSERT ON ProductImages FOR EACH ROW WHEN NEW.ProductID IS NOT NULL BEGIN
-UPDATE Products
-SET
-  ImageDefaultID = NEW.ImageID
-WHERE
-  ProductID = NEW.ProductID
-  AND ImageDefaultID IS NULL;
-
+CREATE TRIGGER SetDefaultImageAfterInsert
+AFTER INSERT ON ProductImages
+FOR EACH ROW
+BEGIN
+    UPDATE Products
+    SET ImageDefaultID = NEW.ImageID
+    WHERE ProductID = NEW.ProductID
+    AND ImageDefaultID IS NULL;
 END;
 
--- Cambia los estados de todos los subenvios del envio
+-- Actualiza la valoración de un producto
 CREATE TRIGGER UpdateOrderProductsStatus
 AFTER UPDATE OF OrderStatus ON Orders
 FOR EACH ROW
@@ -32,19 +32,16 @@ BEGIN
 END;
 
 -- Actualiza comentarios
-CREATE TRIGGER update_product_comments
+CREATE TRIGGER UpdateProductRatingAndComments
 AFTER INSERT ON Reviews
 FOR EACH ROW
 BEGIN
-    DECLARE avg_rating REAL;
-    -- Calcular la valoración media de todos los comentarios para el producto
-    SELECT AVG(AssignedRating) INTO avg_rating FROM Reviews WHERE ProductID = NEW.ProductID;
-    -- Actualizar la valoración media en la tabla Products
     UPDATE Products
-    SET TotalComments = TotalComments + 1,
-        Rating = avg_rating
+    SET Rating = (SELECT AVG(AssignedRating) FROM Reviews WHERE ProductID = NEW.ProductID),
+        TotalComments = (SELECT COUNT(*) FROM Reviews WHERE ProductID = NEW.ProductID)
     WHERE ProductID = NEW.ProductID;
 END;
+
 
 
 -- Actualizar el status de un pedido
@@ -68,6 +65,16 @@ BEGIN
     WHERE ShopID = NEW.ShopID;
 END;
 
+-- Actualizar las ventas del producto
+
+CREATE TRIGGER update_products_sales
+AFTER INSERT ON OrderProducts
+FOR EACH ROW
+BEGIN
+    UPDATE Products
+    SET TotalSales = TotalSales + NEW.Quantity
+    WHERE ProductID = NEW.ProductID;
+END;
 -- Actualiza el estado global del pedido
 
 CREATE TRIGGER update_order_status_trigger
