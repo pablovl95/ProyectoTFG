@@ -1,4 +1,3 @@
--- Tabla de Imagenes
 CREATE TRIGGER SetDefaultImageAfterInsert
 AFTER INSERT ON ProductImages
 FOR EACH ROW
@@ -9,7 +8,6 @@ BEGIN
     AND ImageDefaultID IS NULL;
 END;
 
--- Actualiza la valoración de un producto
 CREATE TRIGGER UpdateOrderProductsStatus
 AFTER UPDATE OF OrderStatus ON Orders
 FOR EACH ROW
@@ -19,8 +17,6 @@ BEGIN
     WHERE OrderID = NEW.OrderID;
 END;
 
-
--- Actualiza ventas del producto y stock
 CREATE TRIGGER update_product_sales
 AFTER INSERT ON OrderProducts
 FOR EACH ROW
@@ -31,7 +27,6 @@ BEGIN
     WHERE ProductID = NEW.ProductID;
 END;
 
--- Actualiza comentarios
 CREATE TRIGGER UpdateProductRatingAndComments
 AFTER INSERT ON Reviews
 FOR EACH ROW
@@ -42,9 +37,6 @@ BEGIN
     WHERE ProductID = NEW.ProductID;
 END;
 
-
-
--- Actualizar el status de un pedido
 CREATE TRIGGER update_order_status
 AFTER UPDATE ON OrderProducts
 FOR EACH ROW
@@ -53,8 +45,6 @@ BEGIN
     SET OrderStatus = NEW.OrderStatus
     WHERE OrderID = NEW.OrderID;
 END;
-
--- Actualizar las ventas de una tienda
 
 CREATE TRIGGER update_shop_sales
 AFTER INSERT ON OrderProducts
@@ -65,8 +55,6 @@ BEGIN
     WHERE ShopID = NEW.ShopID;
 END;
 
--- Actualizar las ventas del producto
-
 CREATE TRIGGER update_products_sales
 AFTER INSERT ON OrderProducts
 FOR EACH ROW
@@ -75,7 +63,6 @@ BEGIN
     SET TotalSales = TotalSales + NEW.Quantity
     WHERE ProductID = NEW.ProductID;
 END;
--- Actualiza el estado global del pedido
 
 CREATE TRIGGER update_order_status_trigger
 AFTER UPDATE ON OrderProducts

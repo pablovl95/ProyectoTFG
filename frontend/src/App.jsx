@@ -32,23 +32,16 @@ function App() {
       setUser(user);
       if (user) {
         try {
-          await fetch(`${backendUrl}/api/v1/users/${user.uid}`)
-            .then((response) => response.json())
-            .then((data) => {
-              setUserData(data[0]);
-              console.log(data[0]);
-            });
-        } catch (error) {
-
-        }
-        if (userData === undefined || userData === null) {
-          console.log("no hay datos");
-          try {
+          const data = await fetch(`${backendUrl}/api/v1/users/${user.uid}`);
+          const response = await data.json();
+          if (response.length > 0) {
+            setUserData(response[0]);
+          } else {
             const body = {
-              FirstName: user.displayName ? user.displayName?.split(' ')[0] : "NULL",
-              LastName: user.displayName ? user.displayName?.split(' ')[1] : "NULL" + (user.displayName ? user.displayName?.split(' ')[2] : ''),
-              Email: user ? user.email : "NULL",
-              UserID: user ? user.uid : "NULL",
+              FirstName: user.displayName ? user.displayName.split(' ')[0] : "NULL",
+              LastName: user.displayName ? (user.displayName.split(' ')[1] || '') + (user.displayName.split(' ')[2] || '') : "NULL",
+              Email: user.email || "NULL",
+              UserID: user.uid || "NULL",
               Phone: user.phoneNumber || 'NULL',
             };
             await fetch(`${backendUrl}/api/v1/users`, {
@@ -59,16 +52,16 @@ function App() {
               body: JSON.stringify(body),
             });
             setUserData(body);
-          } catch (error) {
-            console.error('Error during Google login:', error);
           }
+        } catch (error) {
+          console.error('Error durante el inicio de sesión:', error);
         }
       }
     });
-
+  
     return () => unsubscribe(); // Se asegura de desuscribirse cuando se desmonta el componente
-  }, [backendUrl, user]);
-
+  }, [backendUrl]);
+  
   const changeCart = () => {
     setChanger(!changer);
   };

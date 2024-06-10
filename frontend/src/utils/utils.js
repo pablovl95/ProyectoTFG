@@ -96,7 +96,22 @@ const calculateStarsPercentage = (product, reviews) => {
   return starsPercentage;
 };
 
+function StatusTranslation(status) {
+  switch (status) {
+    case 'delivered':
+      return 'Entregado';
+    case 'shipped':
+      return 'Enviado';
+    case 'pending':
+      return 'Pendiente';
+    case 'cancelled':
+      return 'Cancelado';
+    case 'archived':
+      return 'Archivado';
+    default:
+      return status;
+  }
+}
 
 
-
-export { buildURLSearchParams, renderStars, renderStarsProductCard, calculateStarsPercentage, generateCustomSequence };  
+export { buildURLSearchParams, StatusTranslation, renderStars, renderStarsProductCard, calculateStarsPercentage, generateCustomSequence };  

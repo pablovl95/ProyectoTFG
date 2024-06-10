@@ -194,17 +194,23 @@
 
 @media screen and (max-width: 768px) {
   .orders-container {
-    width: 90%;
+    width: 100%;
+    margin: 1rem 0;
+    padding:0;
   }
-
+  .order-info-subheader {
+    margin: 0 0.5rem;
+  }
   .orders-header {
     flex-wrap: wrap;
     justify-content: center;
+    padding:0;
   }
 
   .orders-header a {
     padding: 0.25rem 0.5rem;
     margin: 0.25rem;
+    padding:0;
   }
 
   .order-info-tags {

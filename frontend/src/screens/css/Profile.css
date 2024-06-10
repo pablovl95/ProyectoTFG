@@ -14,9 +14,42 @@
   background-color: #f9f9f9;
   border-radius: 4px;
 }
+
 .profile-resume-content {
   display: flex;
   flex-direction: row;
+}
+
+.profile-data-user-details {
+  width: 40%;
+  margin-left: 1rem;
+}
+
+.profile-user-info,
+.profile-shipping-info {
+  width: 100%;
+  border: 1px solid #e8e8e8;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  color: #656565;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-user-info h4,
+.profile-shipping-info h4 {
+  margin: 0;
+}
+
+.profile-user-info p,
+.profile-shipping-info p {
+  width: 100%;
+  color: #000000;
+  padding: 0;
+  margin: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar {
@@ -56,10 +89,146 @@
 .edit-button {
   background-color: #ffc107;
   border: none;
-  padding: 5px 10px;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-size: 1rem;
   cursor: pointer;
 }
 
 .edit-button:hover {
   background-color: #e0a800;
+}
+
+.sidebar-mobile {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .profile-container {
+    display: flex;
+    font-family: Arial, sans-serif;
+    flex-direction: column;
+    width: 90%;
+    margin: 1rem auto;
+  }
+
+  .profile-content {
+    width: 100%;
+    padding: 0;
+    margin: auto;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+  }
+
+  .profile-resume-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .profile-data-user-details {
+    width: 90%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .profile-user-info,
+  .profile-shipping-info {
+    width: 100%;
+    border: 1px solid #e8e8e8;
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+    color: #656565;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .profile-user-info h4,
+  .profile-shipping-info h4 {
+    margin: 0;
+  }
+
+  .profile-user-info p,
+  .profile-shipping-info p {
+    width: 100%;
+    color: #000000;
+    padding: 0;
+    margin: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-mobile {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .sidebar-toggle {
+    text-decoration: none;
+    background-color: #e8e8e8;
+    color: black;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+
+  .sidebar-button {
+    text-decoration: none;
+    background-color: #107500;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+  }
+
+  .sidebar-toggle:hover,
+  .sidebar-toggle.active {
+    background-color: #107500;
+    color: white;
+  }
+
+  .sidebar-mobile .logout-button {
+    text-decoration: none;
+    background-color: #e8e8e8;
+    color: rgb(255, 0, 0);
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+
+  .logout-button {
+    background: none;
+    border: none;
+    color: #ff0000;
+    cursor: pointer;
+  }
+
+  .user-info,
+  .shipping-info {
+    width: 100%;
+  }
+
+  .edit-button {
+    background-color: #ffc107;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
+  .edit-button:hover {
+    background-color: #e0a800;
+  }
 }

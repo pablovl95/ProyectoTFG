@@ -37,3 +37,42 @@
 .error-message {
     color: #ff0000;
 }
+
+@media screen and (max-width: 768px) {
+    .profile-details {
+        width: 100%;
+        margin: 1rem auto;
+        padding: 0;
+        background-color: #fff;
+    }
+    
+    .profile-details-header-nav {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 1rem;
+    }
+    
+    .profile-details-header-nav a {
+        text-decoration: none;
+        background-color: #188e0020;
+        margin: 1rem 0.5rem 0 0.5rem;
+        padding: 0;
+        border-radius: 0.5rem;
+        color: #565656;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    
+    .profile-details-content {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid #ccc;
+    }
+    
+    .error-message {
+        color: #ff0000;
+    }
+    
+    
+}

@@ -41,6 +41,7 @@
     padding: 1rem;
     border-radius: 0.5rem;
     border: 1px solid #ccc;
+    margin-bottom: 1rem;
 }
 
 .profile-details-change-password p {
@@ -72,11 +73,12 @@
     width: 50%;
     margin-right: 2rem;
 }
-
-.profile-details-change-password button {
+.profile-details-user-info button {
     padding: 8px 16px;
     margin-right: 10px;
     background-color: #007a08;
+    display:flex;
+    margin: auto;
     color: #fff;
     border: none;
     border-radius: 3px;
@@ -84,6 +86,111 @@
     transition: background-color 0.3s;
 }
 
+.profile-details-user-info button:hover {
+    background-color: #026b00;
+}
+
+.profile-details-change-password button {
+    padding: 8px 16px;
+    margin-right: 10px;
+    background-color: #007a08;
+    color: #fff;
+    border: none;
+    display:flex;
+    margin: auto;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
 .profile-details-change-password button:hover {
-    background-color: #0056b3;
+    background-color: #026b00;
+}
+
+@media screen and (max-width: 768px) {
+    .profile-details-user-info {
+        padding: 0;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 0.5rem;
+        margin-right: 1rem;
+    }
+    
+    .profile-details-user-info h4 {
+        margin: 0.5rem;
+        color: #333;
+    }
+    
+    .profile-details-user-info input {
+        width: 100%;
+        padding: 0.5rem 0.1rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+    
+    .profile-detail-user-content-row {
+        display: flex;
+        flex-direction: row;
+        margin: 0.5rem;
+    }
+    
+    .profile-detail-user-content-row div {
+        width: 50%;
+        margin: 0 1rem;
+    }
+    
+    
+    .profile-details-user-info h4 {
+        margin:0.5rem;
+        color: #333;
+    }
+    
+    .profile-details-change-password {
+        width: 100%;
+        padding: 0;
+        border-radius: 0.5rem;
+        border: 1px solid #ccc;
+    }
+    
+    .profile-details-change-password p {
+        margin: 0.5rem;
+        color: #333;
+    }
+    
+    .profile-details-change-password h4 {
+        margin: 0.5rem ;
+    }
+    
+    .profile-details-change-password input[type="password"] {
+        width: 100%;
+        padding: 0.5rem 0;
+        margin: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+    
+    .profile-details-new-password {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 1rem;
+        width: 100%;
+    }
+    .current-password-container {
+        margin-right: 2rem;
+    }
+    .profile-details-new-password div {
+        width: 50%;
+        margin-right: 2rem;
+    }
+    .profile-details-user-info button {
+       margin-bottom: 1rem;
+    }
+    .profile-details-change-password button {
+        margin-bottom: 1rem;
+     }
+ 
+    
+
+    
 }

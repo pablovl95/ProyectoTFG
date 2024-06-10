@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Security from "../components/Security";
 import Orders from "../components/Orders";
 import OrdersDetails from "../components/OrdersDetails";
@@ -8,34 +8,39 @@ import Payment from "../components/Payment";
 import Workwithus from "./Workwithus";
 import Contactus from "../components/Contactus";
 import './css/Profile.css';
+import Addresses from '../components/Addresses';
+import { StatusTranslation } from '../utils/utils';
+import { IconChevronsDown, IconChevronsUp } from '@tabler/icons-react';
 
 const Profile = ({ userData, changeUserData }) => {
-  const [selectedScreen, setSelectedScreen] = useState('resumen');
+  const [selectedScreen, setSelectedScreen] = useState('summary');
+  const navigate = useNavigate();
   const { id, id2 } = useParams();
 
-  // Actualiza la pantalla seleccionada al cambiar el id
   useEffect(() => {
-    setSelectedScreen(id || 'resumen');
+    setSelectedScreen(id || 'summary');
   }, [id]);
 
-  // Función para actualizar la pantalla seleccionada
   const handleScreenSelect = (screen) => {
-    setSelectedScreen(screen);
+    // Solo cambia el estado si el screen es diferente al seleccionado
+    if (screen !== selectedScreen) {
+      setSelectedScreen(screen);
+    }
   };
 
   const getNombre = (id) => {
     switch (id) {
-      case 'resumen':
+      case 'summary':
         return "Resumen";
-      case 'mis-pedidos':
-        return "Mis pedidos";
-      case 'seguimiento-de-pedidos':
-        return "Seguimiento de pedidos";
-      case 'mis-cupones':
-        return "Mis cupones";
-      case 'mis-datos':
-        return "Mis datos";
-      case 'contactanos':
+      case 'my-orders':
+        return "Mis Pedidos";
+      case 'order-tracking':
+        return "Seguimiento de Pedidos";
+      case 'my-coupons':
+        return "Mis Cupones";
+      case 'personal-data':
+        return "Mis Datos";
+      case 'contact-us':
         return "Contactanos";
       default:
         return "Resumen";
@@ -44,58 +49,134 @@ const Profile = ({ userData, changeUserData }) => {
 
   return (
     <div className="profile-container">
-      <Sidebar selectedScreen={selectedScreen} onSelect={handleScreenSelect} /> {/* Pasamos la función de selección al Sidebar */}
+      <Sidebar selectedScreen={selectedScreen} onSelect={handleScreenSelect} getNombre={getNombre} />
       <div className="profile-content">
-        <a className='link-active'>Mi cuenta </a>{">"} <a className={id2 ? "link-no-active" : "link-active"} >{getNombre(selectedScreen)}</a> {id2 ? " > " + "Detalles del pedido" : ""}
-        {selectedScreen === 'resumen' && <><h2>Ultimos pedidos</h2> <Resumen userData={userData} /></>}
-        {selectedScreen === 'mis-pedidos' && <><h2>Mis pedidos</h2><Orders userData={userData} /></>}
-        {selectedScreen === 'seguimiento-de-pedidos' && <SeguimientoPedidos />}
-        {selectedScreen === 'mis-cupones' && <MisCupones />}
-        {selectedScreen === 'mis-datos' && <><h2>Mis datos</h2> <ProfileDetails userData={userData} changeUserData={changeUserData}/></>}
-        {selectedScreen === 'contactanos' && <Contactus />}
+        <a className='link-active' onClick={() => navigate("/profile")}>Mi cuenta </a>{">"}
+        <a className={id2 ? "link-no-active" : "link-active"}>{getNombre(selectedScreen)}</a>
+        {id2 ? " > " + "Detalles del pedido" : ""}
+        {selectedScreen === 'summary' && <><h2>Ultimos pedidos</h2> <Resumen userData={userData} /></>}
+        {selectedScreen === 'my-orders' && (
+          id2 ? (
+            <>
+              <h2>Detalles del pedido</h2>
+              <OrdersDetails userData={userData} id={id2} />
+            </>
+          ) : (
+            <>
+              <h2>Mis pedidos</h2>
+              <Orders userData={userData} />
+            </>
+          )
+        )}
+
+        {selectedScreen === 'order-tracking' && <SeguimientoPedidos />}
+        {selectedScreen === 'my-coupons' && <MisCupones />}
+        {selectedScreen === 'personal-data' && <><h2>Mis datos</h2> <ProfileDetails userData={userData} changeUserData={changeUserData} /></>}
+        {selectedScreen === 'contact-us' && <Contactus />}
+      </div >
+    </div >
+  );
+};
+
+const Sidebar = ({ selectedScreen, onSelect, getNombre }) => {
+  const [openSidebar, setOpenSidebar] = useState(false);
+
+  return (
+    <>
+      <div className="sidebar">
+        <Link to={`/profile/summary`} className={selectedScreen === 'summary' ? 'active' : ''} onClick={() => onSelect('summary')}>Resumen</Link>
+        <Link to={`/profile/my-orders`} className={selectedScreen === 'my-orders' ? 'active' : ''} onClick={() => onSelect('my-orders')}>Mis pedidos</Link>
+        <Link to={`/profile/order-tracking`} className={selectedScreen === 'order-tracking' ? 'active' : ''} onClick={() => onSelect('order-tracking')}>Seguimiento de pedidos</Link>
+        <Link to={`/profile/my-coupons`} className={selectedScreen === 'my-coupons' ? 'active' : ''} onClick={() => onSelect('my-coupons')}>Mis cupones</Link>
+        <Link to={`/profile/personal-data`} className={selectedScreen === 'personal-data' ? 'active' : ''} onClick={() => onSelect('personal-data')}>Mis datos</Link>
+        <Link to={`/profile/contact-us`} className={selectedScreen === 'contact-us' ? 'active' : ''} onClick={() => onSelect('contact-us')}>Contactanos</Link>
+        <button className="logout-button">Cerrar sesión</button>
+      </div>
+      <div className='sidebar-mobile'>
+        <div className="sidebar-button" onClick={() => setOpenSidebar(!openSidebar)}>
+          {openSidebar ? <a>Cerrar </a> : <a>{getNombre(selectedScreen)}</a>}
+          {openSidebar ? <IconChevronsUp /> : <IconChevronsDown />}
+        </div>
+        {openSidebar && (
+          <div className={`sidebar-mobile`}>
+            <Link to={`/profile/summary`} className={selectedScreen === 'summary' ? 'sidebar-toggle active' : 'sidebar-toggle'} onClick={() => {onSelect('summary');setOpenSidebar(!openSidebar);}}>Resumen</Link>
+            <Link to={`/profile/my-orders`} className={selectedScreen === 'my-orders' ? 'sidebar-toggle active' : 'sidebar-toggle'} onClick={() => {onSelect('my-orders');setOpenSidebar(!openSidebar);}}>Mis pedidos</Link>
+            <Link to={`/profile/order-tracking`} className={selectedScreen === 'order-tracking' ? 'sidebar-toggle active' : 'sidebar-toggle'} onClick={() => {onSelect('order-tracking');setOpenSidebar(!openSidebar);}}>Seguimiento de pedidos</Link>
+            <Link to={`/profile/my-coupons`} className={selectedScreen === 'my-coupons' ? 'sidebar-toggle active' : 'sidebar-toggle'} onClick={() => {onSelect('my-coupons');setOpenSidebar(!openSidebar);}}>Mis cupones</Link>
+            <Link to={`/profile/personal-data`} className={selectedScreen === 'personal-data' ? 'sidebar-toggle active' : 'sidebar-toggle'} onClick={() => {onSelect('personal-data');setOpenSidebar(!openSidebar);}}>Mis datos</Link>
+            <Link to={`/profile/contact-us`} className={selectedScreen === 'contact-us' ? 'sidebar-toggle active' : 'sidebar-toggle'} onClick={() => {onSelect('contact-us');setOpenSidebar(!openSidebar);}}>Contactanos</Link>
+            <button className="logout-button">Cerrar sesión</button>
+          </div>)}
+      </div>
+    </>
+  );
+}
+
+const Resumen = ({ userData }) => {
+  const [userAddress, setUserAddress] = useState(null);
+  const navigate = useNavigate();
+  const backendUrl = process.env.NODE_ENV === 'development'
+    ? 'http://localhost:5000'
+    : process.env.REACT_APP_BACKEND_URL;
+
+  useEffect(() => {
+    fetch(`${backendUrl}/api/v1/addresses/${userData.UserID}`)
+      .then(response => response.json())
+      .then(data => {
+        const defaultAddress = data.find(address => address.DefaultAddress === 1);
+        if (defaultAddress) {
+          setUserAddress(defaultAddress);
+          console.log(defaultAddress);
+        } else if (data.length > 0) {
+          setUserAddress(data[0]);
+        }
+      })
+      .catch(error => console.error('Error fetching user addresses:', error));
+  }, [userData.id]);
+
+  return (
+    <div className='profile-resume-content'>
+      <Orders userData={userData} recents={true} />
+      <div className="profile-data-user-details">
+        <h2>Mis datos</h2>
+
+        <div className="profile-user-info">
+          <h4>Datos de usuario</h4>
+          <div className="separator" style={{ marginBottom: "1rem" }}></div>
+          NOMBRE:
+          <p>{userData.FirstName}</p>
+          APELLIDOS:
+          <p>{userData.LastName}</p>
+          EMAIL:
+          <p>{userData.Email}</p>
+          TELÉFONO:
+          <p>{userData.Phone === "NULL" ? "No hay datos" : userData.Phone}</p>
+          <button className="edit-button" onClick={() => navigate("/profile/personal-data")}>Editar</button>
+        </div>
+        <div className="profile-shipping-info">
+          <h4>Datos de envío</h4>
+          <div className="separator" style={{ marginBottom: "1rem" }}></div>
+          DESTINATARIO:
+          <p>{userData.FirstName} {userData.LastName}</p>
+          DIRECCIÓN:
+          {userAddress ? (
+            <>
+              <p>{userAddress?.AddressTitle}</p>
+              <p>{userAddress?.AddressLine}, {userAddress?.AddressNumber}</p>
+              <p>{userAddress?.City}, {userAddress?.Province}, {userAddress?.Country}</p>
+              <button className="edit-button" onClick={() => navigate("/profile/personal-data")}>Editar</button>
+            </>
+          ) : (
+            <>
+              <p>Aún no hay ninguna dirección añadida.</p>
+              <button className="edit-button" onClick={() => navigate("/profile/personal-data")}>Añadir Dirección</button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
 };
-
-const Sidebar = ({ selectedScreen, onSelect }) => (
-  <div className="sidebar">
-    <Link to={`/profile/resumen`} className={selectedScreen === 'resumen' ? 'active' : ''} onClick={() => onSelect('resumen')}>Resumen</Link>
-    <Link to={`/profile/mis-pedidos`} className={selectedScreen === 'mis-pedidos' ? 'active' : ''} onClick={() => onSelect('mis-pedidos')}>Mis pedidos</Link>
-    <Link to={`/profile/seguimiento-de-pedidos`} className={selectedScreen === 'seguimiento-de-pedidos' ? 'active' : ''} onClick={() => onSelect('seguimiento-de-pedidos')}>Seguimiento de pedidos</Link>
-    <Link to={`/profile/mis-cupones`} className={selectedScreen === 'mis-cupones' ? 'active' : ''} onClick={() => onSelect('mis-cupones')}>Mis cupones</Link>
-    <Link to={`/profile/mis-datos`} className={selectedScreen === 'mis-datos' ? 'active' : ''} onClick={() => onSelect('mis-datos')}>Mis datos</Link>
-    <Link to={`/profile/contactanos`} className={selectedScreen === 'contactanos' ? 'active' : ''} onClick={() => onSelect('contactanos')}>Contactanos</Link>
-    <button className="logout-button">Cerrar sesión</button>
-  </div>
-);
-
-const Resumen = ({ userData }) => (
-
-  <div className='profile-resume-content'>
-    <Orders userData={userData} recents={true} />
-    <div className="profile-details">
-      <h2>Mis datos</h2>
-
-      <div className="user-info">
-        <h4>Datos de usuario</h4>
-        <div className="separator"></div>
-        <p>NOMBRE: {userData.FirstName}</p>
-        <p>APELLIDOS: {userData.LastName}</p>
-        <p>EMAIL:  {userData.Email}</p>
-        <p>TELÉFONO: {userData.Phone == "NULL" ? "No hay datos" : userData.Phone}</p>
-        <button className="edit-button">Editar</button>
-      </div>
-      <div className="shipping-info">
-        <h4>Datos de envío</h4>
-        <div className="separator"></div>
-        <p>DESTINATARIO: pablo vera lopez</p>
-        <p>DIRECCIÓN: Real De Abajo, 31, 21600 Valverde Del Camino, Huelva, España</p>
-        <button className="edit-button">Editar</button>
-      </div>
-    </div>
-  </div>
-);
 
 const SeguimientoPedidos = () => (
   <div>
@@ -110,8 +191,5 @@ const MisCupones = () => (
     <p>Lista de cupones disponibles para el usuario...</p>
   </div>
 );
-
-
-
 
 export default Profile;

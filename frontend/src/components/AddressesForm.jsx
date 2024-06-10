@@ -42,7 +42,7 @@ const AddressesForm = ({
                             </div>
                             <div>
                                 <label htmlFor="addressNumber">Número</label>
-                                <input type="text" id="addressNumber" name="addressNumber" required defaultValue={emptyAddress.AdressNumber} />
+                                <input type="text" id="addressNumber" name="addressNumber" required defaultValue={emptyAddress.AddressNumber} />
                             </div>
                             <div>
                                 <label htmlFor="postalCode">Código Postal</label>

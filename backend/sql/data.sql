@@ -45,7 +45,6 @@ INSERT INTO
     Email,
     Phone,
     UserType,
-    AssociatedStoreID,
     AccountStatus
   )
 VALUES
@@ -56,7 +55,6 @@ VALUES
     'juan@example.com',
     667323456,
     'consumer',
-    NULL,
     'active'
   ),
   (
@@ -66,7 +64,6 @@ VALUES
     'maria@example.com',
     667323456,
     'producer',
-    NULL,
     'active'
   ),
   (
@@ -76,12 +73,9 @@ VALUES
     'carlos@example.com',
     667323456,
     'delivery',
-    NULL,
     'inactive'
   );
 
-
--- Tabla de direcciones
 INSERT INTO
   Addresses (
     AddressID,
@@ -91,7 +85,7 @@ INSERT INTO
     LastName,
     Phone,
     AddressLine,
-    AdressNumber,
+    AddressNumber,
     PostalCode,
     Country,
     Province,
@@ -160,8 +154,22 @@ VALUES
     0
   );
 
--- Productos
-INSERT INTO Products (ProductID, ProductName, ProductDescription, PrincipalCategoryID, SecundaryCategoryID, Price, Rating, StockAvailability, TotalSales, TotalComments, ImageDefaultID, ShopID)
+INSERT INTO
+  Products (
+    ProductID,
+    ProductName,
+    ProductDescription,
+    PrincipalCategoryID,
+    SecundaryCategoryID,
+    Price,
+    Rating,
+    StockAvailability,
+    TotalSales,
+    TotalComments,
+    ImageDefaultID,
+    ShopID,
+    SelfShipping
+  )
 VALUES
   (
     '21fcc4998068710985641ca3c58fd77',
@@ -175,7 +183,8 @@ VALUES
     0,
     0,
     NULL,
-    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
+    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7',
+    0
   ),
   (
     '21fcc4998068710985641ca3c58fd78',
@@ -189,7 +198,8 @@ VALUES
     0,
     0,
     NULL,
-    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
+    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7',
+    0
   ),
   (
     '21fcc4998068710985641ca3c58fd79',
@@ -203,7 +213,8 @@ VALUES
     0,
     0,
     NULL,
-    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
+    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7',
+    0
   ),
   (
     '21fcc4998068710985641ca3c58fd80',
@@ -217,7 +228,8 @@ VALUES
     0,
     0,
     NULL,
-    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
+    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7',
+    0
   ),
   (
     '21fcc4998068710985641ca3c58fd81',
@@ -231,7 +243,8 @@ VALUES
     0,
     0,
     NULL,
-    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
+    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7',
+    0
   ),
   (
     '21fcc4998068710985641ca3c58fd82',
@@ -245,7 +258,8 @@ VALUES
     0,
     0,
     NULL,
-    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
+    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7',
+    0
   ),
   (
     '21fcc4998068710985641ca3c58fd83',
@@ -259,7 +273,8 @@ VALUES
     0,
     0,
     NULL,
-    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
+    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7',
+    0
   ),
   (
     '21fcc4998068710985641ca3c58fd84',
@@ -273,7 +288,8 @@ VALUES
     0,
     0,
     NULL,
-    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
+    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7',
+    0
   ),
   (
     '21fcc4998068710985641ca3c58fd85',
@@ -287,7 +303,8 @@ VALUES
     0,
     0,
     NULL,
-    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
+    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7',
+    0
   ),
   (
     '21fcc4998068710985641ca3c58fd86',
@@ -301,11 +318,10 @@ VALUES
     0,
     0,
     NULL,
-    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7'
+    'a7b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7',
+    0
   );
 
-
--- Tabla de revisiones
 INSERT INTO
   Reviews (ProductID, Comment, UserID, AssignedRating)
 VALUES
@@ -339,5 +355,3 @@ VALUES
     'c8892c2ada205bf893b69d8243181a3',
     3
   );
-
--- Tabla de Imagenes

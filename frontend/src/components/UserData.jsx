@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { auth } from "../auth";
 import { EmailAuthProvider, updatePassword, reauthenticateWithCredential } from 'firebase/auth';
 import './css/UserData.css';
+
 const UserData = ({ userData, changeUserData }) => {
     const backendUrl = process.env.NODE_ENV === "development"
         ? "http://localhost:5000"

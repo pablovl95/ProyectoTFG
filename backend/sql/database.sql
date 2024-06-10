@@ -1,21 +1,3 @@
-DROP TABLE IF EXISTS Reviews;
-
-DROP TABLE IF EXISTS Users;
-
-DROP TABLE IF EXISTS Products;
-
-DROP TABLE IF EXISTS Categories;
-
-DROP TABLE IF EXISTS Orders;
-
-DROP TABLE IF EXISTS Shops;
-
-DROP TABLE IF EXISTS Addresses;
-
-DROP TABLE IF EXISTS ProductsOrders;
-
-DROP TABLE IF EXISTS ProductImages;
-
 CREATE TABLE
   Categories (
     CategoryID TEXT PRIMARY KEY DEFAULT (
@@ -23,6 +5,26 @@ CREATE TABLE
     ),
     CategoryName TEXT NOT NULL,
     CategoryDescription TEXT
+  );
+
+CREATE TABLE
+  Addresses (
+    AddressID TEXT PRIMARY KEY DEFAULT (
+      LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
+    ),
+    UserID TEXT NOT NULL,
+    AddressTitle TEXT NOT NULL,
+    FirstName TEXT NOT NULL,
+    LastName TEXT NOT NULL,
+    Phone TEXT NOT NULL,
+    AddressLine TEXT NOT NULL,
+    AddressNumber TEXT NOT NULL,
+    PostalCode TEXT NOT NULL,
+    Country TEXT NOT NULL,
+    Province TEXT NOT NULL,
+    City TEXT NOT NULL,
+    DefaultAddress BOOLEAN DEFAULT 0,
+    FOREIGN KEY (UserID) REFERENCES Users (UserID)
   );
 
 CREATE TABLE
@@ -48,7 +50,6 @@ CREATE TABLE
     FirstName TEXT NOT NULL,
     LastName TEXT NOT NULL,
     Email TEXT UNIQUE NOT NULL,
-    ProfileImageUrl TEXT DEFAULT 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
     Phone TEXT,
     UserType TEXT CHECK (
       UserType IN (
@@ -58,14 +59,15 @@ CREATE TABLE
         'administrator'
       )
     ) NOT NULL,
-    AssociatedStoreID TEXT,
-    AccountStatus TEXT CHECK (AccountStatus IN ('active', 'inactive')) NOT NULL,
-    FOREIGN KEY (AssociatedStoreID) REFERENCES Shops (ShopID)
+    AccountStatus TEXT CHECK (
+      AccountStatus IN ('active', 'inactive', 'suspended')
+    ) NOT NULL
   );
 
-CREATE TABLE Products (
+CREATE TABLE
+  Products (
     ProductID TEXT PRIMARY KEY DEFAULT (
-        LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
+      LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
     ),
     ProductName TEXT NOT NULL,
     ProductDescription TEXT,
@@ -78,10 +80,10 @@ CREATE TABLE Products (
     TotalComments INTEGER DEFAULT 0,
     ImageDefaultID TEXT,
     ShopID TEXT NOT NULL,
-    SelfShipping BOOLEAN DEFAULT FALSE, 
+    SelfShipping BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (PrincipalCategoryID) REFERENCES Categories (CategoryID),
     FOREIGN KEY (ShopID) REFERENCES Shops (ShopID)
-);
+  );
 
 CREATE TABLE
   ProductImages (
@@ -93,7 +95,6 @@ CREATE TABLE
     UploadDate DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
   );
-
 
 CREATE TABLE
   Reviews (
@@ -121,26 +122,6 @@ CREATE TABLE
   );
 
 CREATE TABLE
-  Addresses (
-    AddressID TEXT PRIMARY KEY DEFAULT (
-      LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
-    ),
-    UserID TEXT NOT NULL,
-    AddressTitle TEXT NOT NULL,
-    FirstName TEXT NOT NULL,
-    LastName TEXT NOT NULL,
-    Phone TEXT NOT NULL,
-    AddressLine TEXT NOT NULL,
-    AddressNumber TEXT NOT NULL,
-    PostalCode TEXT NOT NULL,
-    Country TEXT NOT NULL,
-    Province TEXT NOT NULL,
-    City TEXT NOT NULL,
-    DefaultAddress BOOLEAN DEFAULT 0,
-    FOREIGN KEY (UserID) REFERENCES Users (UserID)
-  );
-
-CREATE TABLE
   Orders (
     OrderID TEXT PRIMARY KEY DEFAULT (
       LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
@@ -164,14 +145,10 @@ CREATE TABLE
     FOREIGN KEY (AddressID) REFERENCES Addresses (AddressID)
   );
 
-CREATE TABLE OrderProducts (
+CREATE TABLE
+  OrderProducts (
     OrderProductsID TEXT DEFAULT (
-      LOWER(HEX(RANDOMBLOB(4))) || 
-      LOWER(HEX(RANDOMBLOB(2))) || 
-      SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
-      SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || 
-      SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || 
-      LOWER(HEX(RANDOMBLOB(6)))
+      LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
     ),
     OrderID TEXT NOT NULL,
     ShopID TEXT NOT NULL,
@@ -195,7 +172,28 @@ CREATE TABLE OrderProducts (
     FOREIGN KEY (ShopID) REFERENCES Shops (ShopID),
     FOREIGN KEY (OrderID) REFERENCES Orders (OrderID),
     FOREIGN KEY (AddressID) REFERENCES Addresses (AddressID)
-);
+  );
+
+CREATE TABLE
+  OrdersStatus (
+    OrderStatusID TEXT PRIMARY KEY DEFAULT (
+      LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6)))
+    ),
+    OrderProductsID TEXT NOT NULL,
+    OrderStatus TEXT CHECK (
+      OrderStatus IN (
+        'pending',
+        'shipped',
+        'delivered',
+        'archived',
+        'cancelled',
+        'deleted'
+      )
+    ) NOT NULL DEFAULT 'pending',
+    OrderStatusDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    OrderStatusFinalDate DATETIME DEFAULT NULL,
+    FOREIGN KEY (OrderProductsID) REFERENCES OrderProducts(OrderProductsID)
+  );
 
 CREATE TABLE
   Product_Info (

@@ -112,7 +112,7 @@ const Addresses = ({ userData, setAddress }) => {
                         {address.DefaultAddress === 1 && <p>(Dirección por defecto)</p>}
                         <p>Nombre {address.FirstName + " " + address.LastName}</p>
                         <p>Teléfono {address.Phone}</p>
-                        <p>Dirección {address.AddressLine + ", " + address.AdressNumber}</p>
+                        <p>Dirección {address.AddressLine + ", " + address.AddressNumber}</p>
                         <p>Población {address.City}</p>
                         <p>Provincia {address.Province}</p>
                         <p>Código Postal {address.PostalCode}</p>

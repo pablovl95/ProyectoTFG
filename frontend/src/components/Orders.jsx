@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./css/Orders.css";
 import { ClipLoader } from "react-spinners";
-import WriteReview from './WriteReview'; // Importar el componente de escritura de opinión
+import WriteReview from './WriteReview'; 
+import { StatusTranslation } from '../utils/utils';
 
 function Orders({ userData, recents }) {
   const navigate = useNavigate();
@@ -49,22 +50,7 @@ function Orders({ userData, recents }) {
     setSortBy(selectedSortOption);
   };
 
-  function StatusTranslation(status) {
-    switch (status) {
-      case 'delivered':
-        return 'Entregado';
-      case 'shipped':
-        return 'Enviado';
-      case 'pending':
-        return 'Pendiente';
-      case 'cancelled':
-        return 'Cancelado';
-      case 'archived':
-        return 'Archivado';
-      default:
-        return status;
-    }
-  }
+
   const [filter, setFilter] = useState("all");
 
   const handleFilterClick = (filterValue) => {
@@ -82,7 +68,7 @@ function Orders({ userData, recents }) {
   
 
   const handleCardClick = (orderId) => {
-    navigate(`/profile/mis-pedidos/${orderId}`);
+    navigate(`/profile/my-orders/${orderId}`);
   };
   const cancelOrder = async (orderId, status) => {
     try {
