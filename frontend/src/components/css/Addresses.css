@@ -1,3 +1,5 @@
+/* Addresses.css */
+
 .profile-details-address {
   display: flex;
   flex-wrap: wrap;
@@ -9,26 +11,20 @@
   border: 1px solid #ccc;
   border-radius: 0.5rem;
   padding: 10px;
+  cursor: pointer;
 }
 
+.profile-details-address-details:hover {
+  background-color: #f1f1f1;
+}
+
+.default-address {
+  border: 2px solid #4CAF50;
+  background-color: #e6ffe6;
+}
 
 .profile-details-address h4 {
   margin-bottom: 10px;
-}
-
-
-.profile-details-addresses-edit-button:hover {
-  background-color: #085c00;
-}
-
-.profile-details-addresses-edit-button {
-  margin-left: auto;
-  width: 50%;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  background-color: #0d7100;
-  color: white;
 }
 
 .profile-details-address-details h4 {
@@ -39,9 +35,25 @@
   margin: 5px 0;
 }
 
+.profile-details-addresses-edit-button,
+.profile-details-addresses-delete-button {
+  margin-left: auto;
+  width: 50%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  background-color: #0d7100;
+  color: white;
+  margin-top: 10px;
+}
+
+.profile-details-addresses-edit-button:hover,
+.profile-details-addresses-delete-button:hover {
+  background-color: #085c00;
+}
+
 .profile-details-add-address {
   padding: 10px;
   text-align: center;
   cursor: pointer;
 }
-

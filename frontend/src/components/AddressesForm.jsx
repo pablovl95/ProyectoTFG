@@ -23,44 +23,44 @@ const AddressesForm = ({
                         </div>
                         <div className='form-row-data'>
                             <div>
-                                <label htmlFor="firstName">Nombre</label>
-                                <input type="text" id="firstName" name="firstName" required defaultValue={emptyAddress.FirstName} />
+                                <label htmlFor="FirstName">Nombre</label>
+                                <input type="text" id="FirstName" name="FirstName" required defaultValue={emptyAddress.FirstName} />
                             </div>
                             <div>
-                                <label htmlFor="lastName">Apellido</label>
-                                <input type="text" id="lastName" name="lastName" required defaultValue={emptyAddress.LastName} />
+                                <label htmlFor="LastName">Apellido</label>
+                                <input type="text" id="LastName" name="LastName" required defaultValue={emptyAddress.LastName} />
                             </div>
                             <div>
-                                <label htmlFor="phone">Teléfono</label>
-                                <input type="text" id="phone" name="phone" required defaultValue={emptyAddress.Phone} />
-                            </div>
-                        </div>
-                        <div className='form-row-data'>
-                            <div>
-                                <label htmlFor="addressLine">Dirección</label>
-                                <input type="text" id="addressLine" name="addressLine" required defaultValue={emptyAddress.AddressLine} />
-                            </div>
-                            <div>
-                                <label htmlFor="addressNumber">Número</label>
-                                <input type="text" id="addressNumber" name="addressNumber" required defaultValue={emptyAddress.AddressNumber} />
-                            </div>
-                            <div>
-                                <label htmlFor="postalCode">Código Postal</label>
-                                <input type="text" id="postalCode" name="postalCode" required defaultValue={emptyAddress.PostalCode} />
+                                <label htmlFor="Phone">Teléfono</label>
+                                <input type="text" id="Phone" name="Phone" required defaultValue={emptyAddress.Phone} />
                             </div>
                         </div>
                         <div className='form-row-data'>
                             <div>
-                                <label htmlFor="city">Ciudad</label>
-                                <input type="text" id="city" name="city" required defaultValue={emptyAddress.City} />
+                                <label htmlFor="AddressLine">Dirección</label>
+                                <input type="text" id="AddressLine" name="AddressLine" required defaultValue={emptyAddress.AddressLine} />
                             </div>
                             <div>
-                                <label htmlFor="province">Provincia</label>
-                                <input type="text" id="province" name="province" required defaultValue={emptyAddress.Province} />
+                                <label htmlFor="AddressNumber">Número</label>
+                                <input type="text" id="AddressNumber" name="AddressNumber" required defaultValue={emptyAddress.AddressNumber} />
                             </div>
                             <div>
-                                <label htmlFor="country">País</label>
-                                <input type="text" id="country" name="country" required defaultValue={emptyAddress.Country} />
+                                <label htmlFor="PostalCode">Código Postal</label>
+                                <input type="text" id="PostalCode" name="PostalCode" required defaultValue={emptyAddress.PostalCode} />
+                            </div>
+                        </div>
+                        <div className='form-row-data'>
+                            <div>
+                                <label htmlFor="City">Ciudad</label>
+                                <input type="text" id="City" name="City" required defaultValue={emptyAddress.City} />
+                            </div>
+                            <div>
+                                <label htmlFor="Province">Provincia</label>
+                                <input type="text" id="Province" name="Province" required defaultValue={emptyAddress.Province} />
+                            </div>
+                            <div>
+                                <label htmlFor="Country">País</label>
+                                <input type="text" id="Country" name="Country" required defaultValue={emptyAddress.Country} />
                             </div>
                         </div>
                         <div className="form-buttons">

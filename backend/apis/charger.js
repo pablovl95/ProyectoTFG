@@ -69,15 +69,27 @@ function backendCharger(app, db) {
         try {
             await db.execute(
                 `
-CREATE TRIGGER UpdateProductRatingAndComments
-AFTER INSERT ON Reviews
+CREATE TRIGGER UpdateOrderStatus
+AFTER UPDATE OF OrderStatus ON OrderProducts
 FOR EACH ROW
 BEGIN
-    UPDATE Products
-    SET Rating = (SELECT AVG(AssignedRating) FROM Reviews WHERE ProductID = NEW.ProductID),
-        TotalComments = (SELECT COUNT(*) FROM Reviews WHERE ProductID = NEW.ProductID)
-    WHERE ProductID = NEW.ProductID;
+
+    INSERT INTO OrdersStatus (
+        OrderProductsID,
+        OrderStatus,
+        OrderStatusDate,
+        OrderStatusFinalDate
+    ) VALUES (
+        NEW.OrderProductsID,
+        NEW.OrderStatus,
+        NEW.OrderDate,
+        NULL
+    );
+        UPDATE OrdersStatus
+        SET OrderStatusFinalDate = CURRENT_TIMESTAMP
+        WHERE OrderProductsID = NEW.OrderProductsID AND OrderStatus = OLD.OrderStatus;
 END;
+
                 `
             );
             res.send('Database charged successfully.');

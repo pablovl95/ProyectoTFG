@@ -76,4 +76,26 @@ BEGIN
         WHERE OrderID = NEW.OrderID AND order_status != NEW.OrderStatus;
     END IF;
 END;
-nuevi
+
+
+CREATE TRIGGER UpdateOrderStatus
+AFTER UPDATE OF OrderStatus ON OrderProducts
+FOR EACH ROW
+BEGIN
+    UPDATE OrdersStatus
+        SET OrderStatusFinalDate = CURRENT_TIMESTAMP
+        WHERE OrderProductsID = NEW.OrderProductsID AND OrderStatus != OLD.OrderStatus;
+    INSERT INTO OrdersStatus (
+        OrderProductsID,
+        OrderStatus,
+        OrderStatusDate,
+        OrderStatusFinalDate
+    ) VALUES (
+        NEW.OrderProductsID,
+        NEW.OrderStatus,
+        NEW.OrderDate,
+        CURRENT_TIMESTAMP
+    );
+END;
+
+

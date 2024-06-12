@@ -152,19 +152,27 @@
 .cart-header a {
   margin: 0 10px;
   padding: 0.25rem 1rem;
-  color: #ffffff;
-  border: 1px solid #4ca35f;
   border-radius: 0.5rem;
-  background-color: #4ca35f;
   text-align: center;
-  cursor: pointer;
   text-decoration: none;
+}
+.cart-header-active {
+  background-color: #4ca35f;
+  color: white;
+  border: 1px solid #219150;
+  cursor: pointer;
+}
+.cart-header-passed {
+  background-color: #b1b1b1;
+  color: rgb(255, 255, 255);
+  border: 1px solid #b1b1b1;
 }
 
 @media (max-width: 768px) {
   .cart-container {
     width: 95%;
     padding: 1rem 0;
+    margin:auto;
 
   }
   .cart-item {

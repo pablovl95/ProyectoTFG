@@ -11,7 +11,7 @@ const ProfileDetails = ({ userData, changeUserData }) => {
             ContentComponent = <UserData userData={userData} changeUserData={changeUserData} />;
             break;
         case 'direcciones':
-            ContentComponent = <Addresses userData={userData} />;
+            ContentComponent = <Addresses userData={userData} Screen={"data"}/>;
             break;
         case 'metodosPago':
             ContentComponent = <MetodosPago userData={userData} />;

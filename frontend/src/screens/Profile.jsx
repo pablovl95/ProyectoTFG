@@ -51,9 +51,9 @@ const Profile = ({ userData, changeUserData }) => {
     <div className="profile-container">
       <Sidebar selectedScreen={selectedScreen} onSelect={handleScreenSelect} getNombre={getNombre} />
       <div className="profile-content">
-        <a className='link-active' onClick={() => navigate("/profile")}>Mi cuenta </a>{">"}
-        <a className={id2 ? "link-no-active" : "link-active"}>{getNombre(selectedScreen)}</a>
-        {id2 ? " > " + "Detalles del pedido" : ""}
+        <a className={id2 ? 'link-active' : 'link-no-active'} onClick={() => navigate("/profile")}>Mi cuenta </a>{" > "}
+        <a onClick={() => navigate("/profile/"+selectedScreen)} className={id2 ? 'link-no-active' : 'link-active'}>{getNombre(selectedScreen)}</a>
+        {id2 ?   <>{" > "} <a className='link-active' onClick={() => navigate("/profile/my-orders"+id2)}>Detalles del pedido</a></> : ""}
         {selectedScreen === 'summary' && <><h2>Ultimos pedidos</h2> <Resumen userData={userData} /></>}
         {selectedScreen === 'my-orders' && (
           id2 ? (

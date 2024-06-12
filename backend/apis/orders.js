@@ -68,6 +68,9 @@ function backendOrders (app, db) {
           for (const product of parseProducts) {
             const { ProductID, ShopID, Quantity } = product;
             await db.execute(`INSERT INTO OrderProducts (OrderID, ShopID, ProductID, AddressID, Quantity) VALUES ('${orderId}', '${ShopID}', '${ProductID}', '${AddressID}', '${Quantity}')`);
+            const orderProductsQuery = await db.execute(`SELECT OrderProductsID FROM OrderProducts WHERE OrderID = '${orderId}' AND ProductID = '${ProductID}' AND ShopID = '${ShopID}' AND AddressID = '${AddressID}' AND Quantity = '${Quantity}'`);
+            const OrderProductsID = orderProductsQuery.rows[0].OrderProductsID;
+            await db.execute(`INSERT INTO OrdersStatus (OrderProductsID, OrderStatus, OrderStatusDate) VALUES ('${OrderProductsID}', 'pending', '${OrderDate}')`);
           }
       
           res.status(200).send({ message: "Orden creada exitosamente." });
@@ -76,6 +79,7 @@ function backendOrders (app, db) {
           res.status(500).send({ error: "Error interno del servidor." });
         }
       });
+      
       
       
       app.get('/api/v1/orders/:userId/:orderId', async (req, res) => {

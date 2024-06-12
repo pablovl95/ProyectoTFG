@@ -1,53 +1,82 @@
-.detalles-pedido {
-    padding: 20px;
-    font-family: Arial, sans-serif;
+/* OrdersDetails.css */
+
+.order-details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.tabla-resumen,
-.tabla-direccion,
-.tabla-productos {
+.order-details-order {
     width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
 }
 
-.tabla-resumen th,
-.tabla-direccion th,
-.tabla-productos th,
-.tabla-resumen td,
-.tabla-direccion td,
-.tabla-productos td {
-    border: 1px solid #ddd;
-    padding: 8px;
+.order-details-delivered-address {
+    width: 100%;
 }
 
-.tabla-productos img {
-    max-width: 50px;
-    height: auto;
+.order-details-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin:auto;
 }
 
-.tabla-productos th,
-.tabla-resumen th,
-.tabla-direccion th {
-    background-color: #f4f4f4;
-    text-align: left;
+.order-details-cancel-button {
+    margin: 10px;
+    padding: 0.5rem;
+    text-align: center;
+    background-color: #f06940;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
 }
 
-.tabla-productos tbody tr:hover {
-    background-color: #f1f1f1;
+.order-details-change-button {
+    margin: 10px;
+    padding: 0.5rem;
+    text-align: center;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: #f0c040;
 }
-@media only screen and (max-width: 768px) {
-    .detalles-pedido {
-        padding: 0;
+
+.order-details-table-products {
+    width: 100%;
+}
+
+.order-details-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+@media screen and (max-width: 768px){
+    .order-details-container {
+        padding: 0; 
     }
 
+    .order-details-actions {
+        flex-direction: column;
+        align-items: center; 
+    }
 
-    .tabla-resumen th,
-    .tabla-direccion th,
-    .tabla-productos th,
-    .tabla-resumen td,
-    .tabla-direccion td,
-    .tabla-productos td {
-        width: auto; /* Ajustar el ancho de las celdas a contenido */
+    .order-details-cancel-button,
+    .order-details-change-button,
+    .order-details-tracking-button,
+    .order-details-review-button {
+        width: 100%; /* Hace que los botones ocupen el ancho completo en dispositivos pequeños */
+    }
+
+    .order-details-table-summary,
+    .order-details-table-address,
+    .order-details-table-product {
+        font-size: 0.60rem;
+    }
+
+    .order-details-image {
+        width: 50px; /* Reduce el tamaño de las imágenes de productos en dispositivos pequeños */
+        height: 50px;
     }
 }

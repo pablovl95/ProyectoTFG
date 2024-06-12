@@ -20,6 +20,18 @@ function backendUsers(app, db) {
             res.status(500).send('Error al obtener el usuario de la base de datos');
         }
     });
+    
+    app.get('/api/v1/users/payment/:id', async (req, res) => {
+      const id = req.params.id; // Obtener el valor del parámetro ID de la solicitud
+      console.log(id);
+      try {
+          const data = await db.execute(`SELECT * FROM PaymentMethods WHERE UserID = '${id}'`);
+          res.status(200).send(data.rows);
+      } catch (error) {
+          console.error('Error al consultar la base de datos:', error);
+          res.status(500).send('Error al obtener el usuario de la base de datos');
+      }
+  });
 
     app.put('/api/v1/users/:id', async (req, res) => {
         const id = req.params.id;

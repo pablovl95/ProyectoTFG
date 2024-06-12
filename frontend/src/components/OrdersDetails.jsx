@@ -32,10 +32,10 @@ function DetallesPedido({ userData, id }) {
   }
 
   return (
-    <div className="detalles-pedido">
-      <div className="resumen-pedido">
+    <div className="order-details-container">
+      <div className="order-details-order">
         <h3>Resumen del Pedido</h3>
-        <table className="tabla-resumen">
+        <table className="order-details-table-summary">
           <tbody>
             <tr>
               <th>ID del Pedido:</th>
@@ -57,9 +57,9 @@ function DetallesPedido({ userData, id }) {
         </table>
       </div>
 
-      <div className="direccion-entrega">
+      <div className="order-details-delivered-address">
         <h3>Dirección de Entrega</h3>
-        <table className="tabla-direccion">
+        <table className="order-details-table-address">
           <tbody>
             <tr>
               <th>Nombre Completo:</th>
@@ -97,9 +97,24 @@ function DetallesPedido({ userData, id }) {
         </table>
       </div>
 
-      <div className="productos-pedido">
+      <div className="order-details-actions">
+        {detallesPedido.OrderStatus === 'pending' && (
+          <>
+          <button className="order-details-cancel-button">Cancelar Pedido</button>
+          <button className="order-details-change-button">Cambiar Dirección de envio</button>
+          </>
+        )}
+        {detallesPedido.OrderStatus === 'shipped' && (
+          <button className="order-details-tracking-button">Seguimiento del pedido</button>
+        )}
+        {detallesPedido.OrderStatus === 'delivered' && (
+          <button className="order-details-review-button">Valorar Pedido</button>
+        )}
+      </div>
+
+      <div className="order-details-products">
         <h3>Productos en este Pedido</h3>
-        <table className="tabla-productos">
+        <table className="order-details-table-product">
           <thead>
             <tr>
               <th>Imagen</th>
@@ -113,7 +128,7 @@ function DetallesPedido({ userData, id }) {
             {detallesPedido.OrderProducts.map(producto => (
               <tr key={producto?.ProductID}>
                 <td>
-                  <img src={`data:image/png;base64,${producto?.ImageContent}`} alt={producto?.ProductName} />
+                  <img className="order-details-image" src={`data:image/png;base64,${producto?.ImageContent}`} alt={producto?.ProductName} />
                 </td>
                 <td>{producto?.ProductName}</td>
                 <td>{producto?.ShopName}</td>

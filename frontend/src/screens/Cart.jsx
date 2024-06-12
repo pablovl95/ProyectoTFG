@@ -10,15 +10,16 @@ const Cart = ({ changeCart, userData }) => {
   const [cartTotal, setCartTotal] = useState(0);
   const [activeComponent, setActiveComponent] = useState('cart');
   const [AddressID, setAddressID] = useState('');
+  const [passComponent, setPassComponent] = useState(['cart']);
+
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
-      setCart(JSON.parse(storedCart));
-      const total = calculateCartTotal(JSON.parse(storedCart));
-      setCartTotal(total);
+      const parsedCart = JSON.parse(storedCart);
+      setCart(parsedCart);
+      setCartTotal(calculateCartTotal(parsedCart));
     }
   }, []);
-
 
   const calculateCartTotal = (cart) => {
     return cart.reduce((total, item) => total + item.Price * item.quantity, 0).toFixed(2);
@@ -28,8 +29,7 @@ const Cart = ({ changeCart, userData }) => {
     const updatedCart = cart.filter(item => item.ProductID !== productId);
     setCart(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
-    const total = calculateCartTotal(updatedCart);
-    setCartTotal(total);
+    setCartTotal(calculateCartTotal(updatedCart));
     changeCart();
   };
 
@@ -46,19 +46,40 @@ const Cart = ({ changeCart, userData }) => {
 
     setCart(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
-    const total = calculateCartTotal(updatedCart);
-    setCartTotal(total);
+    setCartTotal(calculateCartTotal(updatedCart));
     changeCart();
+  };
+
+  const handleCheckout = (content) => {
+    setActiveComponent(content);
+    if (!passComponent.includes(content)) {
+      setPassComponent([...passComponent, content]);
+    }
   };
 
   return (
     <div className="cart-container">
       <div className="cart-header">
-        <a onClick={() => setActiveComponent('cart')} className={activeComponent === 'cart' ? 'active' : ''}>Carrito</a>
+        <a
+          onClick={() => setActiveComponent('cart')}
+          className={activeComponent === 'cart' || passComponent.includes('cart') ? 'cart-header-active' : 'cart-header-passed '}
+        >
+          Carrito
+        </a>
         <div className="cart-header-separator"></div>
-        <a onClick={() => setActiveComponent('shipping')} className={activeComponent === 'shipping' ? 'active' : ''}>Envio</a>
+        <a
+          onClick={() => passComponent.includes('shipping') && setActiveComponent('shipping')}
+          className={activeComponent === 'shipping' || passComponent.includes('shipping') ? 'cart-header-active' : 'cart-header-passed '}
+        >
+          Envio
+        </a>
         <div className="cart-header-separator"></div>
-        <a onClick={() => setActiveComponent('payment')} className={activeComponent === 'payment' ? 'active' : ''}>Pago</a>
+        <a
+          onClick={() => passComponent.includes('payment') && setActiveComponent('payment')}
+          className={activeComponent === 'payment' || passComponent.includes('payment') ? 'cart-header-active' : 'cart-header-passed '}
+        >
+          Pago
+        </a>
       </div>
       {activeComponent === 'cart' && (
         <>
@@ -66,20 +87,26 @@ const Cart = ({ changeCart, userData }) => {
           {cart.length === 0 ? (
             <p>El carrito está vacío</p>
           ) : (
-            <div className='cart-content'>
+            <div className="cart-content">
               {cart.map(item => (
                 <div className="cart-item" key={item.ProductID}>
-                  <Link to={`/product/${item.ProductID}`} className='link-container'>
-                    <img src={"data:image/png;base64," + item.ImageContent} alt={item.ProductName} className="cart-item-image" />
+                  <Link to={`/product/${item.ProductID}`} className="link-container">
+                    <img
+                      src={"data:image/png;base64," + item.ImageContent}
+                      alt={item.ProductName}
+                      className="cart-item-image"
+                    />
                     <div className="cart-item-info">
                       <h3>{item.ProductName}</h3>
                       <p>{item.Price} €</p>
                     </div>
                   </Link>
                   <div className="cart-item-actions">
-                    {item.quantity === 1 ?
-                      <IconTrash size={20} onClick={() => handleRemoveFromCart(item.ProductID)} /> :
-                      <div onClick={() => handleQuantityChange(item.ProductID, -1)}> - </div>}
+                    {item.quantity === 1 ? (
+                      <IconTrash size={20} onClick={() => handleRemoveFromCart(item.ProductID)} />
+                    ) : (
+                      <div onClick={() => handleQuantityChange(item.ProductID, -1)}> - </div>
+                    )}
                     <div>{item.quantity}</div>
                     <div onClick={() => handleQuantityChange(item.ProductID, 1)}> + </div>
                   </div>
@@ -87,15 +114,34 @@ const Cart = ({ changeCart, userData }) => {
               ))}
               <div className="cart-total">
                 <h3>Total del Carrito: {cartTotal} €</h3>
-                <button className="checkout-button" onClick={() => setActiveComponent('shipping')}>Tramitar pedido</button>
+                <button className="checkout-button" onClick={() => handleCheckout("shipping")}>Tramitar pedido</button>
               </div>
               <Link to="/" className="back-to-shop-link">Volver a la Tienda</Link>
             </div>
           )}
         </>
       )}
-      {activeComponent === 'shipping' && <Shipping setActiveComponent={setActiveComponent}  cartTotal={cartTotal} cart={cart} userData={userData} setAddress={(AddressID) => {setAddressID(AddressID)}}/>}
-      {activeComponent === 'payment' && <Payment setActiveComponent={setActiveComponent} cartTotal={cartTotal} cart={cart} userData={userData} AddressID={AddressID} changeCart={changeCart}/>}
+      {activeComponent === 'shipping' && (
+        <Shipping
+          setActiveComponent={(content) => handleCheckout(content)}
+          cartTotal={cartTotal}
+          cart={cart}
+          userData={userData}
+          setAddress={setAddressID}
+
+          paymentVisibility={() => handleCheckout('payment')}
+        />
+      )}
+      {activeComponent === 'payment' && (
+        <Payment
+          setActiveComponent={(content) => handleCheckout(content)}
+          cartTotal={cartTotal}
+          cart={cart}
+          userData={userData}
+          AddressID={AddressID}
+          changeCart={changeCart}
+        />
+      )}
     </div>
   );
 };

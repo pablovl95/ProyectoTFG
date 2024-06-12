@@ -4,17 +4,23 @@ import Addresses from './Addresses';
 
 const Shipping = ({ setActiveComponent, cart, cartTotal, userData, setAddress }) => {
     const [shippingMethod, setShippingMethod] = useState('express');
+    const [AddressSelected, setAddressSelected] = useState(null);
 
     const handleShippingChange = (event) => {
         setShippingMethod(event.target.value);
     };
 
     const handleAddressSelect = (addressID) => {
-        setAddress(addressID); // Set the selected address ID
+        setAddress(addressID);
+        setAddressSelected(addressID);
     };
 
     const handleClickPayment = () => {
-        setActiveComponent('payment');
+        if (AddressSelected) {
+            setActiveComponent('payment');
+        }else {
+            alert('Por favor, selecciona una dirección de envío');
+        } 
     };
 
     return (
@@ -57,7 +63,7 @@ const Shipping = ({ setActiveComponent, cart, cartTotal, userData, setAddress })
                     </div>
                 </div>
                 {shippingMethod === 'express' && (
-                    <Addresses userData={userData} setAddress={handleAddressSelect} />
+                    <Addresses userData={userData} setAddress={handleAddressSelect} Screen={"cart"} />
                 )}
             </div>
             <div className="shipping-summary">

@@ -15,6 +15,10 @@
   border-radius: 4px;
 }
 
+.profile-content h2 {
+  margin-top: 0.5rem;
+}
+
 .profile-resume-content {
   display: flex;
   flex-direction: row;
@@ -103,6 +107,18 @@
 .sidebar-mobile {
   display: none;
 }
+
+.link-active {
+  color: rgb(0, 180, 51);
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 1.25rem;
+}
+.link-no-active {
+  color: rgb(155, 155, 155);
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 1.25rem;
+}
+
 
 @media screen and (max-width: 768px) {
   .sidebar {
