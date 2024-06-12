@@ -7,7 +7,7 @@ import CardReviews from "../components/CardReviews";
 import ImageReviewsSlider from "../components/ImageReviewsSlider";
 import { calculateStarsPercentage, renderStarsProductCard } from "../utils/utils";
 
-const Product = ({ changeCart }) => {
+const Product = ({ changeCart, setNotification }) => {
   const [showNav, setShowNav] = useState(window.innerWidth > 768);
   const [product, setProduct] = useState({});
   const [images, setImages] = useState([]);
@@ -38,12 +38,13 @@ const Product = ({ changeCart }) => {
       setProduct(productData[0]);
       const reviewsResponse = await fetch(`${backendUrl}/api/v1/reviews/${params.id}`);
       if (!reviewsResponse.ok) {
-        throw new Error("Error fetching reviews data");
+        setReviews([]);
       }
       const reviewsData = await reviewsResponse.json();
       setReviews(reviewsData);
     } catch (error) {
-      console.error("Error:", error);
+      console.log(error)
+      setNotification({ type: 'error', message: "Ha ocurrido un problema con el producto. Reinicia la pagina o vuelve mas tarde" });
     } finally {
       setLoading(false);
     }
@@ -145,7 +146,7 @@ const Product = ({ changeCart }) => {
             </p>
             <div>
               <p>
-                {product?.Rating.toFixed(2)} {renderStarsProductCard(product?.Rating)}
+                {product?.Rating?.toFixed(2)} {renderStarsProductCard(product?.Rating)}
                 {" | "}
                 <a href="#comentarios" style={{ textDecoration: "none", color: "green" }}>
                   {product?.TotalComments} Valoraciones | Buscar en esta página

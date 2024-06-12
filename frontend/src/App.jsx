@@ -15,18 +15,20 @@ import Dashboard from "./screens/Dashboard";
 import Delivery from "./screens/Delivery";
 import Images from "./screens/Images";
 import Workwithus from './screens/Workwithus';
+import Notification from './components/Notification';
 
 import { auth } from "./auth";
-
 
 function App() {
   const [loginView, setLoginView] = useState(false);
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
   const [changer, setChanger] = useState(false);
+  const [notification, setNotification] = useState(null);
   const backendUrl = process.env.NODE_ENV === 'development'
-  ? 'http://localhost:5000'
-  : process.env.REACT_APP_BACKEND_URL;
+    ? 'http://localhost:5000'
+    : process.env.REACT_APP_BACKEND_URL;
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setUser(user);
@@ -54,34 +56,44 @@ function App() {
             setUserData(body);
           }
         } catch (error) {
+          setNotification({ type: 'error', message: 'Error durante el inicio de sesión' });
           console.error('Error durante el inicio de sesión:', error);
         }
       }
     });
-  
+
     return () => unsubscribe(); // Se asegura de desuscribirse cuando se desmonta el componente
   }, [backendUrl]);
-  
+
   const changeCart = () => {
     setChanger(!changer);
   };
-
+  useEffect(() => {
+    if (notification) {
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
+    }
+  }, [notification]);
   return (
     <div className="App">
-      <Navbar loginView={() => setLoginView(true)} user={userData} changeCart={changer} />
+      {notification && (
+        <Notification notification={notification} onClose={() => setNotification(null)} />
+      )}
+      <Navbar loginView={() => setLoginView(true)} user={userData} changeCart={changer} setNotification={setNotification}/>
       <Routes>
-        <Route path="/" element={<Home changeCart={changeCart} />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/product/:id" element={<Product changeCart={changeCart} />} />
-        <Route path="/search" element={<Search changeCart={changeCart} />} />
-        <Route path="/shop/:id" element={<Shop />} />
-        <Route path="/cart" element={<Cart changeCart={changeCart} userData={userData} />} />
-        <Route path="/work-with-us" element={<Workwithus/>}/>
+        <Route path="/" element={<Home changeCart={changeCart} setNotification={setNotification}/>} />
+        <Route path="/about" element={<About setNotification={setNotification}/>} />
+        <Route path="/product/:id" element={<Product changeCart={changeCart} setNotification={setNotification}/>} />
+        <Route path="/search" element={<Search changeCart={changeCart} setNotification={setNotification}/>} />
+        <Route path="/shop/:id" element={<Shop setNotification={setNotification}/>} />
+        <Route path="/cart" element={<Cart changeCart={changeCart} userData={userData} setNotification={setNotification}/>} />
+        <Route path="/work-with-us" element={<Workwithus setNotification={setNotification}/>} />
         {userData && (
           <>
-            <Route path="/profile" element={<Profile userData={userData} changeUserData={(udata) =>{ setUserData(udata);console.log(udata)}}/>} />
-            <Route path="/profile/:id/:id2" element={<Profile userData={userData} changeUserData={(udata) => setUserData(udata)}/>}/>
-            <Route path="/profile/:id" element={<Profile userData={userData} changeUserData={(udata) => setUserData(udata)}/>}/>
+            <Route path="/profile" element={<Profile userData={userData} changeUserData={(udata) => { setUserData(udata)}} setNotification={setNotification}/>} />
+            <Route path="/profile/:id/:id2" element={<Profile userData={userData} changeUserData={(udata) => setUserData(udata)} setNotification={setNotification}/>} />
+            <Route path="/profile/:id" element={<Profile userData={userData} changeUserData={(udata) => setUserData(udata)} setNotification={setNotification}/>} />
           </>
         )}
         {userData?.UserType === "administrator" && (
@@ -93,9 +105,10 @@ function App() {
         <Route path="/images" element={<Images />} />
       </Routes>
       <Footer />
+
       {loginView && !user && (
         <div className="overlay">
-          <Login onClose={() => setLoginView(false)} setUser={(user) => setUser(user)} />
+          <Login onClose={() => setLoginView(false)} setUser={(user) => setUser(user)} setNotification={setNotification} />
         </div>
       )}
     </div>

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "./css/Orders.css";
+import "../css/profile/Orders.css";
 import { ClipLoader } from "react-spinners";
-import WriteReview from './WriteReview'; 
-import { StatusTranslation } from '../utils/utils';
+import WriteReview from '../WriteReview'; 
+import { StatusTranslation } from '../../utils/utils';
 
 function Orders({ userData, recents }) {
   const navigate = useNavigate();
@@ -12,6 +12,7 @@ function Orders({ userData, recents }) {
   const [loading, setLoading] = useState(true);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [ChangeAddress, setChangeAddress] = useState(false);
   const backendUrl = process.env.NODE_ENV === "development"
     ? "http://localhost:5000"
     : process.env.REACT_APP_BACKEND_URL;
@@ -67,9 +68,7 @@ function Orders({ userData, recents }) {
   };
   
 
-  const handleCardClick = (orderId) => {
-    navigate(`/profile/my-orders/${orderId}`);
-  };
+
   const cancelOrder = async (orderId, status) => {
     try {
       const response = await fetch(`${backendUrl}/api/v1/orders/${orderId}`, {
@@ -122,15 +121,15 @@ function Orders({ userData, recents }) {
         <div className="order-actions">
           {/* <div className="order-action-button" onClick={() => { setSelectedOrder(OrdersData[idx]); setShowReviewForm(true); }}>Escribir una opinión</div> */}
           <div className="order-action-button" onClick={async () => { setSelectedOrder(OrdersData[idx]); setShowReviewForm(true); }}>Escribir una opinión</div>
-          <div className="order-action-button" onClick={() => handleCardClick(orderId)}>Detalles del pedido</div>
+          <div className="order-action-button" onClick={() => navigate(`/profile/my-orders/${orderId}`)}>Detalles del pedido</div>
         </div>
       );
     }
     if (orderStatus === "shipped") {
       return (
         <div className="order-actions">
-          <div className="order-action-button">Localiza tu paquete</div>
-          <div className="order-action-button" onClick={() => handleCardClick(orderId)}>Detalles del pedido</div>
+          <div className="order-action-button" onClick={() => navigate("/profile/order-tracking/"+orderId)}>Localiza tu paquete</div>
+          <div className="order-action-button" onClick={() => navigate(`/profile/my-orders/${orderId}`)}>Detalles del pedido</div>
         </div>
       );
     }
@@ -138,8 +137,8 @@ function Orders({ userData, recents }) {
       return (
         <div className="order-actions">
           <div className="order-action-button" onClick={() => handleActionButtonClick("Cancelar", orderId)}>Cancelar pedido</div>
-          <div className="order-action-button" onClick={() => handleCardClick(orderId)}>Detalles del pedido</div>
-          <div className="order-action-button">Cambiar dirección de envío</div>
+          <div className="order-action-button" onClick={() => navigate(`/profile/my-orders/${orderId}`)}>Detalles del pedido</div>
+          <div className="order-action-button" onClick={() => setChangeAddress(ChangeAddress)}>Cambiar dirección de envío</div>
         </div>
       );
     }
@@ -147,7 +146,7 @@ function Orders({ userData, recents }) {
       return (
         <div className="order-actions">
           <div className="order-action-button" onClick={() => handleActionButtonClick("Eliminar", orderId)}>Eliminar pedido</div>
-          <div className="order-action-button" onClick={() => handleCardClick(orderId)}>Detalles del pedido</div>
+          <div className="order-action-button" onClick={() => navigate(`/profile/my-orders/${orderId}`)}>Detalles del pedido</div>
           <div className="order-action-button">Contactar soporte</div>
         </div>
       );
@@ -156,7 +155,7 @@ function Orders({ userData, recents }) {
       return (
         <div className="order-actions">
           <div className="order-action-button">Restaurar pedido</div>
-          <div className="order-action-button" onClick={() => handleCardClick(orderId)}>Detalles del pedido</div>
+          <div className="order-action-button" onClick={() => navigate(`/profile/my-orders/${orderId}`)}>Detalles del pedido</div>
           <div className="order-action-button" onClick={() => handleActionButtonClick("Eliminar", orderId)}>Eliminar permanentemente</div>
         </div>
       );

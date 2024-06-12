@@ -1,24 +1,24 @@
-// Login.js
 import React, { useState } from 'react';
 import './css/login.css';
-import {  GoogleAuthProvider,signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../auth';
 import { IconX } from '@tabler/icons-react';
 
-function Login({ onClose, setUser }) {
-  const [isLogin, setIsLogin] = useState(true); // Estado para controlar si está en modo de login o registro
+function Login({ onClose, setUser, setNotification }) {
+  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [FirstName, setFirstName] = useState('');
   const [LastName, setLastName] = useState('');
   const [Telephone, setTelephone] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
   const backendUrl = process.env.NODE_ENV === 'development'
-  ? 'http://localhost:5000'
-  : process.env.REACT_APP_BACKEND_URL;
+    ? 'http://localhost:5000'
+    : process.env.REACT_APP_BACKEND_URL;
 
   const switchMode = () => {
-    setIsLogin(!isLogin); // Cambia entre login y registro
+    setIsLogin(!isLogin);
   };
 
   const handleGoogleLogin = async () => {
@@ -26,13 +26,9 @@ function Login({ onClose, setUser }) {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-  
-      // Verificar si el usuario ya existe en la base de datos
       const userSnapshot = await fetch(`${backendUrl}/api/v1/users/${user.uid}`);
       const userData = await userSnapshot.json();
-  
       if (userData.length === 0) {
-        // Si el usuario no existe en la base de datos, se registra como nuevo usuario
         await fetch(`${backendUrl}/api/v1/users`, {
           method: 'POST',
           headers: {
@@ -47,13 +43,12 @@ function Login({ onClose, setUser }) {
           }),
         });
       }
+      setNotification({ type: 'success', message: 'Has iniciado sesión correctamente' });
     } catch (error) {
-      console.error('Error during Google login:', error);
+      setNotification({ type: 'error', message: 'Error durante el inicio de sesión con Google' });
+      console.error('Error durante el inicio de sesión con Google:', error);
     }
   };
-  
-
-
 
   const handleEmailLogin = async (event) => {
     event.preventDefault();
@@ -61,17 +56,17 @@ function Login({ onClose, setUser }) {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       setUser(user);
-
+      setNotification({ type: 'success', message: 'Has iniciado sesión correctamente' });
     } catch (error) {
-      console.error('Error during email login:', error);
+      setNotification({ type: 'error', message: 'Error durante el inicio de sesión con correo electrónico' });
+      console.error('Error durante el inicio de sesión con correo electrónico:', error);
     }
   };
 
   const handleEmailRegister = async (event) => {
     event.preventDefault();
-
     if (password !== confirmPassword) {
-      alert('¡Las contraseñas no coinciden!');
+      setNotification({ type: 'error', message: '¡Las contraseñas no coinciden!' });
       return;
     }
     try {
@@ -87,26 +82,26 @@ function Login({ onClose, setUser }) {
           LastName,
           Email: email,
           UserID: user.uid,
-          Phone: Telephone
+          Phone: Telephone,
         }),
       });
       setUser(user);
-      // console.log('User registered:', user);
+      setNotification({ type: 'success', message: 'Te has registrado correctamente' });
     } catch (error) {
-      console.error('Error during email registration:', error);
+      setNotification({ type: 'error', message: 'Error durante el registro con correo electrónico' });
+      console.error('Error durante el registro con correo electrónico:', error);
     }
   };
 
   return (
     <div className="login-container">
-
       <div className="login-container-i">
 
         <div className="close-div" onClick={onClose}>
           X
         </div>
         <div className="close-div-mobile" onClick={onClose}>
-          <IconX/>
+          <IconX />
         </div>
         <h2>{isLogin ? 'Login' : 'Registro'}</h2>
 

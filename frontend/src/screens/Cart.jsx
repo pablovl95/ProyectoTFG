@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { IconTrash } from '@tabler/icons-react';
-import Shipping from '../components/Shipping';
-import Payment from '../components/Payment';
+import Shipping from '../components/profile/Shipping';
+import Payment from '../components/profile/Payment';
 import './css/Cart.css';
 
 const Cart = ({ changeCart, userData }) => {

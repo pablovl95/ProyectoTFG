@@ -39,6 +39,16 @@
     text-align: center;
     border: none;
     border-radius: 0.5rem;
+    color: white;
+    background-color: #f0c040;
+}
+.order-details-tracking-button {
+    margin: 10px;
+    padding: 0.5rem;
+    text-align: center;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
     background-color: #f0c040;
 }
 
@@ -78,5 +88,6 @@
     .order-details-image {
         width: 50px; /* Reduce el tamaño de las imágenes de productos en dispositivos pequeños */
         height: 50px;
+        border-radius: 0.5rem;
     }
 }

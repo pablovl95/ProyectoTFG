@@ -31,9 +31,11 @@ const Addresses = ({ userData, setAddress, Screen }) => {
             .then(data => {
                 if (data.length > 0) {
                     const AddressDefaultID = data.filter(x => x.DefaultAddress == 1);
-                    if(AddressDefaultID.length > 0){
+                    if (AddressDefaultID.length > 0) {
                         setAddressSelected(AddressDefaultID[0].AddressID);
-                        setAddress(AddressDefaultID[0].AddressID);
+                        if (Screen === "cart") {
+                            setAddress(AddressDefaultID[0].AddressID);
+                        }
                     } else {
                         setAddressSelected(null);
                     }
@@ -128,7 +130,7 @@ const Addresses = ({ userData, setAddress, Screen }) => {
         } else {
             if (window.confirm("¿Quieres poner esta dirección como dirección por defecto?")) {
                 setDefaultAddress(addressID);
-            } 
+            }
         }
 
 

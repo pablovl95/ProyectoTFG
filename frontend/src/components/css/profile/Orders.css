@@ -237,4 +237,7 @@
     display: flex;
     margin: auto;
   }
+  .orders-container select {
+    width: 100%;
+  }
 }

@@ -7,10 +7,10 @@ import {
     IconDeviceMobileMessage,
     IconBrandGoogle
 } from '@tabler/icons-react';
-import "./css/Payment.css";
+import "../css/profile/Payment.css";
 
 // Import the PaymentForm component
-import { PaymentForm } from '../utils/utils'; // adjust the path according to your file structure
+import { PaymentForm } from '../../utils/utils'; // adjust the path according to your file structure
 
 const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCart }) => {
     const [selectedMethod, setSelectedMethod] = useState(null);

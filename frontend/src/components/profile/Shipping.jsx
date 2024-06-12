@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import './css/Shipping.css';
-import Addresses from './Addresses';
+import '../css/profile/Shipping.css';
+import Addresses from '../Addresses';
 
 const Shipping = ({ setActiveComponent, cart, cartTotal, userData, setAddress }) => {
     const [shippingMethod, setShippingMethod] = useState('express');

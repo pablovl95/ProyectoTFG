@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import "./css/OrdersDetails.css";
-import { StatusTranslation } from '../utils/utils';
+import "../css/profile/OrdersDetails.css";
+import { StatusTranslation } from '../../utils/utils';
 
 function DetallesPedido({ userData, id }) {
   const [detallesPedido, setDetallesPedido] = useState(null);

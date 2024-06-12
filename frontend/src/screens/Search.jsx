@@ -19,7 +19,7 @@ const PrincipalCategories = [
   { id: 8, name: "Productos de colmena" }
 ];
 
-const Search = ({ changeCart }) => {
+const Search = ({ changeCart, setNotification }) => {
   const [products, setProducts] = useState([]);
   const [productCount, setProductCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -65,10 +65,12 @@ const Search = ({ changeCart }) => {
       let data = [];
       if (response.ok) {
         data = await response.json();
+        
       }
       setProducts(data);
       setProductCount(data.length);
     } catch (error) {
+      setNotification({ type: 'error', message: "Ha ocurrido un problema con la busqueda. Reinicia la pagina o vuelve mas tarde" });
       console.error('Error:', error);
     } finally {
       setLoading(false);

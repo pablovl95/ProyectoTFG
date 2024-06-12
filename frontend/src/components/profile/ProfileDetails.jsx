@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import UserData from './UserData';
-import Addresses from './Addresses';
-import './css/ProfileDetails.css';
+import Addresses from '../Addresses';
+import '../css/profile/ProfileDetails.css';
 
 const ProfileDetails = ({ userData, changeUserData }) => {
     const [selectedOption, setSelectedOption] = useState('datos');

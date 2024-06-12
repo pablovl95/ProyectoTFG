@@ -1,0 +1,36 @@
+.notification {
+    position: absolute;
+    width: 30%;
+    margin: 1rem;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.75rem;
+    border-radius: 5px;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .notification.error {
+    background-color: #FFCCCC;
+    color: #FF0000;
+  }
+  
+  .notification.success {
+    background-color: #249724;
+    color: #ffffff;
+  }
+  
+  .notification.info {
+    background-color: #CCE5FF;
+    color: #0000FF;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  

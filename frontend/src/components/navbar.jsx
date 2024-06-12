@@ -4,7 +4,8 @@ import "./css/navbar.css";
 import { Link, NavLink } from "react-router-dom";
 import { IconShoppingCart, IconUsers, IconSearch } from '@tabler/icons-react';
 import { auth } from "../auth";
-import UserMenu from "./UserMenu"; // Importa el componente UserMenu
+import UserMenu from "./UserMenu"; 
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar({ loginView, user, changeCart }) {
   const PrincipalCategories = [
@@ -24,7 +25,8 @@ export default function Navbar({ loginView, user, changeCart }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchType, setSearchType] = useState('search');
   const rootRef = useRef(null);
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
     updateCart();
   }, [changeCart]);
@@ -33,6 +35,7 @@ export default function Navbar({ loginView, user, changeCart }) {
     auth.signOut();
     setUserMenuOpen(false);
     setMenuOpen(false);
+    navigate('/');
   };
 
   const Modals = () => {
@@ -134,7 +137,7 @@ export default function Navbar({ loginView, user, changeCart }) {
               <NavLink to="/profile">Perfil</NavLink>
             </li>
             <li>
-              <NavLink to="/profile/orders">Mis pedidos</NavLink>
+              <NavLink to="/profile/my-orders">Mis pedidos</NavLink>
             </li>
 
             <li>
