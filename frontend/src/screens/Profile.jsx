@@ -5,6 +5,7 @@ import OrdersDetails from "../components/profile/OrdersDetails";
 import ProfileDetails from "../components/profile/ProfileDetails";
 import Contactus from "../components/Contactus";
 import WorkWithUs from "./Workwithus";
+import OrderTracking from "../components/profile/OrderTracking";
 import { auth } from "../auth";
 import './css/Profile.css';
 import { IconChevronsDown, IconChevronsUp } from '@tabler/icons-react';
@@ -68,7 +69,7 @@ const Profile = ({ userData, changeUserData, setNotification }) => {
           )
         )}
 
-        {selectedScreen === 'order-tracking' && <OrderTracking />}
+        {selectedScreen === 'order-tracking' && <OrderTracking userData={userData} setNotification={setNotification}/>}
         {selectedScreen === 'my-coupons' && <MyCoupons />}
         {selectedScreen === 'personal-data' && <><h2>Mis datos</h2> <ProfileDetails userData={userData} changeUserData={changeUserData} /></>}
         {selectedScreen === 'contact-us' && <Contactus />}
@@ -183,13 +184,6 @@ const Resumen = ({ userData }) => {
     </div>
   );
 };
-
-const OrderTracking = () => (
-  <div>
-    <h2>Seguimiento de Pedidos</h2>
-    <p>Información sobre el seguimiento de pedidos...</p>
-  </div>
-);
 
 const MyCoupons = () => (
   <div>

@@ -1,0 +1,161 @@
+.order-tracking-container {
+    width: 100%;
+}
+
+.order-tracking-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.order-tracking-item h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.order-tracking-item p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #666;
+}
+
+.order-tracking-item h4 {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.order-tracking-order-products {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-tracking-product {
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 4px;
+}
+
+.order-tracking-product img {
+    width: 30%;
+    height: 200px;
+    object-fit:cover;
+    border-radius: 0.5rem;
+}
+.order-tracking-product-content {
+    width: 70%;
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    
+
+}
+.order-tracking-product-details {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+
+}
+.order-tracking-product-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: right;
+    width: 20%;
+    justify-content: right;
+}
+.order-tracking-product p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.order-tracking-status-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-tracking-status {
+    padding: 0.5rem;
+    margin-bottom:1rem;
+    width: 70%;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.order-tracking-status p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.order-tracking-products-card {
+    background-color: #ebebeb;
+}
+.order-tracking-table-column {
+    display: flex;
+    flex-direction: column;
+    
+    justify-content: left;
+    align-items: left; 
+    text-align: left; 
+    height: 100%; 
+}
+
+.order-tracking-products-table {
+    width: 100%;
+    border-collapse: collapse; 
+}
+
+.order-tracking-products-table tr {
+    background-color: #ebebeb; 
+    
+}
+
+.order-tracking-products-table th {
+    border: none; 
+    background-color: #ebebeb;
+
+    padding: 10px; 
+    
+}
+
+.order-tracking-products-table td {
+    border: none; 
+    border-bottom: 1px solid #bcbcbc;
+    padding: 10px; 
+
+    justify-content: left;
+    align-items: left; 
+    text-align: left; 
+}
+
+.order-tracking-products-table thead {
+    background-color: #ebebeb; 
+}
+
+.order-tracking-card {
+
+    padding: 0 0 0.5rem 2rem;
+    box-shadow: 0.5rem 0.5rem rgba(0, 0, 0, 0.1);
+    background-color: #ebebeb;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 600px) {
+    .order-tracking-order-products {
+        grid-template-columns: 1fr;
+    }
+}
