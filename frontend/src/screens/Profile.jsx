@@ -59,12 +59,12 @@ const Profile = ({ userData, changeUserData, setNotification }) => {
           id2 ? (
             <>
               <h2>Detalles del pedido</h2>
-              <OrdersDetails userData={userData} id={id2} />
+              <OrdersDetails userData={userData} id={id2} setNotification={setNotification} />
             </>
           ) : (
             <>
               <h2>Mis pedidos</h2>
-              <Orders userData={userData} />
+              <Orders userData={userData} setNotification={setNotification} />
             </>
           )
         )}
