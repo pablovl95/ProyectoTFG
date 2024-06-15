@@ -54,7 +54,7 @@ const Profile = ({ userData, changeUserData, setNotification }) => {
         <a className={id2 ? 'link-active' : 'link-no-active'} onClick={() => navigate("/profile")}>Mi cuenta </a>{" > "}
         <a onClick={() => navigate("/profile/" + selectedScreen)} className={id2 ? 'link-no-active' : 'link-active'}>{getNombre(selectedScreen)}</a>
         {id2 ? <>{" > "} <a className='link-active' onClick={() => navigate("/profile/my-orders" + id2)}>Detalles del pedido</a></> : ""}
-        {selectedScreen === 'summary' && <><h2>Ultimos pedidos</h2> <Resumen userData={userData} /></>}
+        {selectedScreen === 'summary' && <><h2>Ultimos pedidos</h2> <Resumen userData={userData} setNotification={setNotification}/></>}
         {selectedScreen === 'my-orders' && (
           id2 ? (
             <>
@@ -119,7 +119,7 @@ const Sidebar = ({ selectedScreen, onSelect, getNombre }) => {
   );
 }
 
-const Resumen = ({ userData }) => {
+const Resumen = ({ userData, setNotification }) => {
   const [userAddress, setUserAddress] = useState(null);
   const navigate = useNavigate();
   const backendUrl = process.env.NODE_ENV === 'development'
