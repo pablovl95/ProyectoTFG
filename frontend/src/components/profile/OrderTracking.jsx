@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../css/profile/OrderTracking.css';
+import { ClipLoader } from 'react-spinners';
 
 const OrderTracking = ({ setNotification, userData }) => {
     const { id2 } = useParams();
@@ -123,7 +124,16 @@ const OrderTracking = ({ setNotification, userData }) => {
     };
 
     if (isLoading) {
-        return <div>Cargando...</div>;
+        return (
+            <div style={{ padding: "10rem", paddingBottom: "20rem", width: "10%", margin: "auto" }}>
+                <ClipLoader
+                    color={"green"}
+                    loading={isLoading}
+                    size={150}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                />
+            </div>)
     }
 
     if (error) {

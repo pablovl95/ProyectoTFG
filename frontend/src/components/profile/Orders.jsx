@@ -5,7 +5,7 @@ import { ClipLoader } from "react-spinners";
 import WriteReview from '../WriteReview'; 
 import { StatusTranslation } from '../../utils/utils';
 
-function Orders({ userData, recents }) {
+function Orders({ userData, recents, setNotification }) {
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState("recent");
   const [OrdersData, setOrdersData] = useState({});
@@ -244,7 +244,7 @@ function Orders({ userData, recents }) {
                     </div>
                   ))}
                 </div>
-                <div className="order-detail-mobile" onClick={() => handleCardClick(orderID)}>
+                <div className="order-detail-mobile" onClick={() => navigate(`/profile/my-orders/${orderID}`)}>
                   {">"}
                 </div>
                 {renderOrderButtons(order?.OrderStatus, orderID, idx)}
