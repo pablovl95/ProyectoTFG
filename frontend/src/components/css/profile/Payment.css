@@ -22,6 +22,25 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.cart-payment-container-details {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.cart-payment-content-details {
+  width: 100%; /* Adjusted to fit alongside summary */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 /* Summary section */
 .cart-payment-summary {
   background-color: #fff;
@@ -206,6 +225,35 @@
 
 .payment-form button:hover {
   background-color: #0056b3;
+}
+.payment-button-new {
+  display: flex;
+  width: 100%;
+  margin: 1rem 0;
+  justify-content: center;
+  padding: 0.5rem;
+  background-color: #178900;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.payment-button-cancel {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding: 0.5rem;
+  background-color: #890000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.cart-payment-selector-header.active {
+  background-color: #2ed355; /* Cambia aquí el color a verde deseado */
+  color: #fff; /* Color del texto cuando está seleccionado */
 }
 
 @media (max-width: 768px) {

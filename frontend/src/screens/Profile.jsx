@@ -3,7 +3,6 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Orders from "../components/profile/Orders";
 import OrdersDetails from "../components/profile/OrdersDetails";
 import ProfileDetails from "../components/profile/ProfileDetails";
-import Contactus from "../components/Contactus";
 import WorkWithUs from "./Workwithus";
 import OrderTracking from "../components/profile/OrderTracking";
 import { auth } from "../auth";
@@ -51,10 +50,10 @@ const Profile = ({ userData, changeUserData, setNotification }) => {
     <div className="profile-container">
       <Sidebar selectedScreen={selectedScreen} onSelect={handleScreenSelect} getNombre={getNombre} />
       <div className="profile-content">
-        <a className={id2 ? 'link-active' : 'link-no-active'} onClick={() => navigate("/profile")}>Mi cuenta </a>{" > "}
+        <a className={selectedScreen != 'summary' ? 'link-no-active' : 'link-active'} onClick={() => navigate("/profile")}>Mi cuenta </a>{" > "}
         <a onClick={() => navigate("/profile/" + selectedScreen)} className={id2 ? 'link-no-active' : 'link-active'}>{getNombre(selectedScreen)}</a>
         {id2 ? <>{" > "} <a className='link-active' onClick={() => navigate("/profile/my-orders" + id2)}>Detalles del pedido</a></> : ""}
-        {selectedScreen === 'summary' && <><h2>Ultimos pedidos</h2> <Resumen userData={userData} setNotification={setNotification}/></>}
+        {selectedScreen === 'summary' && <><h2>Ultimos pedidos</h2> <Resumen userData={userData} setNotification={setNotification} /></>}
         {selectedScreen === 'my-orders' && (
           id2 ? (
             <>
@@ -69,10 +68,9 @@ const Profile = ({ userData, changeUserData, setNotification }) => {
           )
         )}
 
-        {selectedScreen === 'order-tracking' && <OrderTracking userData={userData} setNotification={setNotification}/>}
+        {selectedScreen === 'order-tracking' && <OrderTracking userData={userData} setNotification={setNotification} />}
         {selectedScreen === 'my-coupons' && <MyCoupons />}
-        {selectedScreen === 'personal-data' && <><h2>Mis datos</h2> <ProfileDetails userData={userData} changeUserData={changeUserData} /></>}
-        {selectedScreen === 'contact-us' && <Contactus />}
+        {selectedScreen === 'personal-data' && <><h2>Mis datos</h2> <ProfileDetails userData={userData} changeUserData={changeUserData} setNotification={setNotification}/></>}
         {selectedScreen === 'work-with-us' && <WorkWithUs />}
       </div >
     </div >
@@ -94,7 +92,6 @@ const Sidebar = ({ selectedScreen, onSelect, getNombre }) => {
         <Link to={`/profile/order-tracking`} className={selectedScreen === 'order-tracking' ? 'active' : ''} onClick={() => onSelect('order-tracking')}>Seguimiento de pedidos</Link>
         <Link to={`/profile/my-coupons`} className={selectedScreen === 'my-coupons' ? 'active' : ''} onClick={() => onSelect('my-coupons')}>Mis cupones</Link>
         <Link to={`/profile/personal-data`} className={selectedScreen === 'personal-data' ? 'active' : ''} onClick={() => onSelect('personal-data')}>Mis datos</Link>
-        <Link to={`/profile/contact-us`} className={selectedScreen === 'contact-us' ? 'active' : ''} onClick={() => onSelect('contact-us')}>Contactanos</Link>
         <Link to={`/profile/work-with-us`} className={selectedScreen === 'work-with-us' ? 'active' : ''} onClick={() => onSelect('work-with-us')}>Trabaja con nosotros</Link>
         <button className="logout-button" onClick={handleLogout}>Cerrar sesión</button>
       </div>

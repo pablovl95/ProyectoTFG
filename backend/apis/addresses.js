@@ -36,18 +36,19 @@ function backendAdresses(app, db) {
 
   app.put('/api/v1/addresses/:id', async (req, res) => {
 
-    const { AddressTitle, FirstName, LastName, Phone, AddressLine, AddressNumber, PostalCode, Country, Province, City } = req.body;
+    const { AddressTitle, FirstName, LastName, Phone, AddressLine, AddressNumber, PostalCode, Country, Province, City, UserID } = req.body;
+    console.log(req.body)
     const { id } = req.params;
     try {
       const updateQuery = `
         UPDATE Addresses
         SET AddressTitle = '${AddressTitle}', FirstName = '${FirstName}', LastName = '${LastName}', Phone = '${Phone}',
             AddressLine = '${AddressLine}', AddressNumber = '${AddressNumber}', PostalCode = '${PostalCode}',
-            Country = '${Country}', Province = '${Province}', City = '${City}'
+            Country = '${Country}', Province = '${Province}', City = '${City}', UserID = '${UserID}'
         WHERE AddressID = '${id}'
       `;
-      await db.execute(updateQuery);
-
+      const resp = await db.execute(updateQuery);
+      console.log(resp)
       res.status(200);
     } catch (error) {
       console.error('Error al actualizar la dirección en la base de datos:', error);

@@ -45,7 +45,7 @@ useEffect(() => {
       </div> 
       <div className='data-container'>
         <h1 className="HomeTitle">
-          Productos más vendidos
+          Productos que te pueden interesar
         </h1>
         <div className="data-container-cards">
           {popularProducts.map((product) => (

@@ -154,8 +154,75 @@
     margin-bottom: 2rem;
 }
 
-@media (max-width: 600px) {
-    .order-tracking-order-products {
-        grid-template-columns: 1fr;
+@media (max-width: 768px) {
+    .order-tracking-container {
+        padding: 10px; /* Reduce padding para mejor ajuste en dispositivos pequeños */
+    }
+    
+    .order-tracking-item {
+        padding: 10px; /* Reduce padding para mejor ajuste en dispositivos pequeños */
+    }
+
+    .order-tracking-product {
+        flex-direction: column; /* Cambia a columna */
+        padding: 10px; 
+        margin-bottom:1rem;
+    }
+
+    .order-tracking-product img {
+        width: 100%; /* Ocupa todo el ancho disponible */
+        height: auto; /* Ajusta la altura automáticamente */
+    }
+
+    .order-tracking-product-content {
+        width: 100%; /* Ocupa todo el ancho disponible */
+        padding-left: 0; /* Quita el padding izquierdo */
+        margin-top: 10px; 
+        
+    }
+
+    .order-tracking-product-details {
+        flex-direction: column; 
+
+    }
+
+    .order-tracking-product-actions {
+        width: 100%; /* Ocupa todo el ancho disponible */
+        align-items: flex-start; /* Alinea a la izquierda */
+        justify-content: flex-start;
+        margin-top: 10px; /* Añade margen para separación */
+    }
+
+    .order-tracking-status {
+        width: 90%; 
+        padding: 0;
+    }
+
+    .order-tracking-status p {
+        margin-left:1rem;
+    }
+
+    .order-tracking-products-table, .order-tracking-products-table th, .order-tracking-products-table td {
+        padding: 5px; /* Reduce padding para mejor ajuste */
+        font-size: 0.8rem; /* Reduce el tamaño de fuente */
+    }
+
+    .order-tracking-products-table {
+        display: block; /* Cambia la tabla a block */
+        overflow-x: auto; /* Permite el desplazamiento horizontal */
+    }
+
+    .order-tracking-card {
+        padding: 10px; /* Reduce padding */
+        margin-bottom: 1rem; /* Reduce margen inferior */
+    }
+
+    .order-tracking-table-column {
+        align-items: flex-start; /* Alinea a la izquierda */
+    }
+
+    .order-tracking-status {
+        width: 100%; /* Ocupa todo el ancho disponible */
+        margin-bottom: 10px; /* Reduce el margen inferior */
     }
 }

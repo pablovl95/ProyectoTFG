@@ -228,3 +228,14 @@ CREATE TABLE
     Minerals TEXT,
     FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
   );
+
+  CREATE TABLE PaymentMethods (
+    PaymentMethodID TEXT PRIMARY KEY DEFAULT (
+      LOWER(HEX(RANDOMBLOB(4))) || LOWER(HEX(RANDOMBLOB(2))) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || SUBSTR('89ab', 1 + (ABS(RANDOM()) % 4) / 2, 1) || SUBSTR(LOWER(HEX(RANDOMBLOB(2))), 2) || LOWER(HEX(RANDOMBLOB(6))
+    ),
+    UserID TEXT NOT NULL,
+    PaymentMethodType TEXT NOT NULL,
+    ContentText TEXT,
+    PRIMARY KEY (PaymentMethodID),
+    FOREIGN KEY (UserID) REFERENCES Users (UserID)
+  );

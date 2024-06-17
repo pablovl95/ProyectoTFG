@@ -65,7 +65,7 @@ const Search = ({ changeCart, setNotification }) => {
       let data = [];
       if (response.ok) {
         data = await response.json();
-        
+
       }
       setProducts(data);
       setProductCount(data.length);
@@ -109,7 +109,7 @@ const Search = ({ changeCart, setNotification }) => {
   return (
     <>
       {loading ? (
-        <div style={{ padding: "10rem", paddingBottom: "20rem",width:"10%",margin:"auto" }}>
+        <div style={{ padding: "10rem", paddingBottom: "20rem", width: "10%", margin: "auto" }}>
           <ClipLoader
             color={"green"}
             loading={loading}
@@ -123,6 +123,7 @@ const Search = ({ changeCart, setNotification }) => {
           {productCount} resultados para esta búsqueda
           <div className="product-list-container">
             <div className={`filter-container ${filterVisible ? 'visible' : ''}`}>
+              <h2>Filtros de busqueda</h2>
               <div className="filter">
                 <label>Buscar</label>
                 <input
@@ -157,6 +158,12 @@ const Search = ({ changeCart, setNotification }) => {
                 />
               </div>
               <div className="filter">
+                <label>Valoración</label>
+                <div className="star-rating">
+                  {renderStars(filters.MinRating, handleStarClick)}
+                </div>
+              </div>
+              <div className="filter">
                 <label>Precio Mínimo</label>
                 <input
                   type="number"
@@ -173,12 +180,6 @@ const Search = ({ changeCart, setNotification }) => {
                   value={filters.MaxPrice}
                   onChange={handleFilterChange}
                 />
-              </div>
-              <div className="filter">
-                <label>Valoración</label>
-                <div className="star-rating">
-                  {renderStars(filters.MinRating, handleStarClick)}
-                </div>
               </div>
 
               <button onClick={applyFilters}>Aplicar Filtros</button>
@@ -202,7 +203,7 @@ const Search = ({ changeCart, setNotification }) => {
           </div>
           <div className="search-pagination">
             {Array.from({ length: totalPages }, (_, i) => (
-              <button key={i + 1} onClick={() => handlePageChange(i +1)}>{i + 1}</button>
+              <button key={i + 1} onClick={() => handlePageChange(i + 1)}>{i + 1}</button>
             ))}
           </div>
         </>

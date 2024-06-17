@@ -76,6 +76,7 @@ function App() {
     }
   }, [notification]);
   return (
+    <>
     <div className="App">
       {notification && (
         <Notification notification={notification} onClose={() => setNotification(null)} />
@@ -104,7 +105,7 @@ function App() {
         )}
         <Route path="/images" element={<Images />} />
       </Routes>
-      <Footer />
+      
 
       {loginView && !user && (
         <div className="overlay">
@@ -112,6 +113,8 @@ function App() {
         </div>
       )}
     </div>
+    <Footer />
+    </>
   );
 }
 

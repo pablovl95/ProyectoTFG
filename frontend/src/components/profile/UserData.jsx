@@ -3,7 +3,7 @@ import { auth } from "../../auth";
 import { EmailAuthProvider, updatePassword, reauthenticateWithCredential } from 'firebase/auth';
 import '../css/profile/UserData.css';
 
-const UserData = ({ userData, changeUserData }) => {
+const UserData = ({ userData, changeUserData, setNotification }) => {
     const backendUrl = process.env.NODE_ENV === "development"
         ? "http://localhost:5000"
         : process.env.REACT_APP_BACKEND_URL;
@@ -50,22 +50,24 @@ const UserData = ({ userData, changeUserData }) => {
             await reauthenticateWithCredential(user, credentials);
             await updatePassword(user, newPassword);
             setErrorMessage('Contraseña cambiada exitosamente.');
+            setNotification({ type: 'success', message: 'Contraseña cambiada exitosamente.' });
             setCurrentPassword('');
             setNewPassword('');
             setConfirmPassword('');
 
         } catch (error) {
             setErrorMessage('Hubo un error al cambiar la contraseña. Por favor, inténtalo de nuevo más tarde.');
+            setNotification({ type: 'error', message: 'Hubo un error al cambiar la contraseña. Por favor, inténtalo de nuevo más tarde.' });
         }
     };
 
     const handleSaveChanges = async () => {
         if (!user) {
             setErrorMessage('Error al obtener la información del usuario.');
+            setNotification({ type: 'error', message: 'Error al obtener la información del usuario.' });
             return;
         }
         const body = { "FirstName": firstName, "LastName": lastName, "Phone": phone }
-        console.log('Body:', body);
         try {
             const response = await fetch(`${backendUrl}/api/v1/users/${user.uid}`, {
                 method: 'PUT',
@@ -77,21 +79,23 @@ const UserData = ({ userData, changeUserData }) => {
 
 
             if (response.ok) {
-                const updatedUserData = JSON.parse(body);
+                const updatedUserData = body;
                 console.log('Updated User Data:', updatedUserData);
                 console.log('User Data:', userData);
                 const newDat = { ...userData, ...updatedUserData }
                 console.log('New User Data:', newDat);
                 setErrorMessage('Datos actualizados exitosamente.');
+                setNotification({ type: 'success', message: 'Datos actualizados exitosamente.' });
                 changeUserData(newDat);
             } else {
                 const errorText = await response.text(); // Captura el texto de error completo
                 console.log('Error Text:', errorText);
                 setErrorMessage(`Error al actualizar los datos: ${errorText}`);
+                setNotification({ type: 'error', message: `Error al actualizar los datos: ${errorText}` });
             }
         } catch (error) {
             setErrorMessage('Hubo un error al actualizar los datos. Por favor, inténtalo de nuevo más tarde.');
-            console.error('Error al actualizar los datos:', error);
+            setNotification({ type: 'error', message: 'Hubo un error al actualizar los datos. Por favor, inténtalo de nuevo más tarde.' });
         }
     };
 

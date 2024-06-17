@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './css/ProductSlider.css';
 
-const ManualSlider = ({ images }) => {
+const ProductSlider = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = () => {
@@ -41,4 +41,4 @@ const ManualSlider = ({ images }) => {
   );
 };
 
-export default ManualSlider;
+export default ProductSlider;

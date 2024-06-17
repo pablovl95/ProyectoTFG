@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import UserData from './UserData';
 import Addresses from '../Addresses';
+import Payment from './Payment';
 import '../css/profile/ProfileDetails.css';
 
-const ProfileDetails = ({ userData, changeUserData }) => {
+const ProfileDetails = ({ userData, changeUserData, setNotification }) => {
     const [selectedOption, setSelectedOption] = useState('datos');
     let ContentComponent;
     switch (selectedOption) {
         case 'datos':
-            ContentComponent = <UserData userData={userData} changeUserData={changeUserData} />;
+            ContentComponent = <UserData userData={userData} changeUserData={changeUserData} setNotification={setNotification}/>;
             break;
         case 'direcciones':
             ContentComponent = <Addresses userData={userData} Screen={"data"}/>;
             break;
         case 'metodosPago':
-            ContentComponent = <MetodosPago userData={userData} />;
+            ContentComponent = <Payment userData={userData} Screen={"Details"}/>;
             break;
         default:
             ContentComponent = null;

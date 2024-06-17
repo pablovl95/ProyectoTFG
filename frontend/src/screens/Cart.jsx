@@ -5,9 +5,10 @@ import Shipping from '../components/profile/Shipping';
 import Payment from '../components/profile/Payment';
 import './css/Cart.css';
 
-const Cart = ({ changeCart, userData }) => {
+const Cart = ({ changeCart, userData, setNotification }) => {
   const [cart, setCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
+  const [shippingCostTotal, setShippingCostTotal] = useState(0);
   const [activeComponent, setActiveComponent] = useState('cart');
   const [AddressID, setAddressID] = useState('');
   const [passComponent, setPassComponent] = useState(['cart']);
@@ -17,19 +18,38 @@ const Cart = ({ changeCart, userData }) => {
     if (storedCart) {
       const parsedCart = JSON.parse(storedCart);
       setCart(parsedCart);
-      setCartTotal(calculateCartTotal(parsedCart));
+      const total = calculateCartTotal(parsedCart);
+      setCartTotal(total.cartTotal);
+      setShippingCostTotal(total.shippingCostTotal);
     }
   }, []);
 
   const calculateCartTotal = (cart) => {
-    return cart.reduce((total, item) => total + item.Price * item.quantity, 0).toFixed(2);
+    let cartTotal = 0;
+    let shippingCostTotal = 0;
+    let totalUnits = 0;
+
+    cart.forEach(item => {
+      const itemTotal = item.Price * item.quantity;
+      cartTotal += itemTotal;
+      shippingCostTotal += item.quantity > item.MinUnits ? 0 : item.ShippingCost;
+      totalUnits += item.quantity;
+    });
+
+    return {
+      cartTotal: cartTotal.toFixed(2),
+      shippingCostTotal: shippingCostTotal.toFixed(2),
+      totalUnits
+    };
   };
 
   const handleRemoveFromCart = (productId) => {
     const updatedCart = cart.filter(item => item.ProductID !== productId);
     setCart(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
-    setCartTotal(calculateCartTotal(updatedCart));
+    const total = calculateCartTotal(updatedCart);
+    setCartTotal(total.cartTotal);
+    setShippingCostTotal(total.shippingCostTotal);
     changeCart();
   };
 
@@ -46,14 +66,20 @@ const Cart = ({ changeCart, userData }) => {
 
     setCart(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
-    setCartTotal(calculateCartTotal(updatedCart));
+    const total = calculateCartTotal(updatedCart);
+    setCartTotal(total.cartTotal);
+    setShippingCostTotal(total.shippingCostTotal);
     changeCart();
   };
 
   const handleCheckout = (content) => {
-    setActiveComponent(content);
-    if (!passComponent.includes(content)) {
-      setPassComponent([...passComponent, content]);
+    if (userData != null || userData != undefined) {
+      setActiveComponent(content);
+      if (!passComponent.includes(content)) {
+        setPassComponent([...passComponent, content]);
+      }
+    } else {
+      setNotification({ type: 'error', message: 'Debes iniciar sesión para poder realizar un pedido' });
     }
   };
 
@@ -98,7 +124,8 @@ const Cart = ({ changeCart, userData }) => {
                     />
                     <div className="cart-item-info">
                       <h3>{item.ProductName}</h3>
-                      <p>{item.Price} €</p>
+                      <p>Precio: {item.Price} €</p>
+                      <p>Gastos de Envío: {item.quantity > item.MinUnits ? 'Gratis' : item.ShippingCost + ' €'}</p>
                     </div>
                   </Link>
                   <div className="cart-item-actions">
@@ -113,7 +140,9 @@ const Cart = ({ changeCart, userData }) => {
                 </div>
               ))}
               <div className="cart-total">
-                <h3>Total del Carrito: {cartTotal} €</h3>
+                <h5>Total del Carrito: {cartTotal} €</h5>
+                <h5>Gastos de Envío Totales: {shippingCostTotal} €</h5>
+                <h5>Total con Envío: {(parseFloat(cartTotal) + parseFloat(shippingCostTotal)).toFixed(2)} €</h5>
                 <button className="checkout-button" onClick={() => handleCheckout("shipping")}>Tramitar pedido</button>
               </div>
               <Link to="/" className="back-to-shop-link">Volver a la Tienda</Link>
@@ -128,7 +157,23 @@ const Cart = ({ changeCart, userData }) => {
           cart={cart}
           userData={userData}
           setAddress={setAddressID}
+          changeShippingCost={(productId, newShippingCost) => {
+            const updatedCart = cart.map(item => {
+              if (item.ProductID === productId) {
+                return {
+                  ...item,
+                  shippingCost: newShippingCost
+                };
+              }
+              return item;
+            });
 
+            setCart(updatedCart);
+            localStorage.setItem('cart', JSON.stringify(updatedCart));
+            const total = calculateCartTotal(updatedCart);
+            setCartTotal(total.cartTotal);
+            setShippingCostTotal(total.shippingCostTotal);
+          }}
           paymentVisibility={() => handleCheckout('payment')}
         />
       )}
@@ -140,6 +185,7 @@ const Cart = ({ changeCart, userData }) => {
           userData={userData}
           AddressID={AddressID}
           changeCart={changeCart}
+          shippingCostTotal={shippingCostTotal}
         />
       )}
     </div>

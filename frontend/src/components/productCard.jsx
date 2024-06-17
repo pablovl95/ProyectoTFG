@@ -8,18 +8,24 @@ const ProductCard = ({ product, changeCart }) => {
     const imageUrl = product?.ImageContent;
 
     const addToCart = () => {
-        const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
-        const existingProductIndex = existingCart.findIndex(item => item.ProductID === product.ProductID);
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        const existingProductIndex = cart.findIndex(item => item.ProductID === product?.ProductID);
+        const ShippingCost = product?.productInfo?.Shipping_cost ? product?.productInfo?.Shipping_cost : 4.99;
+        const MinUnits = product?.productInfo?.Min_units_for_free_shipping ? product?.productInfo?.Min_units_for_free_shipping : 5;
+        const updatedProduct = { ...product, quantity: 1, ShippingCost, MinUnits };
+    
         if (existingProductIndex !== -1) {
-            const updatedCart = [...existingCart];
-            updatedCart[existingProductIndex].quantity += 1;
-            localStorage.setItem('cart', JSON.stringify(updatedCart));
+          const updatedCart = [...cart];
+          updatedCart[existingProductIndex].quantity += 1;
+          updatedCart[existingProductIndex].ShippingCost = ShippingCost;
+          updatedCart[existingProductIndex].MinUnits = MinUnits;
+          localStorage.setItem("cart", JSON.stringify(updatedCart));
         } else {
-            const updatedCart = [...existingCart, { ...product, quantity: 1 }];
-            localStorage.setItem('cart', JSON.stringify(updatedCart));
+          const updatedCart = [...cart, updatedProduct];
+          localStorage.setItem("cart", JSON.stringify(updatedCart));
         }
         changeCart();
-    };
+      };
 
     const navigateToProduct = () => {
         navigate(`/product/${product.ProductID}`);

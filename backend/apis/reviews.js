@@ -4,7 +4,7 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
     const response = [];
     try {
       const query = `
-        SELECT Reviews.*, Users.FirstName, Users.ProfileImageUrl
+        SELECT Reviews.*, Users.FirstName
         FROM Reviews
         INNER JOIN Users ON Reviews.UserID = Users.UserID
         WHERE Reviews.ProductID='${req.params.id}'

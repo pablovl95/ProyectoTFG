@@ -3,10 +3,13 @@
 .profile-details-address {
   display: flex;
   flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 .profile-details-address-details {
-  flex: 0 0 calc(30% - 1rem);
+  flex: 0 0 calc(45% - 1rem);
   margin: 0 0 1rem 1rem;
   border: 1px solid #ccc;
   border-radius: 0.5rem;
@@ -38,22 +41,68 @@
 .profile-details-addresses-edit-button,
 .profile-details-addresses-delete-button {
   margin-left: auto;
-  width: 50%;
+  width: 30%;
+  background-color: #0d7100;
   padding: 0.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  background-color: #0d7100;
   color: white;
   margin-top: 10px;
 }
 
-.profile-details-addresses-edit-button:hover,
+.profile-details-addresses-delete-button {
+  background-color: #d10000;
+}
+
 .profile-details-addresses-delete-button:hover {
+  background-color: #830000;
+}
+
+.profile-details-addresses-edit-button:hover {
   background-color: #085c00;
+
 }
 
 .profile-details-add-address {
   padding: 10px;
   text-align: center;
   cursor: pointer;
+}
+
+
+@media (max-width: 1000px) {
+  .Addresses-content {
+    margin: 0 1rem;
+  }
+
+  .profile-details-addresses-edit-button,
+  .profile-details-addresses-delete-button {
+    margin: auto;
+    padding: 0.5rem;
+    width: 50%;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    color: white;
+    margin-top: 10px;
+  }
+
+  .profile-details-address {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    padding: 0;
+    width: 100%;
+  }
+
+  .profile-details-address-details {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 1rem 0;
+    width: 95%;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+  }
+
 }

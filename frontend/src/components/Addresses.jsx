@@ -44,7 +44,7 @@ const Addresses = ({ userData, setAddress, Screen }) => {
             }
             )
             .catch(error => console.error('Error fetching addresses:', error));
-    }, []);
+    }, [userData.UserID, Screen]);
     const handleEditButtonClick = (event, index) => {
         event.stopPropagation();
         openEditForm(index);
@@ -83,6 +83,7 @@ const Addresses = ({ userData, setAddress, Screen }) => {
             setAddresses([...addresses, form]);
         }
         closeForm();
+        console.log({ ...form, UserID: userData?.UserID })
         try {
             const response = await fetch(`${backendUrl}/api/v1/addresses${url}`, {
                 method: method,
@@ -158,10 +159,11 @@ const Addresses = ({ userData, setAddress, Screen }) => {
 
 
     const handleDeleteAddress = async (index) => {
+        console.log(index);
         const addressToDelete = addresses[index];
-        console.log("borrando");
+        setAddresses(addresses.filter((_, idx) => idx !== index));
+        console.log({ ...addressToDelete, UserID: "null" });
         try {
-            console.log("borrando");
             const response = await fetch(`${backendUrl}/api/v1/addresses/${addressToDelete.AddressID}`, {
                 method: 'PUT',
                 headers: {
@@ -169,12 +171,6 @@ const Addresses = ({ userData, setAddress, Screen }) => {
                 },
                 body: JSON.stringify({ ...addressToDelete, UserID: "null" })
             });
-
-            if (response.ok) {
-                setAddresses(addresses.filter((_, idx) => idx !== index));
-            } else {
-                console.error('Error deleting address:', response.statusText);
-            }
         } catch (error) {
             console.error('Error deleting address:', error);
         }

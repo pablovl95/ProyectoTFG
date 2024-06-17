@@ -6,6 +6,7 @@ import "./css/Product.css";
 import CardReviews from "../components/CardReviews";
 import ImageReviewsSlider from "../components/ImageReviewsSlider";
 import { calculateStarsPercentage, renderStarsProductCard } from "../utils/utils";
+import Shipping from "../components/profile/Shipping";
 
 const Product = ({ changeCart, setNotification }) => {
   const [showNav, setShowNav] = useState(window.innerWidth > 768);
@@ -21,10 +22,38 @@ const Product = ({ changeCart, setNotification }) => {
     ? "http://localhost:5000"
     : process.env.REACT_APP_BACKEND_URL;
 
+  const totalStarsPercentage = calculateStarsPercentage(product, reviews);
+ // Static data for Product_Info
+ const productInfo = {
+  Dimensions: "30x20x10 cm",
+  Weight: 1.2,
+  Volume: 0.6,
+  Unit: "kg",
+  Units: 1,
+  Price_per_unit: 15.99,
+  Manufacturer: "Acme Corp",
+  Brand: "Acme",
+  Storage_instructions: "Keep in a cool, dry place",
+  Country_of_origin_ingredients: "Spain",
+  Shipping_cost: 5.99,
+  Min_units_for_free_shipping: 10
+};
 
-
-  const totalStarsPercentaje = calculateStarsPercentage(product, reviews);
-
+// Static data for Nutritional_Info
+const nutritionalInfo = {
+  Calories: 250,
+  Total_fat: 10,
+  Saturated_fat: 3,
+  Trans_fat: 0,
+  Cholesterol: 30,
+  Sodium: 200,
+  Total_carbohydrates: 30,
+  Fiber: 5,
+  Sugars: 10,
+  Protein: 15,
+  Vitamins: "A, C, D",
+  Minerals: "Calcium, Iron"
+};
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -43,8 +72,8 @@ const Product = ({ changeCart, setNotification }) => {
       const reviewsData = await reviewsResponse.json();
       setReviews(reviewsData);
     } catch (error) {
-      console.log(error)
-      setNotification({ type: 'error', message: "Ha ocurrido un problema con el producto. Reinicia la pagina o vuelve mas tarde" });
+      console.log(error);
+      setNotification({ type: 'error', message: "Ha ocurrido un problema con el producto. Reinicia la página o vuelve más tarde." });
     } finally {
       setLoading(false);
     }
@@ -64,15 +93,30 @@ const Product = ({ changeCart, setNotification }) => {
     fetchProducts();
   }, []);
 
+  const calculateTotalPrice = () => {
+    const productTotal = product?.Price * quantity;
+    const shippingCost = quantity >= productInfo.Min_units_for_free_shipping ? 0 : productInfo.Shipping_cost;
+    return productTotal + shippingCost;
+  };
+
+  const isShippingFree = quantity >= productInfo.Min_units_for_free_shipping;
+
   const addToCart = () => {
     const existingProductIndex = cart.findIndex(item => item.ProductID === product.ProductID);
+    console.log(productInfo.Shipping_cost);
+    const ShippingCost = productInfo.Shipping_cost;
+    const MinUnits = productInfo.Min_units_for_free_shipping;
+    const updatedProduct = { ...product, quantity: parseInt(quantity, 10), ShippingCost, MinUnits };
+
     if (existingProductIndex !== -1) {
       const updatedCart = [...cart];
       updatedCart[existingProductIndex].quantity += parseInt(quantity, 10);
+      updatedCart[existingProductIndex].ShippingCost = ShippingCost;
+      updatedCart[existingProductIndex].MinUnits = MinUnits;
       setCart(updatedCart);
       localStorage.setItem("cart", JSON.stringify(updatedCart));
     } else {
-      const updatedCart = [...cart, { ...product, quantity: parseInt(quantity, 10) }];
+      const updatedCart = [...cart, updatedProduct];
       setCart(updatedCart);
       localStorage.setItem("cart", JSON.stringify(updatedCart));
     }
@@ -81,7 +125,7 @@ const Product = ({ changeCart, setNotification }) => {
 
   if (loading) {
     return (
-      <div style={{ padding: "10rem", paddingBottom: "20rem",width:"10%",margin:"auto" }}>
+      <div style={{ padding: "10rem", paddingBottom: "20rem", width: "10%", margin: "auto" }}>
         <ClipLoader
           color={"green"}
           loading={loading}
@@ -93,35 +137,7 @@ const Product = ({ changeCart, setNotification }) => {
     );
   }
 
-  // Static data for Product_Info
-  const productInfo = {
-    Dimensions: "30x20x10 cm",
-    Weight: 1.2,
-    Volume: 0.6,
-    Unit: "kg",
-    Units: 1,
-    Price_per_unit: 15.99,
-    Manufacturer: "Acme Corp",
-    Brand: "Acme",
-    Storage_instructions: "Keep in a cool, dry place",
-    Country_of_origin_ingredients: "Spain"
-  };
-
-  // Static data for Nutritional_Info
-  const nutritionalInfo = {
-    Calories: 250,
-    Total_fat: 10,
-    Saturated_fat: 3,
-    Trans_fat: 0,
-    Cholesterol: 30,
-    Sodium: 200,
-    Total_carbohydrates: 30,
-    Fiber: 5,
-    Sugars: 10,
-    Protein: 15,
-    Vitamins: "A, C, D",
-    Minerals: "Calcium, Iron"
-  };
+ 
 
   return (
     <div className="product-container-global">
@@ -152,10 +168,10 @@ const Product = ({ changeCart, setNotification }) => {
                   {product?.TotalComments} Valoraciones | Buscar en esta página
                 </a>
               </p>
-
             </div>
-            <h1>{(product?.Price * quantity).toFixed(2)} €</h1>
+            <h1>{product?.Price} €</h1>
             <a> 0,99 €/kg</a>
+ 
           </div>
           <div className="quantity-container">
             <div className="quantity-selector">
@@ -170,8 +186,18 @@ const Product = ({ changeCart, setNotification }) => {
               <button onClick={() => setQuantity(Math.min(100, quantity + 1))}>+</button>
             </div>
             <button className="add-to-cart-button" onClick={addToCart}>Añadir al carrito</button>
+            
           </div>
+          
           <div className="product-description">
+          {!isShippingFree && (
+              <p>
+                Incluye {productInfo.Shipping_cost} € de costes de envío. Añade {productInfo.Min_units_for_free_shipping - quantity} unidades más para obtener envío gratuito.
+              </p>
+            )}
+            {isShippingFree && (
+              <p>¡Envío gratuito!</p>
+            )}
             <h3>Acerca de este producto</h3>
             <p>{product?.ProductDescription}</p>
           </div>
@@ -198,7 +224,7 @@ const Product = ({ changeCart, setNotification }) => {
                 <td>{productInfo.Volume} L</td>
               </tr>
               <tr>
-                <td>Unidad</td>
+              <td>Unidad</td>
                 <td>{productInfo.Unit}</td>
               </tr>
               <tr>
@@ -300,14 +326,14 @@ const Product = ({ changeCart, setNotification }) => {
               <div key={stars} className="starsLine">
                 <a>{stars} Estrellas</a>
                 <div className="WidthDiv">
-                  <div className="WidthPercentaje" style={{ width: `${totalStarsPercentaje[stars]}%` }}></div>
+                  <div className="WidthPercentage" style={{ width: `${totalStarsPercentage[stars]}%` }}></div>
                 </div>
-                {totalStarsPercentaje[stars]}%
+                {totalStarsPercentage[stars]}%
               </div>
             ))}
           </div>
           <div className="Reseñas">
-            <h2>Reseñas con imagenes</h2>
+            <h2>Reseñas con imágenes</h2>
             <ImageReviewsSlider Reviews={reviews} />
             <h2>Principales Reseñas</h2>
             <CardReviews Reviews={reviews} />
@@ -322,13 +348,12 @@ const Product = ({ changeCart, setNotification }) => {
               <div key={stars} className="starsLine">
                 <a>{stars} Estrellas</a>
                 <div className="WidthDiv">
-                  <div className="WidthPercentaje" style={{ width: `${totalStarsPercentaje[stars]}%` }}></div>
+                  <div className="WidthPercentage" style={{ width: `${totalStarsPercentage[stars]}%` }}></div>
                 </div>
-                {totalStarsPercentaje[stars]}%
+                {totalStarsPercentage[stars]}%
               </div>
             ))}
           </div>
-
         </div>
       )}
     </div>
