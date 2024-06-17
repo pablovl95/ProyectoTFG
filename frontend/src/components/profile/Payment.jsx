@@ -49,7 +49,6 @@ const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCar
             PaymentMethodType: selectOption,
             ContentText: JSON.stringify(Object.fromEntries(formData.entries()))
         };
-
         try {
             const response = await fetch(`${backendUrl}/api/v1/users/payment`, {
                 method: 'POST',

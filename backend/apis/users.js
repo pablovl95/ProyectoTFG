@@ -86,12 +86,11 @@ app.get('/api/v1/users/payment/:id', async (req, res) => {
 
 app.post('/api/v1/users/payment', async (req, res) => {
   const { UserID, PaymentMethodType, ContentText } = req.body;
-  const StringContentText = JSON.stringify(ContentText);
   try {
     // Construir la consulta de inserción
     const query = `
       INSERT INTO PaymentMethods (UserID, PaymentMethodType, ContentText)
-      VALUES ('${UserID}', '${PaymentMethodType}', '${StringContentText}')
+      VALUES ('${UserID}', '${PaymentMethodType}', '${ContentText}')
     `;
 
     await db.execute(query);

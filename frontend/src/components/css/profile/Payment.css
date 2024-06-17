@@ -252,8 +252,8 @@
   transition: background-color 0.3s;
 }
 .cart-payment-selector-header.active {
-  background-color: #2ed355; /* Cambia aquí el color a verde deseado */
-  color: #fff; /* Color del texto cuando está seleccionado */
+  background-color: #2ed355; 
+  color: #fff; 
 }
 
 @media (max-width: 768px) {
