@@ -97,25 +97,25 @@ function Login({ onClose, setUser, setNotification }) {
     <div className="login-container">
       <div className="login-container-i">
 
-        <div className="close-div" onClick={onClose}>
+        <div className="login-close-div" onClick={onClose}>
           X
         </div>
-        <div className="close-div-mobile" onClick={onClose}>
+        <div className="login-close-div-mobile" onClick={onClose}>
           <IconX />
         </div>
-        <h2>{isLogin ? 'Login' : 'Registro'}</h2>
+        <h2 className='login-h2'>{isLogin ? 'Login' : 'Registro'}</h2>
 
-        <div className="switch">
-          <div className={isLogin ? 'buttonSwitchOn' : 'buttonSwitchOff'} onClick={isLogin ? null : switchMode}>
+        <div className="login-switch">
+          <div className={isLogin ? 'login-buttonSwitchOn' : 'login-buttonSwitchOff'} onClick={isLogin ? null : switchMode}>
             Ya soy cliente
           </div>
-          <div className={isLogin ? 'buttonSwitchOff' : 'buttonSwitchOn'} onClick={isLogin ? switchMode : null}>
+          <div className={isLogin ? 'login-buttonSwitchOff' : 'login-buttonSwitchOn'} onClick={isLogin ? switchMode : null}>
             Soy nuevo
           </div>
         </div>
 
         <form onSubmit={isLogin ? handleEmailLogin : handleEmailRegister}>
-          <div className="form-group">
+          <div className="login-form-group">
             <input
               type="email"
               id="email"
@@ -125,7 +125,7 @@ function Login({ onClose, setUser, setNotification }) {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="form-group">
+          <div className="login-form-group">
             <input
               type="password"
               id="password"
@@ -137,7 +137,7 @@ function Login({ onClose, setUser, setNotification }) {
           </div>
           {!isLogin && (
             <>
-              <div className="form-group">
+              <div className="login-form-group">
                 <input
                   type="password"
                   id="confirm-password"
@@ -147,7 +147,7 @@ function Login({ onClose, setUser, setNotification }) {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
               </div>
-              <div className="form-group">
+              <div className="login-form-group">
                 <input
                   type="FirstName"
                   id="FirstName"
@@ -157,7 +157,7 @@ function Login({ onClose, setUser, setNotification }) {
                   onChange={(e) => setFirstName(e.target.value)}
                 />
               </div>
-              <div className="form-group">
+              <div className="login-form-group">
                 <input
                   type="LastName"
                   id="LastName"
@@ -167,7 +167,7 @@ function Login({ onClose, setUser, setNotification }) {
                   onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
-              <div className="form-group">
+              <div className="login-form-group">
                 <input
                   type="Telephone"
                   id="Telephone"
@@ -179,13 +179,13 @@ function Login({ onClose, setUser, setNotification }) {
               </div>
             </>
           )}
-          <div className="forgot-password">
+          <div className="login-forgot-password">
             <a href="#">¿Has olvidado la contraseña? Recupéralo aquí</a>
           </div>
-          <button type="submit">{isLogin ? 'Login' : 'Registrarse'}</button>
+          <button type="submit" className="login-button">{isLogin ? 'Login' : 'Registrarse'}</button>
         </form>
-        <div className="social-login">
-          <div className="google-login-div" onClick={handleGoogleLogin}>
+        <div className="login-social-login">
+          <div className="login-google-login-div" onClick={handleGoogleLogin}>
             Acceso con Google
           </div>
         </div>

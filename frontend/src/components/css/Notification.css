@@ -11,8 +11,8 @@
   }
   
   .notification.error {
-    background-color: #FFCCCC;
-    color: #FF0000;
+    background-color: #ff7474;
+    color: #ffffff;
   }
   
   .notification.success {
@@ -21,8 +21,8 @@
   }
   
   .notification.info {
-    background-color: #CCE5FF;
-    color: #0000FF;
+    background-color: #5656ff;
+    color: #dedeff;
   }
   
   .close-button {
@@ -34,3 +34,11 @@
     cursor: pointer;
   }
   
+  @media screen and (max-width: 1000px){
+    .notification {
+      width: 90%;
+      margin: auto;
+      padding:0.5rem 0 0.5rem 0.5rem;
+    }
+    
+  }

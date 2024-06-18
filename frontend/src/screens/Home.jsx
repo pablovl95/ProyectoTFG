@@ -58,7 +58,14 @@ function Home({ changeCart }) {
             Trabaja con nosotros
           </div>
         </div>
-        
+        <div className="home-options-container">
+          <div className='home-option' style={{ backgroundColor: "#4A90E2" }} onClick={() => navigate("/next-implementations")}>
+            Ofertas que se adecuan a tus gustos
+          </div>
+          <div className='home-option' style={{ backgroundColor: "#50E3C2" }} onClick={() => navigate("/work-with-us")}>
+            Trabaja con nosotros
+          </div>
+        </div>
         <h1 className="HomeTitle">
           Productos más vendidos
         </h1>

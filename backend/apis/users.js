@@ -87,19 +87,13 @@ app.get('/api/v1/users/payment/:id', async (req, res) => {
 app.post('/api/v1/users/payment', async (req, res) => {
   const { UserID, PaymentMethodType, ContentText } = req.body;
   try {
-    // Construir la consulta de inserción
     const query = `
       INSERT INTO PaymentMethods (UserID, PaymentMethodType, ContentText)
       VALUES ('${UserID}', '${PaymentMethodType}', '${ContentText}')
     `;
-
     await db.execute(query);
-
-    res.status(201).json({
-      UserID,
-      PaymentMethodType,
-      ContentText
-    });
+    const data = await db.execute(`SELECT * FROM PaymentMethods WHERE UserID = '${UserID}' AND PaymentMethodType = '${PaymentMethodType}' AND ContentText = '${ContentText}'`);
+    res.status(201).json(data.rows[0]);
   } catch (error) {
     console.error('Error al insertar en la base de datos:', error);
     res.status(500).send('Error al agregar el método de pago a la base de datos');
@@ -110,11 +104,7 @@ app.delete('/api/v1/users/payment/:id', async (req, res) => {
   const paymentMethodId = req.params.id;
   try {
     const result = await db.execute(`DELETE FROM PaymentMethods WHERE PaymentMethodID = '${paymentMethodId}'`);
-    if (result.affectedRows > 0) {
-      res.status(200).send(`Método de pago con ID ${paymentMethodId} ha sido eliminado exitosamente.`);
-    } else {
-      res.status(404).send(`No se encontró el método de pago con ID ${paymentMethodId}.`);
-    }
+    res.status(200).send('Método de pago eliminado correctamente');
   } catch (error) {
     console.error('Error al eliminar el método de pago de la base de datos:', error);
     res.status(500).send('Error al eliminar el método de pago de la base de datos');

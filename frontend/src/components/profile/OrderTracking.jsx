@@ -233,10 +233,6 @@ const OrderTracking = ({ setNotification, userData }) => {
                                                         <p>Cantidad: {product.Quantity}</p>
                                                         <p>Tienda: {product.ShopName}</p>
                                                     </div>
-                                                    <div className='order-tracking-product-actions'>
-                                                        <h4>Acciones</h4>
-                                                        {renderButtonActions(product?.OrderStatus[product.OrderStatus.length - 1].OrderStatus)}
-                                                    </div>
                                                 </div>
                                                 <h4>Estados del Pedido</h4>
                                                 <div className="order-tracking-status-container">

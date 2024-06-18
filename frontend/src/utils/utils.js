@@ -76,7 +76,6 @@ const renderStarsProductCard = (rating) => {
 };
 
 
-
 const calculateStarsPercentage = (product, reviews) => {
   const totalReviews = product.TotalComments; // Total de valoraciones
   const starsCount = {}; // Objeto para almacenar el recuento de estrellas
@@ -87,6 +86,18 @@ const calculateStarsPercentage = (product, reviews) => {
     starsCount[stars] = (starsCount[stars] || 0) + 1;
   });
 
+  // Verificar si no hay valoraciones
+  if (totalReviews === 0) {
+    // Devolver un objeto con porcentajes en cero
+    return {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0
+    };
+  }
+
   // Calcular el porcentaje para cada cantidad de estrellas
   const starsPercentage = {};
   for (let i = 1; i <= 5; i++) {
@@ -95,6 +106,7 @@ const calculateStarsPercentage = (product, reviews) => {
 
   return starsPercentage;
 };
+
 
 function StatusTranslation(status) {
   switch (status) {

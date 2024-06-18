@@ -6,7 +6,6 @@ import "./css/Product.css";
 import CardReviews from "../components/CardReviews";
 import ImageReviewsSlider from "../components/ImageReviewsSlider";
 import { calculateStarsPercentage, renderStarsProductCard } from "../utils/utils";
-import Shipping from "../components/profile/Shipping";
 
 const Product = ({ changeCart, setNotification }) => {
   const [showNav, setShowNav] = useState(window.innerWidth > 768);
@@ -156,7 +155,7 @@ const nutritionalInfo = {
             <h2>{product?.ProductName}</h2>
             <p>
               Visita la tienda de{" "}
-              <Link to={`/shop/${product?.ShopID}`} style={{ textDecoration: "none", color: "green" }}>
+              <Link to={`/next-implementations`} style={{ textDecoration: "none", color: "green" }}>
                 {product?.ShopName}
               </Link>
             </p>

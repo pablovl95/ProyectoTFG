@@ -64,8 +64,8 @@ const AddressesForm = ({
                             </div>
                         </div>
                         <div className="form-buttons">
-                            <button type="button" onClick={closeForm}>Cancelar</button>
-                            <button type="submit">Guardar</button>
+                            <button type="button" onClick={closeForm} style={{backgroundColor:"red"}}>Cancelar</button>
+                            <button type="submit" >Guardar</button>
                         </div>
                     </form>
                 </div>

@@ -10,7 +10,7 @@
   z-index: 998;
 }
 
-.buttonSwitchOn {
+.login-buttonSwitchOn {
   background-color: #228000;
   color: #fff;
   border: none;
@@ -21,7 +21,7 @@
 }
 
 
-.switch {
+.login-switch {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1em;
@@ -29,7 +29,7 @@
 }
 
 
-.buttonSwitchOff {
+.login-buttonSwitchOff {
   background-color: #e8e8e8;
   color: #000000;
   border: none;
@@ -39,7 +39,7 @@
   cursor: pointer;
 }
 
-.close-div {
+.login-close-div {
   position: absolute;
   background-color: #228000;
   top: 1em;
@@ -50,49 +50,45 @@
   color: #ffffff;
 }
 
-.close-div:hover {
+.login-close-div:hover {
   color: #000;
 }
 
-h2 {
+.login-h2 {
   margin-bottom: 20px;
 }
 
-.form-group {
+.login-form-group {
   margin-bottom: 15px;
 }
 
-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-input {
+.login-form-group input {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 3px;
 }
 
-.forgot-password {
+.login-forgot-password {
   margin-top: 10px;
   font-size: 0.9em;
   margin-bottom: 1rem
 }
 
-.forgot-password a {
+.login-forgot-password a {
   color: #228000;
   text-decoration: none;
 
 }
 
-.forgot-password a:hover {
+.login-forgot-password a:hover {
   text-decoration: underline;
 }
 
-button[type="submit"] {
+.login-button {
   width: 100%;
   padding: 10px;
+  text-align: center;
   background-color: #228000;
   color: #fff;
   border: none;
@@ -100,16 +96,16 @@ button[type="submit"] {
   cursor: pointer;
 }
 
-button[type="submit"]:hover {
+.login-button:hover {
   background-color: #1c6b00;
 }
 
-.social-login {
+.login-social-login {
   margin-top: 20px;
 }
 
-.google-login-div,
-.facebook-login-div {
+.login-google-login-div,
+.login-facebook-login-div {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 3px;
@@ -117,11 +113,11 @@ button[type="submit"]:hover {
   cursor: pointer;
 }
 
-.google-login-div:hover,
-.facebook-login-div:hover {
+.login-google-login-div:hover,
+.login-facebook-login-div:hover {
   background-color: #f2f2f2;
 }
-.close-div-mobile{
+.login-close-div-mobile{
   display: none;
 }
 /* Agrega estilos para dispositivos móviles */
@@ -140,10 +136,10 @@ button[type="submit"]:hover {
     margin: 5rem auto;
     z-index: 998;
   }
-  .close-div{
+  .login-close-div{
     display: none;
   }
-  .close-div-mobile {
+  .login-close-div-mobile {
     display: block;
     position: absolute;
     padding: 0.25em;
@@ -154,11 +150,11 @@ button[type="submit"]:hover {
     color: #000000;
   }
 
-  .close-div-mobile:hover {
+  .login-close-div-mobile:hover {
     color: #000;
   }
 
-  .buttonSwitchOn {
+  .login-buttonSwitchOn {
     background-color: #228000;
     color: #fff;
     border: none;
@@ -169,7 +165,7 @@ button[type="submit"]:hover {
   }
 
 
-  .switch {
+  .login-switch {
     display: flex;
     justify-content: space-between;
     margin-bottom: 1em;
@@ -177,7 +173,7 @@ button[type="submit"]:hover {
   }
 
 
-  .buttonSwitchOff {
+  .login-buttonSwitchOff {
     background-color: #e8e8e8;
     color: #000000;
     border: none;
@@ -187,7 +183,7 @@ button[type="submit"]:hover {
     cursor: pointer;
   }
 
-  .close-div {
+  .login-close-div {
     position: absolute;
     top: 1em;
     right: 1em;
@@ -196,47 +192,41 @@ button[type="submit"]:hover {
 
   }
 
-  .close-div:hover {
+  .login-close-div:hover {
     color: #000;
   }
 
-  h2 {
-    margin-bottom: 20px;
-  }
-
-  .form-group {
+  .login-form-group {
     margin-bottom: 15px;
   }
 
-  label {
-    display: block;
-    margin-bottom: 5px;
-  }
 
-  .form-group input {
+
+  .login-form-group input {
     width: 90%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 3px;
   }
 
-  .forgot-password {
+  .login-forgot-password {
     margin-top: 10px;
     font-size: 0.9em;
   }
 
-  .forgot-password a {
+  .login-forgot-password a {
     color: #228000;
     text-decoration: none;
   }
 
-  .forgot-password a:hover {
+  .login-forgot-password a:hover {
     text-decoration: underline;
   }
 
-  button[type="submit"] {
+.login-button {
     width: 100%;
     padding: 10px;
+    text-align: center;
     background-color: #228000;
     color: #fff;
     border: none;
@@ -244,16 +234,16 @@ button[type="submit"]:hover {
     cursor: pointer;
   }
 
-  button[type="submit"]:hover {
+.login-button:hover {
     background-color: #1c6b00;
   }
 
-  .social-login {
+  .login-social-login {
     margin-top: 20px;
   }
 
-  .google-login-div,
-  .facebook-login-div {
+  .login-google-login-div,
+  .login-facebook-login-div {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 3px;
@@ -261,8 +251,8 @@ button[type="submit"]:hover {
     cursor: pointer;
   }
 
-  .google-login-div:hover,
-  .facebook-login-div:hover {
+  .login-google-login-div:hover,
+  .login-facebook-login-div:hover {
     background-color: #f2f2f2;
   }
 }

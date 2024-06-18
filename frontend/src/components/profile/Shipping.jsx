@@ -2,19 +2,12 @@ import React, { useState, useEffect } from 'react';
 import '../css/profile/Shipping.css';
 import Addresses from '../Addresses';
 
-const Shipping = ({ setActiveComponent, cart, cartTotal, userData, setAddress }) => {
+const Shipping = ({ setActiveComponent, cart, cartTotal, userData, setAddress, shippingCostTotal }) => {
     const [shippingMethod, setShippingMethod] = useState('express');
     const [AddressSelected, setAddressSelected] = useState(null);
-    const [shippingCost, setShippingCost] = useState(2.90); // Costo de envío por producto
-
     useEffect(() => {
-        const totalUnits = cart.reduce((total, item) => total + item.quantity, 0);
-        if (totalUnits >= 10) {
-            setShippingCost(0); // Envío gratis si se superan las 10 unidades
-        } else {
-            setShippingCost(2.90); // Costo fijo por producto si no se supera
-        }
-    }, [cart]);
+        console.log(shippingCostTotal)
+    }, [shippingCostTotal]);
 
     const handleShippingChange = (event) => {
         setShippingMethod(event.target.value);
@@ -24,7 +17,9 @@ const Shipping = ({ setActiveComponent, cart, cartTotal, userData, setAddress })
         setAddress(addressID);
         setAddressSelected(addressID);
     };
-
+    const handleApplyCoupon = () => {
+        alert("Esta funcionalidad estará disponible en futuras actualizaciones.");
+    };
     const handleClickPayment = () => {
         if (AddressSelected) {
             setActiveComponent('payment');
@@ -70,14 +65,14 @@ const Shipping = ({ setActiveComponent, cart, cartTotal, userData, setAddress })
             </div>
             <div className="shipping-summary">
                 <h3>Resumen</h3>
-                <div className="summary-details">
+                <div className="shipping-summary-details">
                     <p>Subtotal: {cartTotal} €</p>
-                    <p>Gastos de envío: {shippingCost.toFixed(2)} €</p>
-                    <p>TOTAL: {(parseFloat(cartTotal) + parseFloat(shippingCost)).toFixed(2)} € (IVA incluido)</p>
+                    <p>Gastos de envío: {parseFloat(shippingCostTotal).toFixed(2)} €</p>
+                    <p>TOTAL: {(parseFloat(cartTotal) + parseFloat(shippingCostTotal)).toFixed(2)} € (IVA incluido)</p>
                     <p>Revisa los pedidos a los productores para ver si puedes ahorrarte algo en gastos de envío!!</p>
                     <input type="text" placeholder="¿Dispones de un cupón?" />
-                    <button>Aplicar</button>
-                    <button onClick={handleClickPayment}>Siguiente paso</button>
+                    <button style={{ backgroundColor: "#17a2b8" }} onClick={handleApplyCoupon}>Aplicar</button>
+                    <button onClick={handleClickPayment} style={{ backgroundColor: "#28a745" }}>Siguiente paso</button>
                 </div>
             </div>
         </div>

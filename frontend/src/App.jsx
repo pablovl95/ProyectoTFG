@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Route, Routes } from "react-router-dom";
+import React,{useState, useEffect} from 'react';
+import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
+import { IconBubbleText } from '@tabler/icons-react';
 import Login from "./components/Login";
 import Navbar from "./components/navbar";
 import About from "./screens/About";
@@ -8,13 +9,13 @@ import Home from "./screens/Home";
 import Search from "./screens/Search";
 import Product from "./screens/Product";
 import Footer from "./components/Footer";
-import Shop from "./screens/Shop";
 import Cart from "./screens/Cart";
 import Profile from "./screens/Profile";
 import Dashboard from "./screens/Dashboard";
 import Delivery from "./screens/Delivery";
 import Images from "./screens/Images";
 import Workwithus from './screens/Workwithus';
+import NextImplementations from './screens/NextImplementations';
 import Notification from './components/Notification';
 
 import { auth } from "./auth";
@@ -68,6 +69,7 @@ function App() {
   const changeCart = () => {
     setChanger(!changer);
   };
+
   useEffect(() => {
     if (notification) {
       setTimeout(() => {
@@ -75,45 +77,51 @@ function App() {
       }, 3000);
     }
   }, [notification]);
+
+  const navigate = useNavigate(); // Hook para navegar a la página de implementaciones futuras
+
   return (
     <>
-    <div className="App">
-      {notification && (
-        <Notification notification={notification} onClose={() => setNotification(null)} />
-      )}
-      <Navbar loginView={() => setLoginView(true)} user={userData} changeCart={changer} setNotification={setNotification}/>
-      <Routes>
-        <Route path="/" element={<Home changeCart={changeCart} setNotification={setNotification}/>} />
-        <Route path="/about" element={<About setNotification={setNotification}/>} />
-        <Route path="/product/:id" element={<Product changeCart={changeCart} setNotification={setNotification}/>} />
-        <Route path="/search" element={<Search changeCart={changeCart} setNotification={setNotification}/>} />
-        <Route path="/shop/:id" element={<Shop setNotification={setNotification}/>} />
-        <Route path="/cart" element={<Cart changeCart={changeCart} userData={userData} setNotification={setNotification}/>} />
-        <Route path="/work-with-us" element={<Workwithus setNotification={setNotification}/>} />
-        {userData && (
-          <>
-            <Route path="/profile" element={<Profile userData={userData} changeUserData={(udata) => { setUserData(udata)}} setNotification={setNotification}/>} />
-            <Route path="/profile/:id/:id2" element={<Profile userData={userData} changeUserData={(udata) => setUserData(udata)} setNotification={setNotification}/>} />
-            <Route path="/profile/:id" element={<Profile userData={userData} changeUserData={(udata) => setUserData(udata)} setNotification={setNotification}/>} />
-          </>
+      <div className="App">
+        {notification && (
+          <Notification notification={notification} onClose={() => setNotification(null)} />
         )}
-        {userData?.UserType === "administrator" && (
-          <Route path="/dashboard" element={<Dashboard />} />
-        )}
-        {userData?.userType === 'delivery' && (
-          <Route path="/delivery" element={<Delivery />} />
-        )}
-        <Route path="/images" element={<Images />} />
-      </Routes>
-      
+        <Navbar loginView={() => setLoginView(true)} user={userData} changeCart={changer} setNotification={setNotification} />
+        <Routes>
+          <Route path="/" element={<Home changeCart={changeCart} setNotification={setNotification}/>} />
+          <Route path="/about" element={<About setNotification={setNotification}/>} />
+          <Route path="/product/:id" element={<Product changeCart={changeCart} setNotification={setNotification}/>} />
+          <Route path="/search" element={<Search changeCart={changeCart} setNotification={setNotification}/>} />
+          <Route path="/cart" element={<Cart changeCart={changeCart} userData={userData} setNotification={setNotification}/>} />
+          <Route path="/work-with-us" element={<Workwithus setNotification={setNotification}/>} />
+          {userData && (
+            <>
+              <Route path="/profile" element={<Profile userData={userData} changeUserData={(udata) => { setUserData(udata)}} setNotification={setNotification}/>} />
+              <Route path="/profile/:id/:id2" element={<Profile userData={userData} changeUserData={(udata) => setUserData(udata)} setNotification={setNotification}/>} />
+              <Route path="/profile/:id" element={<Profile userData={userData} changeUserData={(udata) => setUserData(udata)} setNotification={setNotification}/>} />
+            </>
+          )}
+          {userData?.UserType === "administrator" && (
+            <Route path="/dashboard" element={<Dashboard />} />
+          )}
+          {userData?.userType === 'delivery' && (
+            <Route path="/delivery" element={<Delivery />} />
+          )}
+          <Route path="/images" element={<Images />} />
+          <Route path="/next-implementations" element={<NextImplementations/>} /> {/* Placeholder for the new route */}
+        </Routes>
 
-      {loginView && !user && (
-        <div className="overlay">
-          <Login onClose={() => setLoginView(false)} setUser={(user) => setUser(user)} setNotification={setNotification} />
+        {loginView && !user && (
+          <div className="overlay">
+            <Login onClose={() => setLoginView(false)} setUser={(user) => setUser(user)} setNotification={setNotification} />
+          </div>
+        )}
+
+        <div className="chatbot-icon" onClick={() => navigate("/next-implementations")}>
+           <IconBubbleText size={30} /> 
         </div>
-      )}
-    </div>
-    <Footer />
+      </div>
+      <Footer />
     </>
   );
 }

@@ -4,84 +4,73 @@ import './css/ImageReviewsSlider.css';
 
 const ImageReviewsSlider = ({ Reviews }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [limitmin, setLimitmin] = useState(0);
+  const [limitsup, setLimitsup] = useState(4);
   const [showReviewDetails, setShowReviewDetails] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [showMorePhotos, setShowMorePhotos] = useState(false);
+  const [reviewSelected, setReviewSelected] = useState(0);
+  const [imagesToSlider, setImagesToSlider] = useState([]);
 
   useEffect(() => {
-    // Manejar el redimensionamiento de la ventana para cambiar el estado 'isMobile'
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
+    const imagesToSlider = [];
 
-    // Limpieza del evento listener al desmontar el componente
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    Reviews.forEach((review, index) => {
+      review.images.forEach((image, idx) => {
+        const imageData = {
+          id: idx, // Crear un ID único para cada imagen
+          src: `data:image/png;base64,${image.ImageContent}`,
+          ReviewID: review.ReviewID
+        };
+        imagesToSlider.push(imageData);
+      });
+    });
+    setImagesToSlider(imagesToSlider);
+  }, [Reviews]);
 
   const handleClickNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % Reviews.length);
+    if (limitsup >= imagesToSlider.length) {
+      setLimitmin(0);
+      setLimitsup(4);
+    } else {
+      setLimitmin(limitmin + 1);
+      setLimitsup(limitsup + 1);
+    }
   };
 
   const handleClickPrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? Reviews.length - 1 : prevIndex - 1
-    );
+    if (limitmin <= 0) {
+      setLimitmin(imagesToSlider.length - 4);
+      setLimitsup(imagesToSlider.length);
+    } else {
+      setLimitmin(limitmin - 1);
+      setLimitsup(limitsup - 1);
+    }
   };
 
-  const handleReviewDetailsToggle = () => {
-    setShowReviewDetails(!showReviewDetails);
-  };
-
-  const toggleShowMorePhotos = () => {
-    setShowMorePhotos(!showMorePhotos);
+  const handleReviewDetailsToggle = (reviewID) => {
+    setReviewSelected(reviewID);
+    setShowReviewDetails(true);
   };
 
   return (
     <div className="slider-container">
       {showReviewDetails && (
         <ReviewDetails
-          review={Reviews[currentIndex]}
-          onClose={handleReviewDetailsToggle}
+          review={Reviews.find(review => review.ReviewID === reviewSelected)}
+          onClose={() => setShowReviewDetails(false)}
         />
       )}
-
-      {!isMobile && (
-        <div className="arrow left" onClick={handleClickPrev}>{'<'}</div>
-      )}
-      
+      <div className="arrow left" onClick={handleClickPrev}>{'<'}</div>
       <div className="slider-images">
-        {Reviews.map((review, index) => {
-          if (review.ContainsPhotos > 0) {
-            // Determinar cuántas fotos mostrar
-            const imagesToShow = isMobile && !showMorePhotos ? review.images.slice(0, 4) : review.images;
-            return imagesToShow.map((image, idx) => (
-              <img
-                key={idx}
-                src={`data:image/png;base64,${image.ImageContent}`}
-                alt={`Review ${index}`}
-                onClick={() => {
-                  setCurrentIndex(index);
-                  setShowReviewDetails(true);
-                }}
-              />
-            ));
-          }
-          return null;
-        })}
+        {imagesToSlider.slice(limitmin, limitsup).map((image, index) => (
+          <img
+            key={index}
+            src={image.src}
+            alt={`Review ${index}`}
+            onClick={() => handleReviewDetailsToggle(image.ReviewID)}
+          />
+        ))}
       </div>
-      
-      {!isMobile && (
-        <div className="arrow right" onClick={handleClickNext}>{'>'}</div>
-      )}
-      
-      {isMobile && (
-        <div className="mobile-controls">
-          <button onClick={handleClickPrev}>Anterior</button>
-          <button onClick={handleClickNext}>Siguiente</button>
-          {!showMorePhotos && Reviews.some(review => review.ContainsPhotos > 4) && (
-            <button onClick={toggleShowMorePhotos}>Mostrar más fotos</button>
-          )}
-        </div>
-      )}
+      <div className="arrow right" onClick={handleClickNext}>{'>'}</div>
     </div>
   );
 };

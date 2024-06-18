@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "../css/profile/OrdersDetails.css";
 import { StatusTranslation } from '../../utils/utils';
 
@@ -7,6 +8,7 @@ function DetallesPedido({ userData, id }) {
   const backendUrl = process.env.NODE_ENV === 'development'
     ? 'http://localhost:5000'
     : process.env.REACT_APP_BACKEND_URL;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -100,8 +102,8 @@ function DetallesPedido({ userData, id }) {
       <div className="order-details-actions">
         {detallesPedido.OrderStatus === 'pending' && (
           <>
-          <button className="order-details-cancel-button">Cancelar Pedido</button>
-          <button className="order-details-change-button">Cambiar Dirección de envio</button>
+            <button className="order-details-cancel-button">Cancelar Pedido</button>
+            <button className="order-details-change-button">Cambiar Dirección de envio</button>
           </>
         )}
         {detallesPedido.OrderStatus === 'shipped' && (
@@ -119,7 +121,7 @@ function DetallesPedido({ userData, id }) {
             <tr>
               <th>Imagen</th>
               <th>Producto</th>
-              <th>Tienda</th>
+              <th >Tienda</th>
               <th>Cantidad</th>
               <th>Precio</th>
             </tr>
@@ -131,9 +133,9 @@ function DetallesPedido({ userData, id }) {
                   <img className="order-details-image" src={`data:image/png;base64,${producto?.ImageContent}`} alt={producto?.ProductName} />
                 </td>
                 <td>{producto?.ProductName}</td>
-                <td>{producto?.ShopName}</td>
+                <td >{producto?.ShopName}</td>
                 <td>{producto?.Quantity}</td>
-                <td>${producto?.Price}</td>
+                <td>{producto?.Price}</td>
               </tr>
             ))}
           </tbody>

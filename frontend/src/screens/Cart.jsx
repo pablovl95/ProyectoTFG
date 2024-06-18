@@ -157,6 +157,7 @@ const Cart = ({ changeCart, userData, setNotification }) => {
           cart={cart}
           userData={userData}
           setAddress={setAddressID}
+          shippingCostTotal={shippingCostTotal}
           changeShippingCost={(productId, newShippingCost) => {
             const updatedCart = cart.map(item => {
               if (item.ProductID === productId) {

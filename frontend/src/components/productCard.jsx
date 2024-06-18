@@ -8,12 +8,19 @@ const ProductCard = ({ product, changeCart }) => {
     const imageUrl = product?.ImageContent;
 
     const addToCart = () => {
-        const cart = JSON.parse(localStorage.getItem("cart"));
-        const existingProductIndex = cart?.findIndex(item => item.ProductID === product?.ProductID);
+        // Retrieve cart from localStorage
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        
+        // Ensure cart is an array, default to an empty array if null
+        if (!Array.isArray(cart)) {
+            cart = [];
+        }
+    
+        const existingProductIndex = cart.findIndex(item => item.ProductID === product?.ProductID);
         const ShippingCost = product?.productInfo?.Shipping_cost ? product?.productInfo?.Shipping_cost : 4.99;
         const MinUnits = product?.productInfo?.Min_units_for_free_shipping ? product?.productInfo?.Min_units_for_free_shipping : 5;
         const updatedProduct = { ...product, quantity: 1, ShippingCost, MinUnits };
-
+    
         if (existingProductIndex !== -1) {
             const updatedCart = [...cart];
             updatedCart[existingProductIndex].quantity += 1;
@@ -26,6 +33,7 @@ const ProductCard = ({ product, changeCart }) => {
         }
         changeCart();
     };
+    
 
     const navigateToProduct = () => {
         navigate(`/product/${product.ProductID}`);

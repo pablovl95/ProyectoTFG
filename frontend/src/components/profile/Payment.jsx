@@ -9,7 +9,7 @@ import {
 } from '@tabler/icons-react';
 import "../css/profile/Payment.css";
 
-const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCart, Screen }) => {
+const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCart, Screen, shippingCostTotal }) => {
     const [selectedMethod, setSelectedMethod] = useState(null);
     const [selectOption, setSelectOption] = useState("Tarjeta de crédito");
     const [selectorOpen, setSelectorOpen] = useState(false);
@@ -40,6 +40,9 @@ const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCar
         };
         fetchPaymentMethods();
     }, [userData.UserID]);
+    const handleApplyCoupon = () => {
+        alert("Esta funcionalidad estará disponible en futuras actualizaciones.");
+    };
 
     const handleAddPaymentMethod = async (event) => {
         event.preventDefault();
@@ -63,11 +66,12 @@ const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCar
             }
 
             const addedMethod = await response.json();
-            setPaymentMethods([...paymentMethods, {
+            const methods = {
                 PaymentMethodID: addedMethod.PaymentMethodID,
                 MethodType: addedMethod.PaymentMethodType,
                 ContentText: JSON.parse(addedMethod.ContentText),
-            }]);
+            };
+            setPaymentMethods([...paymentMethods, methods]);
             setOpenPaymentForm(false);
 
         } catch (error) {
@@ -76,6 +80,7 @@ const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCar
     };
 
     const handleDeletePaymentMethod = async (methodId) => {
+
         try {
             const response = await fetch(`${backendUrl}/api/v1/users/payment/${methodId}`, {
                 method: 'DELETE',
@@ -189,34 +194,37 @@ const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCar
         };
 
         return (
-            <div>
-                <h3>{`Pago con ${selectOption}`}</h3>
+            <div className="payment-form-container">
                 <form onSubmit={handleAddPaymentMethod}>
                     {renderFormFields()}
-                    <button type="submit" className="payment-button-new">Guardar</button>
+                    <div className="payment-buttons-row">
+                        <button type="submit" className="payment-button" style={{ backgroundColor: "#28a745", color: "white" }}>Guardar</button>
+                        <button onClick={() => setOpenPaymentForm(false)} style={{ backgroundColor: "#b64848", color: "white" }} className="payment-button">Cerrar</button>
+                    </div>
                 </form>
-                <button onClick={() => setOpenPaymentForm(false)} className="payment-button-cancel">Cerrar</button>
+
             </div>
         );
     };
 
     const renderPaymentMethodCard = (method) => {
+        const isSelected = selectedMethod && selectedMethod.PaymentMethodID === method.PaymentMethodID;
         return (
-            <div className="payment-details" key={method.PaymentMethodID}>
-                <h3>Métodos de Pago Añadidos</h3>
-                <div className="payment-card" onClick={() => setSelectedMethod(method)}>
-                    <div className="payment-card-content">
-                        {Object.entries(method.ContentText).map(([key, value]) => (
-                            <p key={key}><strong>{key}:</strong> {value}</p>
-                        ))}
-                    </div>
-                    <button className="payment-card-delete" onClick={(e) => { e.stopPropagation(); handleDeletePaymentMethod(method.PaymentMethodID); }}>
-                        Eliminar
-                    </button>
-                </div>
+            <div className={`payment-card-content ${isSelected ? 'selected' : ''}`} key={method.PaymentMethodID}
+                onClick={() => setSelectedMethod(method)}>
+                {Object.entries(method.ContentText).map(([key, value]) => (
+                    <p key={key}><strong>{key}:</strong> {value}</p>
+                ))}
+                <button
+                    className="payment-button-delete"
+                    onClick={(e) => { e.stopPropagation(); handleDeletePaymentMethod(method.PaymentMethodID); }}
+                >
+                    Eliminar
+                </button>
             </div>
         );
     };
+
 
     const renderSelector = (option) => {
         switch (option) {
@@ -267,25 +275,25 @@ const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCar
                     )}
                 </div>
                 {!openPaymentForm &&
-                    <div className="payment-button-new" onClick={() => setOpenPaymentForm(!openPaymentForm)}>
+                    <div className="payment-button" style={{ backgroundColor: "#ccc", marginBottom: "1rem", color: "white" }} onClick={() => setOpenPaymentForm(!openPaymentForm)}>
                         Añadir un nuevo
                     </div>
                 }
+                <h2>Metodos de pago</h2>
                 {openPaymentForm && <PaymentForm selectOption={selectOption} setOpenPaymentForm={setOpenPaymentForm} />}
                 {paymentMethods.map(method => renderPaymentMethodCard(method))}
             </div>
             {Screen !== 'Details' && (
                 <div className={"cart-payment-summary"}>
                     <h3>Resumen</h3>
-                    <div className="summary-details">
+                    <div className="payment-summary-details">
                         <p>Subtotal: {cartTotal} €</p>
-                        <p>Gastos de envío: 2,90 €</p>
-                        <p>TOTAL: {(cartTotal + 2.90)} € (IVA incluido)</p>
+                        <p>Gastos de envío: {parseFloat(shippingCostTotal).toFixed(2)} €</p>
+                        <p>TOTAL: {(parseFloat(cartTotal) + parseFloat(shippingCostTotal)).toFixed(2)} € (IVA incluido)</p>
                         <p>Revisa los pedidos a los productores para ver si puedes ahorrarte algo en gastos de envío!</p>
                         <input type="text" placeholder="¿Dispones de un cupón?" />
-                        <button>Aplicar</button>
-                        <button onClick={() => setActiveComponent('shipping')}>Volver a Envío</button>
-                        <button onClick={handleCheckout}>Pagar y Finalizar Compra</button>
+                        <button className='payment-button' style={{ backgroundColor: "#17a2b8", color: "white" }} onClick={handleApplyCoupon}>Aplicar</button>
+                        <button className='payment-button' onClick={handleCheckout} style={{ backgroundColor: "#28a745", color: "white" }}>Pagar y Finalizar Compra</button>
                     </div>
                 </div>)}
         </div >
