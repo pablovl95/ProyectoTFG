@@ -80,16 +80,12 @@ const UserData = ({ userData, changeUserData, setNotification }) => {
 
             if (response.ok) {
                 const updatedUserData = body;
-                console.log('Updated User Data:', updatedUserData);
-                console.log('User Data:', userData);
                 const newDat = { ...userData, ...updatedUserData }
-                console.log('New User Data:', newDat);
                 setErrorMessage('Datos actualizados exitosamente.');
                 setNotification({ type: 'success', message: 'Datos actualizados exitosamente.' });
                 changeUserData(newDat);
             } else {
                 const errorText = await response.text(); // Captura el texto de error completo
-                console.log('Error Text:', errorText);
                 setErrorMessage(`Error al actualizar los datos: ${errorText}`);
                 setNotification({ type: 'error', message: `Error al actualizar los datos: ${errorText}` });
             }

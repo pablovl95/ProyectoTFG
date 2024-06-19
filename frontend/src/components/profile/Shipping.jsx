@@ -5,9 +5,6 @@ import Addresses from '../Addresses';
 const Shipping = ({ setActiveComponent, cart, cartTotal, userData, setAddress, shippingCostTotal }) => {
     const [shippingMethod, setShippingMethod] = useState('express');
     const [AddressSelected, setAddressSelected] = useState(null);
-    useEffect(() => {
-        console.log(shippingCostTotal)
-    }, [shippingCostTotal]);
 
     const handleShippingChange = (event) => {
         setShippingMethod(event.target.value);

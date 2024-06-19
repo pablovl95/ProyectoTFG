@@ -71,7 +71,6 @@ const nutritionalInfo = {
       const reviewsData = await reviewsResponse.json();
       setReviews(reviewsData);
     } catch (error) {
-      console.log(error);
       setNotification({ type: 'error', message: "Ha ocurrido un problema con el producto. Reinicia la página o vuelve más tarde." });
     } finally {
       setLoading(false);
@@ -102,7 +101,6 @@ const nutritionalInfo = {
 
   const addToCart = () => {
     const existingProductIndex = cart.findIndex(item => item.ProductID === product.ProductID);
-    console.log(productInfo.Shipping_cost);
     const ShippingCost = productInfo.Shipping_cost;
     const MinUnits = productInfo.Min_units_for_free_shipping;
     const updatedProduct = { ...product, quantity: parseInt(quantity, 10), ShippingCost, MinUnits };

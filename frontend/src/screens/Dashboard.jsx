@@ -19,23 +19,20 @@ function Dashboard() {
   };
 
   const handleModificarClick = () => {
-    // console.log("Modificar datos:", formData);
     setIsEditable(true); // Hacer el formulario editable al hacer clic en "Modificar"
   };
 
   const handleEliminarClick = () => {
-    // console.log("Eliminar datos:", formData);
+
   };
 const handleSaveClick = () => {
-    // console.log("Guardar cambios:", formData);
     setIsEditable(false); // Hacer el formulario no editable al hacer clic en "Guardar cambios"
 };
   const handleSearch = async () => {
     try {
       const response = await fetch(`http://localhost:5000/api/v1/${selectedItem}`);
       const data = await response.json();
-      // console.log('Search Results:', data);
-      setFormData(data || []); // Handle case where data is null or undefined
+      setFormData(data || []); 
       setCurrentPage(1);
       setSearch(true);
     } catch (error) {
@@ -44,7 +41,6 @@ const handleSaveClick = () => {
   };
 
   useEffect(() => {
-    // Reset formData when a new item is selected
     setFormData([]);
   }, [selectedItem]);
 

@@ -34,21 +34,23 @@ const ReviewDetails = ({ review, onClose }) => {
                     X
                 </div>
 
+
+                <div className="review-details-image">
                 <button className="slider-arrow left" onClick={handlePrevImage}>
                     &#8249;
                 </button>
 
-                <div className="review-details-image">
                     <img
                         src={`data:image/png;base64,${mainImage}`}
                         alt={`Review ${review.index}`}
                         onClick={(e) => e.stopPropagation()}
                     />
-                </div>
-
+                    
                 <button className="slider-arrow right" onClick={handleNextImage}>
                     &#8250;
                 </button>
+                </div>
+
 
                 <div className="review-details-details">
                     <h2>{review.FirstName}</h2>

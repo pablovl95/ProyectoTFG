@@ -40,7 +40,7 @@ const Addresses = ({ userData, setAddress, Screen }) => {
                         setAddressSelected(null);
                     }
                 }
-                setAddresses(data)
+                setAddresses(data);
             }
             )
             .catch(error => console.error('Error fetching addresses:', error));
@@ -75,23 +75,26 @@ const Addresses = ({ userData, setAddress, Screen }) => {
 
         const url = editingIndex !== null ? '/' + form.AddressID : '';
         const method = editingIndex !== null ? 'PUT' : 'POST';
-        if (editingIndex !== null) {
-            const newAddresses = [...addresses];
-            newAddresses[editingIndex] = form;
-            setAddresses(newAddresses);
-        } else {
-            setAddresses([...addresses, form]);
-        }
-        closeForm();
-        console.log({ ...form, UserID: userData?.UserID })
+
         try {
             const response = await fetch(`${backendUrl}/api/v1/addresses${url}`, {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ ...form, UserID: editingIndex === null ? userData.UserID : undefined })
+                body: JSON.stringify({ ...form, UserID: userData.UserID})
             });
+            if (editingIndex !== null) {
+                const newAddresses = [...addresses];
+                console.log(form);
+                newAddresses[editingIndex] = form;
+                setAddresses(newAddresses);
+            } else {
+                const data = await response.json();
+                setAddressSelected(data.AddressID);
+                setAddresses([...addresses, data]);
+            }
+            closeForm();
         } catch (error) {
             console.error('Error submitting address form:', error);
         }
@@ -125,6 +128,7 @@ const Addresses = ({ userData, setAddress, Screen }) => {
     };
 
     const handleAddressSelect = (addressID) => {
+        console.log("addressID", addressID);
         if (Screen === "cart") {
             setAddress(addressID);
             setAddressSelected(addressID);
@@ -159,10 +163,8 @@ const Addresses = ({ userData, setAddress, Screen }) => {
 
 
     const handleDeleteAddress = async (index) => {
-        console.log(index);
         const addressToDelete = addresses[index];
         setAddresses(addresses.filter((_, idx) => idx !== index));
-        console.log({ ...addressToDelete, UserID: "null" });
         try {
             const response = await fetch(`${backendUrl}/api/v1/addresses/${addressToDelete.AddressID}`, {
                 method: 'PUT',
