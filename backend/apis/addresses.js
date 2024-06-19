@@ -4,6 +4,7 @@ function backendAdresses(app, db) {
   app.get('/api/v1/addresses/:id', async (req, res) => {
     try {
       const data = await db.execute(`SELECT * FROM Addresses WHERE UserID = '${req.params.id}'`);
+      console.log(data.rows)
       res.status(200).send(data.rows);
     } catch (error) {
       console.error('Error al consultar la base de datos:', error);
@@ -57,11 +58,11 @@ function backendAdresses(app, db) {
   });
 
   app.post('/api/v1/addresses', async (req, res) => {
-    const { UserID, AddressTitle, FirstName, LastName, Phone, AddressLine, AddressNumber, PostalCode, Country, Province, City } = req.body;
+    const { UserID, AddressTitle, FirstName, LastName, DefaultAddress,Phone, AddressLine, AddressNumber, PostalCode, Country, Province, City } = req.body;
     try {
       const insertQuery = `
-        INSERT INTO Addresses (UserID, AddressTitle, FirstName, LastName, Phone, AddressLine, AddressNumber, PostalCode, Country, Province, City)
-        VALUES ('${UserID}','${AddressTitle}', '${FirstName}', '${LastName}', '${Phone}', '${AddressLine}', '${AddressNumber}', '${PostalCode}', '${Country}', '${Province}', '${City}');
+        INSERT INTO Addresses (UserID, AddressTitle, FirstName, LastName, Phone, AddressLine, AddressNumber, PostalCode, Country, Province, City, DefaultAddress)
+        VALUES ('${UserID}','${AddressTitle}', '${FirstName}', '${LastName}', '${Phone}', '${AddressLine}', '${AddressNumber}', '${PostalCode}', '${Country}', '${Province}', '${City}', '${DefaultAddress ? 1 : 0}');
     `;
       await db.execute(insertQuery);
 
@@ -78,7 +79,6 @@ app.get('/api/v1/defaultAddress/:userId/:addressId', async (req, res) => {
   const { userId, addressId } = req.params;
 
   try {
-    // Desactivar todas las direcciones del usuario
     const deactivateQuery = `
       UPDATE Addresses
       SET DefaultAddress = 0

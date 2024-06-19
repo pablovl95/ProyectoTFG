@@ -158,23 +158,7 @@ const Cart = ({ changeCart, userData, setNotification }) => {
           userData={userData}
           setAddress={setAddressID}
           shippingCostTotal={shippingCostTotal}
-          changeShippingCost={(productId, newShippingCost) => {
-            const updatedCart = cart.map(item => {
-              if (item.ProductID === productId) {
-                return {
-                  ...item,
-                  shippingCost: newShippingCost
-                };
-              }
-              return item;
-            });
-
-            setCart(updatedCart);
-            localStorage.setItem('cart', JSON.stringify(updatedCart));
-            const total = calculateCartTotal(updatedCart);
-            setCartTotal(total.cartTotal);
-            setShippingCostTotal(total.shippingCostTotal);
-          }}
+          Screen={"cart"}
           paymentVisibility={() => handleCheckout('payment')}
         />
       )}

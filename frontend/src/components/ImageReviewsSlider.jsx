@@ -12,18 +12,19 @@ const ImageReviewsSlider = ({ Reviews }) => {
 
   useEffect(() => {
     const imagesToSlider = [];
-
-    Reviews.forEach((review, index) => {
-      review.images.forEach((image, idx) => {
-        const imageData = {
-          id: idx, // Crear un ID único para cada imagen
-          src: `data:image/png;base64,${image.ImageContent}`,
-          ReviewID: review.ReviewID
-        };
-        imagesToSlider.push(imageData);
+    if (Reviews) {
+      Reviews?.forEach((review, index) => {
+        review?.images?.forEach((image, idx) => {
+          const imageData = {
+            id: idx, 
+            src: `data:image/png;base64,${image.ImageContent}`,
+            ReviewID: review.ReviewID
+          };
+          imagesToSlider.push(imageData);
+        });
       });
-    });
-    setImagesToSlider(imagesToSlider);
+      setImagesToSlider(imagesToSlider);
+    }
   }, [Reviews]);
 
   const handleClickNext = () => {
@@ -61,7 +62,7 @@ const ImageReviewsSlider = ({ Reviews }) => {
       )}
       <div className="arrow left" onClick={handleClickPrev}>{'<'}</div>
       <div className="slider-images">
-        {imagesToSlider.slice(limitmin, limitsup).map((image, index) => (
+        {imagesToSlider?.slice(limitmin, limitsup).map((image, index) => (
           <img
             key={index}
             src={image.src}

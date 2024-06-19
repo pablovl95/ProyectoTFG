@@ -130,7 +130,6 @@ const Resumen = ({ userData, setNotification }) => {
         const defaultAddress = data.find(address => address.DefaultAddress === 1);
         if (defaultAddress) {
           setUserAddress(defaultAddress);
-          console.log(defaultAddress);
         } else if (data.length > 0) {
           setUserAddress(data[0]);
         }

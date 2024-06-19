@@ -36,13 +36,4 @@ const ProfileDetails = ({ userData, changeUserData, setNotification }) => {
 };
 
 
-
-const MetodosPago = () => (
-    <div className="profile-details-user-info">
-        <h4>Mis métodos de pago</h4>
-        <div className="separator"></div>
-        {/* Agrega aquí la lógica para mostrar los métodos de pago */}
-    </div>
-);
-
 export default ProfileDetails;

@@ -20,7 +20,6 @@ function DetallesPedido({ userData, id }) {
           }
         });
         const data = await response.json();
-        console.log(data);
         setDetallesPedido(data[0]); // Suponemos que la API devuelve un array con un pedido
       } catch (error) {
         console.error("Error al obtener los detalles del pedido:", error);
@@ -98,22 +97,6 @@ function DetallesPedido({ userData, id }) {
           </tbody>
         </table>
       </div>
-
-      <div className="order-details-actions">
-        {detallesPedido.OrderStatus === 'pending' && (
-          <>
-            <button className="order-details-cancel-button">Cancelar Pedido</button>
-            <button className="order-details-change-button">Cambiar Dirección de envio</button>
-          </>
-        )}
-        {detallesPedido.OrderStatus === 'shipped' && (
-          <button className="order-details-tracking-button">Seguimiento del pedido</button>
-        )}
-        {detallesPedido.OrderStatus === 'delivered' && (
-          <button className="order-details-review-button">Valorar Pedido</button>
-        )}
-      </div>
-
       <div className="order-details-products">
         <h3>Productos en este Pedido</h3>
         <table className="order-details-table-product">

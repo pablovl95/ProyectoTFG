@@ -10,11 +10,12 @@
 }
 
 .slider-images img {
-  width: 35%; 
+  height: 200px; /* Ajusta la altura fija que desees */
   object-fit: cover;
   border-radius: 0.5rem;
   margin: 1rem;
   cursor: pointer; 
+  flex-shrink: 0; /* Evita que las imágenes se reduzcan por debajo de su tamaño original */
 }
 
 .arrow {
@@ -30,6 +31,7 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  z-index: 10; /* Asegura que las flechas estén por encima de las imágenes */
 }
 
 .arrow.left {
@@ -46,4 +48,38 @@
 
 .arrow.right.hidden {
   display: none;
+}
+
+@media screen and (max-width: 768px){
+  .slider-container {
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 0.5rem;
+  }
+
+  .slider-images img {
+    height: 100px;
+  }
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px; 
+    height: 80%; 
+    background-color: rgba(95, 84, 84, 0.269); 
+    color: white; 
+    font-size: 24px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10; /* Asegura que las flechas estén por encima de las imágenes */
+  }
+  .arrow.left {
+    left: 0; 
+  }
+  
+  .arrow.right {
+    right: 0;
+  }
 }

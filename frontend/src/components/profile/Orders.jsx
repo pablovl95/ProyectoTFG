@@ -78,11 +78,6 @@ function Orders({ userData, recents, setNotification }) {
         },
         body: JSON.stringify({ OrderStatus: status })
       });
-      if (response.ok) {
-        console.log(`Pedido ${orderId} cancelado exitosamente.`);
-      } else {
-        console.error(`Error al cancelar el pedido ${orderId}.`);
-      }
     } catch (error) {
       console.error("Error al cancelar el pedido:", error);
     }
