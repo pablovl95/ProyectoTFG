@@ -1,6 +1,6 @@
-function backendReviews (app, db, upload) {
-    
-app.get('/api/v1/reviews/:id', async (req, res) => {
+function backendReviews(app, db, upload) {
+
+  app.get('/api/v1/reviews/:id', async (req, res) => {
     const response = [];
     try {
       const query = `
@@ -11,7 +11,7 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
       `;
       const reviewsData = await db.execute(query);
       if (reviewsData.rows.length === 0) {
-        res.sendStatus(404);
+        res.status(404).send([]);
       } else {
         // Iterar sobre cada revisión para comprobar si contiene una foto
         for (let review of reviewsData.rows) {
@@ -28,7 +28,6 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
             response.push(review);
           }
         }
-  
         res.status(200).send(response); // Enviar los datos modificados
       }
     } catch (error) {
@@ -36,9 +35,9 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
       res.status(500).send([]);
     }
   });
-  
-  
-  
+
+
+
   app.get('/api/v1/reviewsImages/:id', async (req, res) => {
     try {
       const query = `
@@ -46,26 +45,26 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
         WHERE ReviewID='${req.params.id}'
       `;
       const data = await db.execute(query);
-      res.status(200).send(data.rows);
+      if (data.rows.length === 0) {
+        res.status(404).send([]);
+      } else {
+        res.status(200).send(data.rows);
+      }
     } catch (error) {
       console.error("Error:", error);
       res.status(500).send([]);
     }
   });
-  
+
   app.post('/api/v1/reviews', upload.array('images', 4), async (req, res) => {
     try {
-      //console.log(req.body);
       const { Comment, ProductID, Rating, UserID, containsPhoto } = req.body;
       const images = req.files;
   
-      // Validar datos básicos
       if (!Comment || !Rating || !ProductID || !UserID) {
         return res.status(400).send('Todos los campos son obligatorios.');
       }
       const date = new Date();
-  
-      // Inserción de la reseña
       const reviewQuery = `
         INSERT INTO Reviews (ProductID, Comment, AssignedRating, UserID, UploadDate, ContainsPhotos) 
         VALUES ('${ProductID}', '${Comment}', ${Rating}, '${UserID}', '${date.toISOString()}', ${containsPhoto})
@@ -73,7 +72,6 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
   
       await db.execute(reviewQuery);
   
-      // Obtener el ID de la reseña recién insertada
       const reviewResult = await db.execute(`
         SELECT ReviewID FROM Reviews 
         WHERE Comment = '${Comment}'
@@ -83,8 +81,12 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
           AND UserID = '${UserID}'
       `);
   
-      const ReviewID = reviewResult.rows[0].ReviewID; // Ajustar según cómo tu DB devuelve resultados
-      console.log(ReviewID);
+      if (reviewResult.rows.length === 0) {
+        return res.status(404).json({ error: 'No se encontró la reseña después de insertarla.' });
+      }
+  
+      const ReviewID = reviewResult.rows[0].ReviewID;
+  
       if (containsPhoto === '1' && images.length > 0) {
         for (const image of images) {
           const base64Image = Buffer.from(image.buffer).toString('base64');
@@ -105,6 +107,7 @@ app.get('/api/v1/reviews/:id', async (req, res) => {
     }
   });
   
+
 }
 
 export { backendReviews };

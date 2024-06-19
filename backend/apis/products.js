@@ -1,10 +1,8 @@
 function backendProducts(app, db, upload) {
-
     app.get('/api/v1/products', async (req, res) => {
         let AND = "";
         try {
             let StringQuery = "SELECT Products.*, Categories.CategoryName AS PrincipalCategoryName, Shops.ShopID, Shops.ShopName, ProductImages.ImageContent FROM Products LEFT JOIN Categories ON Products.PrincipalCategoryId = Categories.CategoryID LEFT JOIN Shops ON Products.ShopID = Shops.ShopID LEFT JOIN ProductImages ON Products.ImageDefaultID = ProductImages.ImageID WHERE ";
-            //console.log(req.query);
             if (Object.keys(req.query).length > 0) {
                 if (Object.keys(req.query).length > 1) {
                     AND = " AND ";
@@ -40,9 +38,9 @@ function backendProducts(app, db, upload) {
                 StringQuery += ";";
                 const data = await db.execute(StringQuery);
                 if (data.rows.length === 0) {
-                    res.sendStatus(404); // Si no hay resultados, enviar 404
+                    res.status(404).send([]);
                 } else {
-                    res.status(200).send(data.rows); // Si hay resultados, enviar los datos
+                    res.status(200).send(data.rows);
                 }
             } else {
                 const data = await db.execute("SELECT Products.*, Categories.CategoryName AS PrincipalCategoryName, Shops.ShopID, Shops.ShopName, ProductImages.ImageContent FROM Products LEFT JOIN Categories ON Products.PrincipalCategoryId = Categories.CategoryID LEFT JOIN Shops ON Products.ShopID = Shops.ShopID LEFT JOIN ProductImages ON Products.ImageDefaultID = ProductImages.ImageID");
@@ -53,6 +51,7 @@ function backendProducts(app, db, upload) {
             res.status(500).send([]);
         }
     });
+
     app.get('/api/v1/products/:id', async (req, res) => {
         const id = req.params.id;
         try {
@@ -72,18 +71,15 @@ function backendProducts(app, db, upload) {
       `;
             const data = await db.execute(StringQuery);
             if (data.rows.length === 0) {
-                res.sendStatus(404); // Si no hay resultados, enviar 404
+                res.status(404).send([]);
             } else {
-                res.status(200).send(data.rows); // Si hay resultados, enviar los datos
+                res.status(200).send(data.rows);
             }
-
         } catch (error) {
             console.error("Error:", error);
             res.status(500).send([]);
         }
     });
-
-
 
     app.get('/api/v1/popularProducts', async (req, res) => {
         try {
@@ -93,11 +89,10 @@ function backendProducts(app, db, upload) {
         LIMIT 3
       `;
             const data = await db.execute(query);
-            //console.log(data.rows);
             if (data.rows.length === 0) {
-                res.sendStatus(404); // Si no hay resultados, enviar 404
+                res.status(404).send([]);
             } else {
-                res.status(200).send(data.rows); // Si hay resultados, enviar los datos
+                res.status(200).send(data.rows);
             }
         } catch (error) {
             console.error("Error:", error);
@@ -105,28 +100,31 @@ function backendProducts(app, db, upload) {
         }
     });
 
+    app.get('/api/v1/productImages/:productId', upload.single('image'), async (req, res) => {
+        try {
+            const data = await db.execute(`SELECT * FROM ProductImages WHERE ProductID = '${req.params.productId}'`);
+            if (data.rows.length === 0) {
+                res.status(404).send([]);
+            } else {
+                res.status(200).send(data.rows);
+            }
+        } catch (error) {
+            console.error('Error al subir imagen:', error);
+            res.status(500).send('Error al subir la imagen');
+        }
+    });
 
-
-app.get('/api/v1/productImages/:productId', upload.single('image'), async (req, res) => {
-    try {
-        const data = await db.execute(`SELECT * FROM ProductImages WHERE ProductID = '${req.params.productId}'`);
-        res.status(200).send(data.rows);
-    } catch (error) {
-        console.error('Error al subir imagen:', error);
-        res.status(500).send('Error al subir la imagen');
-    }
-});
-app.post('/api/v1/productImages/:productId', upload.single('image'), async (req, res) => {
-    try {
-        const productId = req.params.productId;
-        const image = req.file.buffer; // Accedemos al buffer del archivo en memoria
-        await db.execute(`INSERT INTO ProductImages (ProductID, ImageContent) VALUES ('${productId}', '${image.toString('base64')}')`);
-        res.status(200).send('Imagen subida correctamente');
-    } catch (error) {
-        console.error('Error al subir imagen:', error);
-        res.status(500).send('Error al subir la imagen');
-    }
-});
+    app.post('/api/v1/productImages/:productId', upload.single('image'), async (req, res) => {
+        try {
+            const productId = req.params.productId;
+            const image = req.file.buffer; // Accedemos al buffer del archivo en memoria
+            await db.execute(`INSERT INTO ProductImages (ProductID, ImageContent) VALUES ('${productId}', '${image.toString('base64')}')`);
+            res.status(200).send('Imagen subida correctamente');
+        } catch (error) {
+            console.error('Error al subir imagen:', error);
+            res.status(500).send('Error al subir la imagen');
+        }
+    });
 }
 
 export { backendProducts };

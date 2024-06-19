@@ -4,16 +4,13 @@ import morgan from 'morgan';
 import cors from 'cors';
 import multer from 'multer'; // Middleware para manejar la subida de archivos
 import { backendProducts } from "./apis/products.js"
-
-const upload = multer(); // Eliminamos el directorio de destino para que los archivos se manejen en memoria
-
+const upload = multer(); 
 import 'dotenv/config';
 import { createClient } from "@libsql/client";
-import { backendAdresses } from './apis/addresses.js';
+import { backendAddresses } from './apis/addresses.js';
 import { backendOrders } from './apis/orders.js';
 import { backendReviews } from './apis/reviews.js';
 import { backendUsers } from './apis/users.js';
-import { backendShops } from './apis/shops.js';
 import { backendCharger } from './apis/charger.js';
 
 const db = createClient({
@@ -34,11 +31,10 @@ app.get('/', (req, res) => {
 });
 
 backendProducts(app, db, upload);
-backendAdresses(app, db);
+backendAddresses(app, db);
 backendOrders(app, db);
 backendReviews(app, db, upload);
 backendUsers(app, db);
-backendShops(app, db);
 backendCharger(app, db);
 
 

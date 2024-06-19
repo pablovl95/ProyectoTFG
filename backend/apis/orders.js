@@ -15,6 +15,11 @@ function backendOrders(app, db) {
       }
 
       const data = await db.execute(query);
+
+      if (data.rows.length === 0) {
+        res.status(404).send([]);
+    } else {
+        
       const result = await Promise.all(data.rows.map(async (order) => {
         const ordersProducts = await db.execute(`
               SELECT OrderProducts.*, Products.ProductName,Products.Price,ProductImages.ImageContent, Shops.ShopName FROM OrderProducts 
@@ -25,6 +30,7 @@ function backendOrders(app, db) {
         return { ...order, "OrderProducts": ordersProducts.rows };
       }));
       res.status(200).send(result);
+    }
     } catch (error) {
       console.error('Error al consultar la base de datos:', error);
       res.status(500).send('Error al obtener los pedidos de la base de datos');
@@ -46,7 +52,6 @@ function backendOrders(app, db) {
       }
       updateOrderQuery += ` ${updateValues.join(', ')} WHERE OrderID = '${orderId}'`;
 
-      console.log(updateOrderQuery);
       await db.execute(updateOrderQuery);
 
       res.status(200).send({ message: `Pedido ${orderId} actualizado exitosamente.` });
@@ -55,7 +60,6 @@ function backendOrders(app, db) {
       res.status(500).send({ error: "Error interno del servidor." });
     }
   });
-  // POST para crear un nuevo pedido
   app.post('/api/v1/orders', async (req, res) => {
     try {
       const { UserID, AddressID, OrderDate, TOTAL, Products } = req.body;
@@ -129,11 +133,9 @@ function backendOrders(app, db) {
 
   app.get('/api/v1/ordersStatus/:orderID', async (req, res) => {
     try {
-      console.log('Llego a la ruta');
       const userId = req.params.userId;
       const orderId = req.params.orderID;
       const data = await db.execute(`SELECT * FROM OrdersStatus WHERE OrderProductsID = '${orderId}'`);
-      console.log(data.rows);
       res.status(200).send(data.rows);
     } catch (error) {
       console.error('Error al consultar la base de datos:', error);

@@ -36,7 +36,6 @@ function backendCharger(app, db) {
         try {
             let sql = fs.readFileSync('./sql/data.sql').toString();
             const queries = sql.replace(/(\r\n|\n|\r)/gm, '').split(';').filter(query => query.length > 0);
-            console.log(queries);
             queries.forEach(async (query) => {
                 await db.execute(query + ";");
             }
