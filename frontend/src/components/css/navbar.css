@@ -205,7 +205,7 @@
     .nav .menu {
         display:flex;
         margin-left: 0.5rem;
-        position: relative; /* Ajustar la posición del menú */
+        position: relative; 
         top: auto;
         right: auto;
 
@@ -213,10 +213,10 @@
 
     .nav ul {
         display: flex;
-        flex-direction: row; /* Cambiar la dirección de la lista de columna a fila */
-        justify-content: space-around; /* Alinear los elementos horizontalmente */
-        width: auto; /* Ajustar el ancho automáticamente */
-        margin-bottom: 0; /* Eliminar margen inferior */
+        flex-direction: row; 
+        justify-content: space-around; 
+        width: auto; 
+        margin-bottom: 0;
     }
 
     .nav ul li {
@@ -225,7 +225,7 @@
     }
 
     .nav ul li a {
-        margin: 0.2rem 0; /* Ajustar el margen superior e inferior */
+        margin: 0.2rem 0;
     }
 
     .navbar-SearchBar-default {
@@ -271,7 +271,7 @@
         background-color: #17480d;
         width: 66%;
         height: 100%;
-        text-align: left; /* Alinea el texto a la izquierda */
+        text-align: left; 
       }
       
       .category-title {
@@ -283,16 +283,22 @@
       
       .menu-categories li {
         margin-left:3rem;
-        margin-bottom: 1rem; /* Espacio entre elementos de la lista */
+        margin-bottom: 1rem; 
       }
       
       .menu-categories li a {
-        text-decoration: none; /* Quita el subrayado predeterminado del enlace */
-        color: #ffffff; /* Color del texto */
+        text-decoration: none; 
+        color: #ffffff; 
       }
       
       .menu-categories li a:hover {
-        color: #137200; /* Cambia el color del texto al pasar el ratón sobre él */
+        color: #137200;
       }
-
+      .IconSearch {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        color: white;
+        cursor: pointer;
+      }
 }

@@ -1,0 +1,16 @@
+"filename", "language", "JavaScript", "SQL", "JSON", "comment", "blank", "total"
+"c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\apis\addresses.js", "JavaScript", 90, 0, 0, 6, 12, 108
+"c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\apis\charger.js", "JavaScript", 89, 0, 0, 4, 11, 104
+"c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\apis\orders.js", "JavaScript", 129, 0, 0, 2, 19, 150
+"c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\apis\products.js", "JavaScript", 132, 0, 0, 0, 5, 137
+"c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\apis\reviews.js", "JavaScript", 95, 0, 0, 1, 17, 113
+"c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\apis\users.js", "JavaScript", 104, 0, 0, 0, 14, 118
+"c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\index.js", "JavaScript", 55, 0, 0, 0, 13, 68
+"c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\package-lock.json", "JSON", 0, 0, 2723, 0, 1, 2724
+"c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\package.json", "JSON", 0, 0, 36, 0, 1, 37
+"c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\sql\data.sql", "SQL", 0, 376, 0, 0, 7, 383
+"c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\sql\database.sql", "SQL", 0, 230, 0, 0, 13, 243
+"c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\sql\deleted_tables.sql", "SQL", 0, 13, 0, 0, 0, 13
+"c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\sql\triggers.sql", "SQL", 0, 90, 0, 0, 12, 102
+"c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\vercel.json", "JSON", 0, 0, 15, 0, 0, 15
+"Total", "-", 694, 709, 2774, 13, 125, 4315

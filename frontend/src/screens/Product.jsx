@@ -12,6 +12,8 @@ const Product = ({ changeCart, setNotification }) => {
   const [product, setProduct] = useState({});
   const [images, setImages] = useState([]);
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
+  const [productInfo, setProductInfo] = useState({});
+  const [nutritionalInfo, setNutritionalInfo] = useState({});
   const [quantity, setQuantity] = useState(1);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,37 +24,7 @@ const Product = ({ changeCart, setNotification }) => {
     : process.env.REACT_APP_BACKEND_URL;
 
   const totalStarsPercentage = calculateStarsPercentage(product, reviews);
- // Static data for Product_Info
- const productInfo = {
-  Dimensions: "30x20x10 cm",
-  Weight: 1.2,
-  Volume: 0.6,
-  Unit: "kg",
-  Units: 1,
-  Price_per_unit: 15.99,
-  Manufacturer: "Acme Corp",
-  Brand: "Acme",
-  Storage_instructions: "Keep in a cool, dry place",
-  Country_of_origin_ingredients: "Spain",
-  Shipping_cost: 5.99,
-  Min_units_for_free_shipping: 10
-};
 
-// Static data for Nutritional_Info
-const nutritionalInfo = {
-  Calories: 250,
-  Total_fat: 10,
-  Saturated_fat: 3,
-  Trans_fat: 0,
-  Cholesterol: 30,
-  Sodium: 200,
-  Total_carbohydrates: 30,
-  Fiber: 5,
-  Sugars: 10,
-  Protein: 15,
-  Vitamins: "A, C, D",
-  Minerals: "Calcium, Iron"
-};
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -61,16 +33,23 @@ const nutritionalInfo = {
         throw new Error("Error fetching product data");
       }
       const productData = await productResponse.json();
-      const urls = productData.map(product => product.ImageContent);
+
+      const urls = productData?.images.map(product => 
+        product.ImageContent);
       setImages(urls);
-      setProduct(productData[0]);
+      setProductInfo(productData.info);
+      setNutritionalInfo(productData.nutritional);
+      setProduct(productData.product);
+      console.log(product)
       const reviewsResponse = await fetch(`${backendUrl}/api/v1/reviews/${params.id}`);
       if (!reviewsResponse.ok) {
         setReviews([]);
       }
       const reviewsData = await reviewsResponse.json();
       setReviews(reviewsData);
+      console.log(product)
     } catch (error) {
+      console.log(error);
       setNotification({ type: 'error', message: "Ha ocurrido un problema con el producto. Reinicia la página o vuelve más tarde." });
     } finally {
       setLoading(false);
@@ -91,20 +70,14 @@ const nutritionalInfo = {
     fetchProducts();
   }, []);
 
-  const calculateTotalPrice = () => {
-    const productTotal = product?.Price * quantity;
-    const shippingCost = quantity >= productInfo.Min_units_for_free_shipping ? 0 : productInfo.Shipping_cost;
-    return productTotal + shippingCost;
-  };
-
   const isShippingFree = quantity >= productInfo.Min_units_for_free_shipping;
 
   const addToCart = () => {
     const existingProductIndex = cart.findIndex(item => item.ProductID === product.ProductID);
     const ShippingCost = productInfo.Shipping_cost;
     const MinUnits = productInfo.Min_units_for_free_shipping;
-    const updatedProduct = { ...product, quantity: parseInt(quantity, 10), ShippingCost, MinUnits };
 
+    const updatedProduct = { ...product, ImageContent: images[0], quantity: parseInt(quantity, 10), ShippingCost, MinUnits };
     if (existingProductIndex !== -1) {
       const updatedCart = [...cart];
       updatedCart[existingProductIndex].quantity += parseInt(quantity, 10);
@@ -134,7 +107,7 @@ const nutritionalInfo = {
     );
   }
 
- 
+
 
   return (
     <div className="product-container-global">
@@ -168,7 +141,7 @@ const nutritionalInfo = {
             </div>
             <h1>{product?.Price} €</h1>
             <a> 0,99 €/kg</a>
- 
+
           </div>
           <div className="quantity-container">
             <div className="quantity-selector">
@@ -183,11 +156,11 @@ const nutritionalInfo = {
               <button onClick={() => setQuantity(Math.min(100, quantity + 1))}>+</button>
             </div>
             <button className="add-to-cart-button" onClick={addToCart}>Añadir al carrito</button>
-            
+
           </div>
-          
+
           <div className="product-description">
-          {!isShippingFree && (
+            {!isShippingFree && (
               <p>
                 Incluye {productInfo.Shipping_cost} € de costes de envío. Añade {productInfo.Min_units_for_free_shipping - quantity} unidades más para obtener envío gratuito.
               </p>
@@ -221,7 +194,7 @@ const nutritionalInfo = {
                 <td>{productInfo.Volume} L</td>
               </tr>
               <tr>
-              <td>Unidad</td>
+                <td>Unidad</td>
                 <td>{productInfo.Unit}</td>
               </tr>
               <tr>

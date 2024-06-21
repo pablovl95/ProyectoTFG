@@ -1,0 +1,43 @@
+Date : 2024-06-20 22:00:14
+Directory : c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend
+Total : 14 files,  4177 codes, 13 comments, 125 blanks, all 4315 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JSON       |          3 |      2,774 |          0 |          2 |      2,776 |
+| SQL        |          4 |        709 |          0 |         32 |        741 |
+| JavaScript |          7 |        694 |         13 |         91 |        798 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                              | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                 |         14 |      4,177 |         13 |        125 |      4,315 |
+| . (Files)                                                                         |          4 |      2,829 |          0 |         15 |      2,844 |
+| apis                                                                              |          6 |        639 |         13 |         78 |        730 |
+| sql                                                                               |          4 |        709 |          0 |         32 |        741 |
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                          | language   | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\apis\addresses.js      | JavaScript |         90 |          6 |         12 |        108 |
+| c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\apis\charger.js        | JavaScript |         89 |          4 |         11 |        104 |
+| c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\apis\orders.js         | JavaScript |        129 |          2 |         19 |        150 |
+| c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\apis\products.js       | JavaScript |        132 |          0 |          5 |        137 |
+| c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\apis\reviews.js        | JavaScript |         95 |          1 |         17 |        113 |
+| c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\apis\users.js          | JavaScript |        104 |          0 |         14 |        118 |
+| c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\index.js               | JavaScript |         55 |          0 |         13 |         68 |
+| c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\package-lock.json      | JSON       |      2,723 |          0 |          1 |      2,724 |
+| c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\package.json           | JSON       |         36 |          0 |          1 |         37 |
+| c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\sql\data.sql           | SQL        |        376 |          0 |          7 |        383 |
+| c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\sql\database.sql       | SQL        |        230 |          0 |         13 |        243 |
+| c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\sql\deleted_tables.sql | SQL        |         13 |          0 |          0 |         13 |
+| c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\sql\triggers.sql       | SQL        |         90 |          0 |         12 |        102 |
+| c:\Users\pablo\Desktop\UNIVERSIDAD\TFG\ProyectoTFG\backend\vercel.json            | JSON       |         15 |          0 |          0 |         15 |
+| Total                                                                             |            |      4,177 |         13 |        125 |      4,315 |
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

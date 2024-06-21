@@ -82,9 +82,9 @@ export default function Navbar({ loginView, user, changeCart }) {
               <option value="search">Productos</option>
               <option value="shops">Tiendas</option>
             </select>
-            <input type="text" placeholder="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+            <input type="text" placeholder="Search" id="searchbar-input" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
             <Link to={`/${searchType}?q=${searchQuery}`} className="IconSearch">
-              <IconSearch color="black" />
+              <IconSearch color="black" id="search"/>
             </Link>
           </div>
           <div className="icons">
@@ -101,14 +101,14 @@ export default function Navbar({ loginView, user, changeCart }) {
           </div>
         </div>
         <div style={{ backgroundColor: "#1d640e", paddingBottom: "1rem", paddingLeft: "1rem" }}>
-          <div className="navbar-SearchBar-mobile">
+          <div className="navbar-SearchBar-mobile" id="searchbar">
             <select value={searchType} onChange={(e) => setSearchType(e.target.value)} className="search-selector">
               <option value="productos">Productos</option>
               <option value="tiendas">Tiendas</option>
             </select>
-            <input type="text" placeholder="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-            <Link to={`/search?type=${searchType}&q=${searchQuery}`} style={{ textDecoration: 'none', color: 'black' }}>
-              <IconSearch color="black" className="IconSearch" />
+            <input type="text" id="searchbar-input" placeholder="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+            <Link to={`/search?type=${searchType}&q=${searchQuery}`}  style={{ textDecoration: 'none', color: 'black' }}>
+              <IconSearch color="black" id="search" className="IconSearch" />
             </Link>
           </div>
         </div>

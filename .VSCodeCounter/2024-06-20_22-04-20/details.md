@@ -1,0 +1,116 @@
+# Details
+
+Date : 2024-06-20 22:04:20
+
+Directory c:\\Users\\pablo\\Desktop\\UNIVERSIDAD\\TFG\\ProyectoTFG\\frontend
+
+Total : 101 files,  28929 codes, 64 comments, 1399 blanks, all 30392 lines
+
+[Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
+
+## Files
+| filename | language | code | comment | blank | total |
+| :--- | :--- | ---: | ---: | ---: | ---: |
+| [frontend/.VSCodeCounter/2024-06-20_21-32-59/details.md](/frontend/.VSCodeCounter/2024-06-20_21-32-59/details.md) | Markdown | 105 | 0 | 6 | 111 |
+| [frontend/.VSCodeCounter/2024-06-20_21-32-59/diff-details.md](/frontend/.VSCodeCounter/2024-06-20_21-32-59/diff-details.md) | Markdown | 9 | 0 | 6 | 15 |
+| [frontend/.VSCodeCounter/2024-06-20_21-32-59/diff.md](/frontend/.VSCodeCounter/2024-06-20_21-32-59/diff.md) | Markdown | 12 | 0 | 7 | 19 |
+| [frontend/.VSCodeCounter/2024-06-20_21-32-59/results.json](/frontend/.VSCodeCounter/2024-06-20_21-32-59/results.json) | JSON | 1 | 0 | 0 | 1 |
+| [frontend/.VSCodeCounter/2024-06-20_21-32-59/results.md](/frontend/.VSCodeCounter/2024-06-20_21-32-59/results.md) | Markdown | 35 | 0 | 7 | 42 |
+| [frontend/README.md](/frontend/README.md) | Markdown | 38 | 0 | 33 | 71 |
+| [frontend/cypress.config.js](/frontend/cypress.config.js) | JavaScript | 6 | 0 | 2 | 8 |
+| [frontend/cypress/e2e/Test01_Register.cy.js](/frontend/cypress/e2e/Test01_Register.cy.js) | JavaScript | 18 | 0 | 6 | 24 |
+| [frontend/cypress/e2e/Test02_Login.cy.js](/frontend/cypress/e2e/Test02_Login.cy.js) | JavaScript | 13 | 0 | 6 | 19 |
+| [frontend/cypress/e2e/Test03_SearchFilter.cy.js](/frontend/cypress/e2e/Test03_SearchFilter.cy.js) | JavaScript | 15 | 0 | 12 | 27 |
+| [frontend/cypress/e2e/Test04_SearchProduct.cy.js](/frontend/cypress/e2e/Test04_SearchProduct.cy.js) | JavaScript | 12 | 0 | 7 | 19 |
+| [frontend/cypress/e2e/Test05_AddToCardProduct.cy.js](/frontend/cypress/e2e/Test05_AddToCardProduct.cy.js) | JavaScript | 18 | 0 | 12 | 30 |
+| [frontend/cypress/e2e/Test06_ChangePassword.cy.js](/frontend/cypress/e2e/Test06_ChangePassword.cy.js) | JavaScript | 22 | 0 | 15 | 37 |
+| [frontend/cypress/e2e/Test07_ShowProfile.js](/frontend/cypress/e2e/Test07_ShowProfile.js) | JavaScript | 16 | 0 | 9 | 25 |
+| [frontend/cypress/e2e/Test08_AddAddress.cy.js](/frontend/cypress/e2e/Test08_AddAddress.cy.js) | JavaScript | 29 | 0 | 13 | 42 |
+| [frontend/cypress/e2e/Test09_EditAddress.cy.js](/frontend/cypress/e2e/Test09_EditAddress.cy.js) | JavaScript | 36 | 0 | 18 | 54 |
+| [frontend/cypress/e2e/Test10_DeleteAddress.cy.js](/frontend/cypress/e2e/Test10_DeleteAddress.cy.js) | JavaScript | 19 | 0 | 14 | 33 |
+| [frontend/cypress/e2e/Test11_DeletePaymentMethod.cy.js](/frontend/cypress/e2e/Test11_DeletePaymentMethod.cy.js) | JavaScript | 28 | 0 | 16 | 44 |
+| [frontend/cypress/e2e/Test12_AddPaymentMethod.cy.js](/frontend/cypress/e2e/Test12_AddPaymentMethod.cy.js) | JavaScript | 23 | 0 | 13 | 36 |
+| [frontend/cypress/e2e/Test13_EditPersonalData.cy.js](/frontend/cypress/e2e/Test13_EditPersonalData.cy.js) | JavaScript | 21 | 0 | 12 | 33 |
+| [frontend/cypress/e2e/Test14_MakeAnOrder.cy.js](/frontend/cypress/e2e/Test14_MakeAnOrder.cy.js) | JavaScript | 46 | 0 | 27 | 73 |
+| [frontend/cypress/e2e/Test15_OrderDetails.cy.js](/frontend/cypress/e2e/Test15_OrderDetails.cy.js) | JavaScript | 47 | 0 | 27 | 74 |
+| [frontend/cypress/e2e/Test16_OrderTracking.cy.js](/frontend/cypress/e2e/Test16_OrderTracking.cy.js) | JavaScript | 18 | 0 | 12 | 30 |
+| [frontend/cypress/e2e/Test17_CancelOrder.cy.js](/frontend/cypress/e2e/Test17_CancelOrder.cy.js) | JavaScript | 47 | 0 | 27 | 74 |
+| [frontend/cypress/e2e/Test18_ArchivedOrder.cy.js](/frontend/cypress/e2e/Test18_ArchivedOrder.cy.js) | JavaScript | 47 | 0 | 27 | 74 |
+| [frontend/cypress/e2e/Test19_SendWorkWithUs.cy.js](/frontend/cypress/e2e/Test19_SendWorkWithUs.cy.js) | JavaScript | 22 | 0 | 16 | 38 |
+| [frontend/cypress/e2e/Test20_OpenChatBot.cy.js](/frontend/cypress/e2e/Test20_OpenChatBot.cy.js) | JavaScript | 14 | 0 | 7 | 21 |
+| [frontend/cypress/e2e/Test21_logout.cy.js](/frontend/cypress/e2e/Test21_logout.cy.js) | JavaScript | 14 | 0 | 6 | 20 |
+| [frontend/package-lock.json](/frontend/package-lock.json) | JSON | 20,716 | 0 | 1 | 20,717 |
+| [frontend/package.json](/frontend/package.json) | JSON | 55 | 0 | 1 | 56 |
+| [frontend/public/index.html](/frontend/public/index.html) | HTML | 20 | 23 | 1 | 44 |
+| [frontend/public/manifest.json](/frontend/public/manifest.json) | JSON | 25 | 0 | 1 | 26 |
+| [frontend/src/App.css](/frontend/src/App.css) | CSS | 39 | 0 | 7 | 46 |
+| [frontend/src/App.jsx](/frontend/src/App.jsx) | JavaScript | 113 | 0 | 10 | 123 |
+| [frontend/src/auth.jsx](/frontend/src/auth.jsx) | JavaScript | 14 | 0 | 3 | 17 |
+| [frontend/src/components/Addresses.jsx](/frontend/src/components/Addresses.jsx) | JavaScript | 208 | 0 | 20 | 228 |
+| [frontend/src/components/AddressesForm.jsx](/frontend/src/components/AddressesForm.jsx) | JavaScript | 75 | 0 | 3 | 78 |
+| [frontend/src/components/CardReviews.jsx](/frontend/src/components/CardReviews.jsx) | JavaScript | 48 | 0 | 6 | 54 |
+| [frontend/src/components/Footer.jsx](/frontend/src/components/Footer.jsx) | JavaScript | 10 | 0 | 5 | 15 |
+| [frontend/src/components/ImageGallery.jsx](/frontend/src/components/ImageGallery.jsx) | JavaScript | 27 | 0 | 6 | 33 |
+| [frontend/src/components/ImageReviewsSlider.jsx](/frontend/src/components/ImageReviewsSlider.jsx) | JavaScript | 72 | 0 | 8 | 80 |
+| [frontend/src/components/Login.jsx](/frontend/src/components/Login.jsx) | JavaScript | 186 | 0 | 12 | 198 |
+| [frontend/src/components/Notification.jsx](/frontend/src/components/Notification.jsx) | JavaScript | 12 | 0 | 4 | 16 |
+| [frontend/src/components/ProductSlider.jsx](/frontend/src/components/ProductSlider.jsx) | JavaScript | 37 | 0 | 8 | 45 |
+| [frontend/src/components/ReviewDetails.jsx](/frontend/src/components/ReviewDetails.jsx) | JavaScript | 67 | 0 | 15 | 82 |
+| [frontend/src/components/UserMenu.jsx](/frontend/src/components/UserMenu.jsx) | JavaScript | 34 | 0 | 6 | 40 |
+| [frontend/src/components/WriteReview.jsx](/frontend/src/components/WriteReview.jsx) | JavaScript | 109 | 3 | 15 | 127 |
+| [frontend/src/components/css/Addresses.css](/frontend/src/components/css/Addresses.css) | CSS | 102 | 0 | 19 | 121 |
+| [frontend/src/components/css/AddressesForm.css](/frontend/src/components/css/AddressesForm.css) | CSS | 181 | 0 | 28 | 209 |
+| [frontend/src/components/css/CardReviews.css](/frontend/src/components/css/CardReviews.css) | CSS | 80 | 5 | 16 | 101 |
+| [frontend/src/components/css/ImageGallery.css](/frontend/src/components/css/ImageGallery.css) | CSS | 50 | 0 | 8 | 58 |
+| [frontend/src/components/css/ImageReviewsSlider.css](/frontend/src/components/css/ImageReviewsSlider.css) | CSS | 75 | 0 | 10 | 85 |
+| [frontend/src/components/css/Notification.css](/frontend/src/components/css/Notification.css) | CSS | 38 | 0 | 6 | 44 |
+| [frontend/src/components/css/ProductSlider.css](/frontend/src/components/css/ProductSlider.css) | CSS | 49 | 0 | 9 | 58 |
+| [frontend/src/components/css/ReviewDetails.css](/frontend/src/components/css/ReviewDetails.css) | CSS | 159 | 0 | 26 | 185 |
+| [frontend/src/components/css/Security.css](/frontend/src/components/css/Security.css) | CSS | 61 | 2 | 14 | 77 |
+| [frontend/src/components/css/SubBar.css](/frontend/src/components/css/SubBar.css) | CSS | 24 | 0 | 2 | 26 |
+| [frontend/src/components/css/WriteReview.css](/frontend/src/components/css/WriteReview.css) | CSS | 62 | 1 | 9 | 72 |
+| [frontend/src/components/css/footer.css](/frontend/src/components/css/footer.css) | CSS | 11 | 1 | 7 | 19 |
+| [frontend/src/components/css/login.css](/frontend/src/components/css/login.css) | CSS | 215 | 1 | 42 | 258 |
+| [frontend/src/components/css/navbar.css](/frontend/src/components/css/navbar.css) | CSS | 267 | 0 | 38 | 305 |
+| [frontend/src/components/css/productCard.css](/frontend/src/components/css/productCard.css) | CSS | 151 | 6 | 32 | 189 |
+| [frontend/src/components/css/profile/OrderTracking.css](/frontend/src/components/css/profile/OrderTracking.css) | CSS | 184 | 0 | 44 | 228 |
+| [frontend/src/components/css/profile/Orders.css](/frontend/src/components/css/profile/Orders.css) | CSS | 206 | 0 | 38 | 244 |
+| [frontend/src/components/css/profile/OrdersDetails.css](/frontend/src/components/css/profile/OrdersDetails.css) | CSS | 93 | 1 | 12 | 106 |
+| [frontend/src/components/css/profile/Payment.css](/frontend/src/components/css/profile/Payment.css) | CSS | 240 | 0 | 40 | 280 |
+| [frontend/src/components/css/profile/ProfileDetails.css](/frontend/src/components/css/profile/ProfileDetails.css) | CSS | 65 | 0 | 13 | 78 |
+| [frontend/src/components/css/profile/Shipping.css](/frontend/src/components/css/profile/Shipping.css) | CSS | 95 | 0 | 21 | 116 |
+| [frontend/src/components/css/profile/UserData.css](/frontend/src/components/css/profile/UserData.css) | CSS | 166 | 0 | 30 | 196 |
+| [frontend/src/components/navbar.jsx](/frontend/src/components/navbar.jsx) | JavaScript | 138 | 1 | 13 | 152 |
+| [frontend/src/components/productCard.jsx](/frontend/src/components/productCard.jsx) | JavaScript | 57 | 2 | 10 | 69 |
+| [frontend/src/components/profile/OrderTracking.jsx](/frontend/src/components/profile/OrderTracking.jsx) | JavaScript | 242 | 0 | 20 | 262 |
+| [frontend/src/components/profile/Orders.jsx](/frontend/src/components/profile/Orders.jsx) | JavaScript | 252 | 0 | 23 | 275 |
+| [frontend/src/components/profile/OrdersDetails.jsx](/frontend/src/components/profile/OrdersDetails.jsx) | JavaScript | 125 | 0 | 7 | 132 |
+| [frontend/src/components/profile/Payment.jsx](/frontend/src/components/profile/Payment.jsx) | JavaScript | 280 | 1 | 23 | 304 |
+| [frontend/src/components/profile/ProfileDetails.jsx](/frontend/src/components/profile/ProfileDetails.jsx) | JavaScript | 35 | 0 | 5 | 40 |
+| [frontend/src/components/profile/Shipping.jsx](/frontend/src/components/profile/Shipping.jsx) | JavaScript | 74 | 0 | 6 | 80 |
+| [frontend/src/components/profile/UserData.jsx](/frontend/src/components/profile/UserData.jsx) | JavaScript | 166 | 1 | 12 | 179 |
+| [frontend/src/index.css](/frontend/src/index.css) | CSS | 12 | 0 | 2 | 14 |
+| [frontend/src/index.js](/frontend/src/index.js) | JavaScript | 10 | 0 | 3 | 13 |
+| [frontend/src/logo.svg](/frontend/src/logo.svg) | XML | 1 | 0 | 0 | 1 |
+| [frontend/src/screens/About.jsx](/frontend/src/screens/About.jsx) | JavaScript | 5 | 0 | 2 | 7 |
+| [frontend/src/screens/Cart.jsx](/frontend/src/screens/Cart.jsx) | JavaScript | 169 | 0 | 12 | 181 |
+| [frontend/src/screens/Delivery.jsx](/frontend/src/screens/Delivery.jsx) | JavaScript | 6 | 0 | 3 | 9 |
+| [frontend/src/screens/Home.jsx](/frontend/src/screens/Home.jsx) | JavaScript | 74 | 0 | 9 | 83 |
+| [frontend/src/screens/Images.jsx](/frontend/src/screens/Images.jsx) | JavaScript | 109 | 0 | 20 | 129 |
+| [frontend/src/screens/NextImplementations.jsx](/frontend/src/screens/NextImplementations.jsx) | JavaScript | 11 | 0 | 3 | 14 |
+| [frontend/src/screens/Product.jsx](/frontend/src/screens/Product.jsx) | JavaScript | 313 | 0 | 21 | 334 |
+| [frontend/src/screens/Profile.jsx](/frontend/src/screens/Profile.jsx) | JavaScript | 177 | 1 | 14 | 192 |
+| [frontend/src/screens/Search.jsx](/frontend/src/screens/Search.jsx) | JavaScript | 198 | 1 | 17 | 216 |
+| [frontend/src/screens/Workwithus.jsx](/frontend/src/screens/Workwithus.jsx) | JavaScript | 97 | 0 | 8 | 105 |
+| [frontend/src/screens/css/Cart.css](/frontend/src/screens/css/Cart.css) | CSS | 188 | 0 | 31 | 219 |
+| [frontend/src/screens/css/Home.css](/frontend/src/screens/css/Home.css) | CSS | 53 | 0 | 3 | 56 |
+| [frontend/src/screens/css/NextImplementations.css](/frontend/src/screens/css/NextImplementations.css) | CSS | 22 | 0 | 3 | 25 |
+| [frontend/src/screens/css/Product.css](/frontend/src/screens/css/Product.css) | CSS | 249 | 0 | 52 | 301 |
+| [frontend/src/screens/css/Profile.css](/frontend/src/screens/css/Profile.css) | CSS | 214 | 1 | 35 | 250 |
+| [frontend/src/screens/css/Search.css](/frontend/src/screens/css/Search.css) | CSS | 231 | 2 | 36 | 269 |
+| [frontend/src/screens/css/Shop.css](/frontend/src/screens/css/Shop.css) | CSS | 60 | 0 | 14 | 74 |
+| [frontend/src/screens/css/Workwithus.css](/frontend/src/screens/css/Workwithus.css) | CSS | 61 | 2 | 9 | 72 |
+| [frontend/src/utils/utils.css](/frontend/src/utils/utils.css) | CSS | 25 | 1 | 5 | 31 |
+| [frontend/src/utils/utils.js](/frontend/src/utils/utils.js) | JavaScript | 103 | 8 | 19 | 130 |
+
+[Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)

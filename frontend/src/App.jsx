@@ -11,8 +11,6 @@ import Product from "./screens/Product";
 import Footer from "./components/Footer";
 import Cart from "./screens/Cart";
 import Profile from "./screens/Profile";
-import Dashboard from "./screens/Dashboard";
-import Delivery from "./screens/Delivery";
 import Images from "./screens/Images";
 import Workwithus from './screens/Workwithus';
 import NextImplementations from './screens/NextImplementations';
@@ -63,8 +61,8 @@ function App() {
       }
     });
 
-    return () => unsubscribe(); // Se asegura de desuscribirse cuando se desmonta el componente
-  }, [backendUrl]);
+    return () => unsubscribe();
+  }, []);
 
   const changeCart = () => {
     setChanger(!changer);
@@ -78,7 +76,7 @@ function App() {
     }
   }, [notification]);
 
-  const navigate = useNavigate(); // Hook para navegar a la página de implementaciones futuras
+  const navigate = useNavigate();
 
   return (
     <>
@@ -102,21 +100,16 @@ function App() {
             </>
           )}
           {userData?.UserType === "administrator" && (
-            <Route path="/dashboard" element={<Dashboard />} />
-          )}
-          {userData?.userType === 'delivery' && (
-            <Route path="/delivery" element={<Delivery />} />
+            {/*"Proximas implementaciones"*/}
           )}
           <Route path="/images" element={<Images />} />
-          <Route path="/next-implementations" element={<NextImplementations/>} /> {/* Placeholder for the new route */}
+          <Route path="/next-implementations" element={<NextImplementations/>} />
         </Routes>
-
         {loginView && !user && (
           <div className="overlay">
             <Login onClose={() => setLoginView(false)} setUser={(user) => setUser(user)} setNotification={setNotification} />
           </div>
         )}
-
         <div className="chatbot-icon" onClick={() => navigate("/next-implementations")}>
            <IconBubbleText size={30} /> 
         </div>

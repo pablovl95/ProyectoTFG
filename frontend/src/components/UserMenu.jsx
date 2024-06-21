@@ -31,7 +31,7 @@ export default function UserMenu({ user, handleLogout, setUserMenuOpen }) {
           <li><NavLink to="/dashboard" onClick={handleLinkClick}>Dashboard de Gestion</NavLink></li>
         }
         {user && user.type === "Seller" && <li><NavLink to="/ordersto" onClick={handleLinkClick}>Pedidos para recogida</NavLink></li>}
-        <li onClick={() => { handleLogout(); handleLinkClick(); }} style={{ color: 'black' }}>Cerrar sesión</li>
+        <li className="user-menu-logout" onClick={() => { handleLogout(); handleLinkClick(); }} style={{ color: 'black' }}>Cerrar sesión</li>
         <div className="bubble-pointer"></div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './css/ReviewDetails.css';
-
+import { renderStarsProductCard } from '../utils/utils';
 const ReviewDetails = ({ review, onClose }) => {
     const [mainImage, setMainImage] = useState(review.images[0].ImageContent);
     const [mainImageIndex, setMainImageIndex] = useState(0);
@@ -36,25 +36,29 @@ const ReviewDetails = ({ review, onClose }) => {
 
 
                 <div className="review-details-image">
-                <button className="slider-arrow left" onClick={handlePrevImage}>
-                    &#8249;
-                </button>
+                    <button className="slider-arrow left" onClick={handlePrevImage}>
+                        &#8249;
+                    </button>
 
                     <img
                         src={`data:image/png;base64,${mainImage}`}
                         alt={`Review ${review.index}`}
                         onClick={(e) => e.stopPropagation()}
                     />
-                    
-                <button className="slider-arrow right" onClick={handleNextImage}>
-                    &#8250;
-                </button>
+
+                    <button className="slider-arrow right" onClick={handleNextImage}>
+                        &#8250;
+                    </button>
                 </div>
 
 
                 <div className="review-details-details">
                     <h2>{review.FirstName}</h2>
-                    <p>Valoración: {review.AssignedRating}</p>
+                    <div>
+                        {renderStarsProductCard(review.AssignedRating)}
+                    </div>
+                    <p>{review.AssignedRating} Estrellas de valoración</p>
+
                     <p>{review.Comment}</p>
                     <div className="review-details-images">
                         {review.images.map((image, idx) => (

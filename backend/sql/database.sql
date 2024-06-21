@@ -197,7 +197,7 @@ CREATE TABLE
 
 CREATE TABLE
   Product_Info (
-    ProductID INTEGER PRIMARY KEY,
+    ProductID TEXT PRIMARY KEY,
     Dimensions TEXT,
     Weight REAL,
     Volume REAL,
@@ -208,12 +208,14 @@ CREATE TABLE
     Brand TEXT,
     Storage_instructions TEXT,
     Country_of_origin_ingredients TEXT,
+    Min_units_for_free_shipping INTEGER,
+    Shipping_cost REAL,
     FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
   );
 
 CREATE TABLE
   Nutritional_Info (
-    ProductID INTEGER PRIMARY KEY,
+    ProductID TEXT PRIMARY KEY,
     Calories INTEGER,
     Total_fat REAL,
     Saturated_fat REAL,

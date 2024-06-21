@@ -355,3 +355,28 @@ VALUES
     'c8892c2ada205bf893b69d8243181a3',
     3
   );
+  INSERT INTO Product_Info (ProductID, Dimensions, Weight, Volume, Unit, Units, Price_per_unit, Manufacturer, Brand, Storage_instructions, Country_of_origin_ingredients, Min_units_for_free_shipping, Shipping_cost)
+VALUES
+  ('21fcc4998068710985641ca3c58fd77', '10cm x 10cm x 10cm', 0.2, 1000, 'kg', 10, 2.99, 'Orgánicos S.A.', 'Orgánico', 'Mantener en un lugar fresco y seco', 'Pais de Origen: UE', 5, 5.0),
+  ('21fcc4998068710985641ca3c58fd78', '15cm x 8cm x 8cm', 0.15, 800, 'kg', 8, 1.99, 'Orgánicos S.A.', 'Orgánico', 'Refrigerar después de abrir', 'Pais de Origen: UE', 5, 5.0),
+  ('21fcc4998068710985641ca3c58fd79', '20cm x 5cm x 5cm', 0.1, 400, 'kg', 4, 0.99, 'Orgánicos S.A.', 'Orgánico', 'Mantener en un lugar fresco y seco', 'Pais de Origen: UE', 5, 5.0),
+  ('21fcc4998068710985641ca3c58fd80', '12cm x 12cm x 12cm', 0.25, 1200, 'kg', 12, 1.49, 'Orgánicos S.A.', 'Orgánico', 'Mantener en un lugar fresco y seco', 'Pais de Origen: UE', 5, 5.0),
+  ('21fcc4998068710985641ca3c58fd81', '8cm x 8cm x 8cm', 0.3, 900, 'kg', 9, 2.49, 'Orgánicos S.A.', 'Orgánico', 'Refrigerar después de abrir', 'Pais de Origen: UE', 5, 5.0),
+  ('21fcc4998068710985641ca3c58fd82', '15cm x 15cm x 10cm', 0.18, 600, 'kg', 6, 1.99, 'Orgánicos S.A.', 'Orgánico', 'Mantener en un lugar fresco y seco', 'Pais de Origen: UE', 5, 5.0),
+  ('21fcc4998068710985641ca3c58fd83', '7cm x 7cm x 7cm', 0.12, 500, 'kg', 5, 3.99, 'Orgánicos S.A.', 'Orgánico', 'Refrigerar después de abrir', 'Pais de Origen: UE', 5, 5.0),
+  ('21fcc4998068710985641ca3c58fd84', '18cm x 10cm x 10cm', 0.3, 1100, 'kg', 11, 1.79, 'Orgánicos S.A.', 'Orgánico', 'Mantener en un lugar fresco y seco', 'Pais de Origen: UE', 5, 5.0),
+  ('21fcc4998068710985641ca3c58fd85', '25cm x 15cm x 15cm', 0.5, 1500, 'kg', 15, 4.99, 'Orgánicos S.A.', 'Orgánico', 'Mantener en un lugar fresco y seco', 'Pais de Origen: UE', 5, 5.0),
+  ('21fcc4998068710985641ca3c58fd86', '14cm x 6cm x 6cm', 0.15, 700, 'kg', 7, 1.29, 'Orgánicos S.A.', 'Orgánico', 'Refrigerar después de abrir', 'Pais de Origen: UE', 5, 5.0);
+
+INSERT INTO Nutritional_Info (ProductID, Calories, Total_fat, Saturated_fat, Trans_fat, Cholesterol, Sodium, Total_carbohydrates, Fiber, Sugars, Protein, Vitamins, Minerals)
+VALUES
+  ('21fcc4998068710985641ca3c58fd77', 52, 0.2, 0.05, 0.0, 0.0, 1.0, 14.0, 2.4, 10.3, 0.3, 'Vitamina A: 2%, Vitamina C: 10%', 'Calcio: 1%, Hierro: 2%'),
+  ('21fcc4998068710985641ca3c58fd78', 89, 0.3, 0.1, 0.0, 0.0, 1.0, 23.0, 2.6, 12.4, 1.1, 'Vitamina B6: 5%, Vitamina C: 8%', 'Calcio: 2%, Potasio: 3%'),
+  ('21fcc4998068710985641ca3c58fd79', 41, 0.4, 0.1, 0.0, 0.0, 3.0, 10.0, 2.8, 4.7, 0.9, 'Vitamina A: 1%, Vitamina C: 7%', 'Calcio: 1%, Hierro: 2%'),
+  ('21fcc4998068710985641ca3c58fd80', 18, 0.2, 0.0, 0.0, 0.0, 2.0, 3.9, 1.2, 2.6, 0.9, 'Vitamina A: 2%, Vitamina C: 13%', 'Calcio: 1%, Potasio: 3%'),
+  ('21fcc4998068710985641ca3c58fd81', 47, 0.1, 0.0, 0.0, 0.0, 0.0, 12.0, 2.0, 9.4, 1.0, 'Vitamina C: 80%', 'Calcio: 1%, Potasio: 4%'),
+  ('21fcc4998068710985641ca3c58fd82', 23, 0.4, 0.1, 0.0, 0.0, 2.0, 3.6, 2.2, 0.4, 2.9, 'Vitamina A: 15%, Vitamina C: 6%', 'Calcio: 2%, Hierro: 3%'),
+  ('21fcc4998068710985641ca3c58fd83', 32, 0.3, 0.0, 0.0, 0.0, 1.0, 7.7, 2.0, 4.9, 0.9, 'Vitamina C: 60%', 'Calcio: 1%, Potasio: 3%'),
+  ('21fcc4998068710985641ca3c58fd84', 34, 0.5, 0.1, 0.0, 0.0, 2.0, 6.6, 2.6, 1.7, 3.7, 'Vitamina A: 12%, Vitamina C: 5%', 'Calcio: 3%, Hierro: 2%'),
+  ('21fcc4998068710985641ca3c58fd85', 50, 0.2, 0.0, 0.0, 0.0, 0.0, 13.1, 1.4, 10.6, 0.5, 'Vitamina C: 100%', 'Calcio: 1%, Potasio: 3%'),
+  ('21fcc4998068710985641ca3c58fd86', 16, 0.1, 0.0, 0.0, 0.0, 2.0, 3.6, 0.5, 1.1, 0.7, 'Vitamina K: 36%, Vitamina C: 10%', 'Calcio: 1%, Hierro: 2%');

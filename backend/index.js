@@ -1,11 +1,11 @@
-// Importa Express
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import multer from 'multer'; // Middleware para manejar la subida de archivos
-import { backendProducts } from "./apis/products.js"
+import multer from 'multer';
 const upload = multer(); 
 import 'dotenv/config';
+
+import { backendProducts } from "./apis/products.js";
 import { createClient } from "@libsql/client";
 import { backendAddresses } from './apis/addresses.js';
 import { backendOrders } from './apis/orders.js';
