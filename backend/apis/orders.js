@@ -3,12 +3,24 @@ function backendOrders(app, db) {
   app.get('/api/v1/orders/:id', async (req, res) => {
     try {
       const id = req.params.id;
-      let query = `SELECT Orders.*,   
-          Addresses.AddressTitle 
-          FROM Orders 
-          LEFT JOIN Addresses ON Addresses.AddressID = Orders.AddressID 
-          WHERE Orders.UserID ='${id}' AND Orders.OrderStatus != 'deleted' 
-          ORDER BY Orders.OrderDate DESC`;
+      const {q} = req.query;
+      let query;
+      if (q){
+        query = `SELECT Orders.*,   
+        Addresses.AddressTitle 
+        FROM Orders 
+        LEFT JOIN Addresses ON Addresses.AddressID = Orders.AddressID 
+        WHERE Orders.UserID ='${id}' AND Orders.OrderStatus != 'deleted' AND Orders.OrderID LIKE '%${q}%'
+        ORDER BY Orders.OrderDate DESC`;
+      }else{
+        query = `SELECT Orders.*,   
+        Addresses.AddressTitle 
+        FROM Orders 
+        LEFT JOIN Addresses ON Addresses.AddressID = Orders.AddressID 
+        WHERE Orders.UserID ='${id}' AND Orders.OrderStatus != 'deleted' 
+        ORDER BY Orders.OrderDate DESC`;
+      }
+
       const recents = req.query.recents === 'true'; // Convertir a booleano
       if (recents) {
         query += " LIMIT 3;"; // Cambiar 10 al número deseado de pedidos recientes
@@ -63,7 +75,9 @@ function backendOrders(app, db) {
   app.post('/api/v1/orders', async (req, res) => {
     try {
       const { UserID, AddressID, OrderDate, TOTAL, Products } = req.body;
+
       const parseProducts = JSON.parse(Products);
+
       const insertOrderQuery = `INSERT INTO Orders (UserID, AddressID, OrderDate, TOTAL) VALUES ('${UserID}', '${AddressID}', '${OrderDate}', '${TOTAL}')`;
       await db.execute(insertOrderQuery);
       const selectOrderQuery = `SELECT OrderID FROM Orders WHERE UserID = '${UserID}' AND AddressID = '${AddressID}' AND OrderDate = '${OrderDate}' AND TOTAL = '${TOTAL}'`;

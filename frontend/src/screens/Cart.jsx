@@ -160,6 +160,7 @@ const Cart = ({ changeCart, userData, setNotification }) => {
           shippingCostTotal={shippingCostTotal}
           Screen={"cart"}
           paymentVisibility={() => handleCheckout('payment')}
+          setNotification={setNotification}
         />
       )}
       {activeComponent === 'payment' && (
@@ -171,6 +172,7 @@ const Cart = ({ changeCart, userData, setNotification }) => {
           AddressID={AddressID}
           changeCart={changeCart}
           shippingCostTotal={shippingCostTotal}
+          setNotification={setNotification}
         />
       )}
     </div>

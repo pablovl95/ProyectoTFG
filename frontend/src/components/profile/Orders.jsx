@@ -13,6 +13,7 @@ function Orders({ userData, recents, setNotification }) {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [ChangeAddress, setChangeAddress] = useState(false);
+  const [changeData, setChangeData] = useState(false);
   const backendUrl = process.env.NODE_ENV === "development"
     ? "http://localhost:5000"
     : process.env.REACT_APP_BACKEND_URL;
@@ -28,12 +29,12 @@ function Orders({ userData, recents, setNotification }) {
       } catch (error) {
         console.error("Error fetching orders:", error);
       } finally {
-        setLoading(false); // Cambiar el estado de carga después de completar la carga de datos
+        setLoading(false);
       }
     };
     fetchOrders();
 
-  }, []);
+  }, [changeData]);
 
   const handleSortChange = (event) => {
     const selectedSortOption = event.target.value;
@@ -78,8 +79,10 @@ function Orders({ userData, recents, setNotification }) {
         },
         body: JSON.stringify({ OrderStatus: status })
       });
+      setNotification({ type: 'success', message: 'Pedido actualizado con exito' });
     } catch (error) {
       console.error("Error al cancelar el pedido:", error);
+      setNotification({ type: 'error', message: 'Ha ocurrido un error al realizar la acción en el pedido' });
     }
   };
   const handleActionButtonClick = (action, orderId, idx) => {
@@ -87,15 +90,13 @@ function Orders({ userData, recents, setNotification }) {
       const confirmCancel = window.confirm("¿Estás seguro de que quieres cancelar este pedido?");
       if (confirmCancel) {
         cancelOrder(orderId, "cancelled");
-        window.location.reload();
-      } else {
-        console.log("Cancelación de pedido cancelada por el usuario.");
-      }
+        setChangeData(!changeData)
+      } 
     } else if (action === "Eliminar") {
       const confirmCancel = window.confirm("¿Estás seguro de que quieres eliminar este pedido?");
       if (confirmCancel) {
         cancelOrder(orderId, "deleted");
-        window.location.reload();
+        setChangeData(!changeData)
       } else {
         console.log("Cancelación de pedido eliminar por el usuario.");
       }
@@ -104,7 +105,7 @@ function Orders({ userData, recents, setNotification }) {
       const confirmCancel = window.confirm("¿Estás seguro de que quieres archivar este pedido?");
       if (confirmCancel) {
         cancelOrder(orderId, "archived");
-        window.location.reload();
+        setChangeData(!changeData);
       } else {
         console.log("Cancelación de pedido cancelada por el usuario.");
       }
@@ -114,7 +115,6 @@ function Orders({ userData, recents, setNotification }) {
     if (orderStatus === "delivered") {
       return (
         <div className="order-actions">
-          {/* <div className="order-action-button" onClick={() => { setSelectedOrder(OrdersData[idx]); setShowReviewForm(true); }}>Escribir una opinión</div> */}
           <div className="order-action-button" onClick={async () => { setSelectedOrder(OrdersData[idx]); setShowReviewForm(true); }}>Escribir una opinión</div>
           <div className="order-action-button" onClick={() => navigate(`/profile/my-orders/${orderId}`)}>Detalles del pedido</div>
         </div>
@@ -234,7 +234,7 @@ function Orders({ userData, recents, setNotification }) {
                         <p>{
                           product.ProductName}</p>
                         <p>Cantidad: {product.Quantity}</p>
-                        <div className='order-buy-button'>Comprarlo de nuevo</div>
+                        <div className='order-buy-button' onClick={() => navigate(`/product/`+product.ProductID)}>Comprarlo de nuevo</div>
                       </div>
                     </div>
                   ))}

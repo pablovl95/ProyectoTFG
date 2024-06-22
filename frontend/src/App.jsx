@@ -4,7 +4,6 @@ import "./App.css";
 import { IconBubbleText } from '@tabler/icons-react';
 import Login from "./components/Login";
 import Navbar from "./components/navbar";
-import About from "./screens/About";
 import Home from "./screens/Home";
 import Search from "./screens/Search";
 import Product from "./screens/Product";
@@ -87,7 +86,6 @@ function App() {
         <Navbar loginView={() => setLoginView(true)} user={userData} changeCart={changer} setNotification={setNotification} />
         <Routes>
           <Route path="/" element={<Home changeCart={changeCart} setNotification={setNotification}/>} />
-          <Route path="/about" element={<About setNotification={setNotification}/>} />
           <Route path="/product/:id" element={<Product changeCart={changeCart} setNotification={setNotification}/>} />
           <Route path="/search" element={<Search changeCart={changeCart} setNotification={setNotification}/>} />
           <Route path="/cart" element={<Cart changeCart={changeCart} userData={userData} setNotification={setNotification}/>} />

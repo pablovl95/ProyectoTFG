@@ -73,7 +73,7 @@ function backendAddresses(app, db) {
   });
 
   // PUT para establecer una dirección como predeterminada
-  app.put('/api/v1/defaultAddress/:userId/:addressId', async (req, res) => {
+  app.get('/api/v1/defaultAddress/:userId/:addressId', async (req, res) => {
     const { userId, addressId } = req.params;
 
     try {
@@ -90,7 +90,7 @@ function backendAddresses(app, db) {
         WHERE AddressID = '${addressId}' AND UserID = '${userId}'
       `;
       const result = await db.execute(activateQuery);
-
+      console.log('result:', result);
       if (result.rowsAffected === 0) {
         res.status(404).send('La dirección especificada no pertenece al usuario o no se encontró.');
       } else {

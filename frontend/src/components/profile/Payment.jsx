@@ -9,7 +9,7 @@ import {
 } from '@tabler/icons-react';
 import "../css/profile/Payment.css";
 
-const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCart, Screen, shippingCostTotal }) => {
+const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCart, Screen, shippingCostTotal, setNotification }) => {
     const [selectedMethod, setSelectedMethod] = useState(null);
     const [selectOption, setSelectOption] = useState("Tarjeta de crédito");
     const [selectorOpen, setSelectorOpen] = useState(false);
@@ -36,12 +36,13 @@ const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCar
                 setPaymentMethods(methods);
             } catch (error) {
                 console.error('Error fetching payment methods:', error);
+                setNotification({ type: 'error', message: 'Ha ocurrido un error al cargar los metodos de pago.' });
             }
         };
         fetchPaymentMethods();
     }, [userData.UserID]);
     const handleApplyCoupon = () => {
-        alert("Esta funcionalidad estará disponible en futuras actualizaciones.");
+        setNotification({ type: 'info', message: 'Esta funcionalidad estara disponible en versiones posteriores' });
     };
 
     const handleAddPaymentMethod = async (event) => {
@@ -73,9 +74,11 @@ const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCar
             };
             setPaymentMethods([...paymentMethods, methods]);
             setOpenPaymentForm(false);
+            setNotification({ type: 'success', message: 'Metodo de pago añadido correctamente' });
 
         } catch (error) {
             console.error('Error adding payment method:', error);
+            setNotification({ type: 'error', message: 'Ha ocurrido un error al añadir los metodos de pago' });
         }
     };
 
@@ -92,18 +95,19 @@ const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCar
 
             setPaymentMethods(paymentMethods.filter(method => method.PaymentMethodID !== methodId));
 
-            // Clear selected method if it's the one being deleted
             if (selectedMethod && selectedMethod.PaymentMethodID === methodId) {
                 setSelectedMethod(null);
             }
+            setNotification({ type: 'success', message: 'Metodo de pago borrado con exito' });
         } catch (error) {
             console.error('Error deleting payment method:', error);
+            setNotification({ type: 'error', message: 'Ha ocurrido un error al borrar los metodos de pago' });
         }
     };
 
     const handleCheckout = () => {
         if (!selectedMethod) {
-            alert("Por favor, selecciona un método de pago antes de proceder.");
+            setNotification({ type: 'error', message: 'Por favor, selecciona un método de pago' });
             return;
         }
 
@@ -145,6 +149,7 @@ const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCar
             })
             .catch((error) => {
                 console.error('Error:', error);
+                setNotification({ type: 'error', message: 'Ha ocurrido un error al realizar el pedido' });
             });
     };
 

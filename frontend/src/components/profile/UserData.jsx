@@ -13,8 +13,6 @@ const UserData = ({ userData, changeUserData, setNotification }) => {
     const [user, setUser] = useState(null);
     const [isGoogleUser, setIsGoogleUser] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-
-    // Estados locales para los campos de usuario
     const [firstName, setFirstName] = useState(userData.FirstName || '');
     const [lastName, setLastName] = useState(userData.LastName || '');
     const [email, setEmail] = useState(userData.Email || '');
@@ -33,12 +31,12 @@ const UserData = ({ userData, changeUserData, setNotification }) => {
 
     const handleChangePassword = async () => {
         if (!user || !user.email) {
-            setErrorMessage('Error al obtener la información del usuario.');
+            setNotification({ type: 'error', message: 'Error al obtener la información del usuario.' });
             return;
         }
 
         if (newPassword !== confirmPassword) {
-            setErrorMessage('Las nuevas contraseñas no coinciden.');
+            setNotification({ type: 'error', message: 'Las contraseñas no coinciden.' });
             return;
         }
 

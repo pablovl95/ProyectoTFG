@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../css/profile/Shipping.css';
 import Addresses from '../Addresses';
 
-const Shipping = ({ setActiveComponent, cart, cartTotal, userData, setAddress, shippingCostTotal }) => {
+const Shipping = ({ setActiveComponent, cart, cartTotal, userData, setAddress, shippingCostTotal, setNotification }) => {
     const [shippingMethod, setShippingMethod] = useState('express');
     const [AddressSelected, setAddressSelected] = useState(null);
 
@@ -15,13 +15,13 @@ const Shipping = ({ setActiveComponent, cart, cartTotal, userData, setAddress, s
         setAddressSelected(addressID);
     };
     const handleApplyCoupon = () => {
-        alert("Esta funcionalidad estará disponible en futuras actualizaciones.");
+        setNotification({ type: 'info', message: 'Esta funcionalidad estará disponible en futuras actualizaciones.' });
     };
     const handleClickPayment = () => {
         if (AddressSelected) {
             setActiveComponent('payment');
         } else {
-            alert('Por favor, selecciona una dirección de envío');
+            setNotification({ type: 'error', message: 'Debes seleccionar una dirección de envío.' });
         }
     };
 
@@ -54,7 +54,7 @@ const Shipping = ({ setActiveComponent, cart, cartTotal, userData, setAddress, s
                     </div>
                 </div>
                 {shippingMethod === 'express' && (
-                    <Addresses userData={userData} setAddress={handleAddressSelect} Screen={"cart"} />
+                    <Addresses userData={userData} setAddress={handleAddressSelect} Screen={"cart"} setNotification={setNotification}/>
                 )}
                 {shippingMethod === 'pickup' && (
                     <a>Para próximas implementaciones</a>

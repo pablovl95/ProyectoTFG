@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import "../css/profile/OrdersDetails.css";
 import { StatusTranslation } from '../../utils/utils';
 
-function DetallesPedido({ userData, id }) {
+function DetallesPedido({ userData, id, setNotification }) {
   const [detallesPedido, setDetallesPedido] = useState(null);
   const backendUrl = process.env.NODE_ENV === 'development'
     ? 'http://localhost:5000'
@@ -20,9 +20,10 @@ function DetallesPedido({ userData, id }) {
           }
         });
         const data = await response.json();
-        setDetallesPedido(data[0]); // Suponemos que la API devuelve un array con un pedido
+        setDetallesPedido(data[0]);
       } catch (error) {
         console.error("Error al obtener los detalles del pedido:", error);
+        setNotification({ type: 'error', message: 'Error al obtener los detalles del pedido' });
       }
     };
     fetchData();

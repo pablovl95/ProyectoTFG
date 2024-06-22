@@ -4,8 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import ProductCard from '../components/productCard';
 import './css/Search.css';
-
-// Importa las funciones utilitarias desde utils.js
 import { buildURLSearchParams, renderStars } from '../utils/utils';
 
 const PrincipalCategories = [

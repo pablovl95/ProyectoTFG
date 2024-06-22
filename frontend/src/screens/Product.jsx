@@ -40,7 +40,6 @@ const Product = ({ changeCart, setNotification }) => {
       setProductInfo(productData.info);
       setNutritionalInfo(productData.nutritional);
       setProduct(productData.product);
-      console.log(product)
       const reviewsResponse = await fetch(`${backendUrl}/api/v1/reviews/${params.id}`);
       if (!reviewsResponse.ok) {
         setReviews([]);
@@ -49,7 +48,6 @@ const Product = ({ changeCart, setNotification }) => {
       setReviews(reviewsData);
       console.log(product)
     } catch (error) {
-      console.log(error);
       setNotification({ type: 'error', message: "Ha ocurrido un problema con el producto. Reinicia la página o vuelve más tarde." });
     } finally {
       setLoading(false);

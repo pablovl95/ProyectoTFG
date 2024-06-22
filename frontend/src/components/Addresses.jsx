@@ -3,7 +3,7 @@ import './css/Addresses.css';
 import { IconCirclePlus } from '@tabler/icons-react';
 import AddressesForm from "./AddressesForm";
 
-const Addresses = ({ userData, setAddress, Screen }) => {
+const Addresses = ({ userData, setAddress, Screen, setNotification }) => {
     const [addresses, setAddresses] = useState([]);
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingIndex, setEditingIndex] = useState(null);
@@ -43,7 +43,10 @@ const Addresses = ({ userData, setAddress, Screen }) => {
                 setAddresses(data);
             }
             )
-            .catch(error => console.error('Error fetching addresses:', error));
+            .catch(error => {
+                setNotification({ type: 'error', message: 'Error al obtener las direcciones' });
+                console.error('Error fetching addresses:', error)
+            });
     }, [userData.UserID, Screen]);
     const handleEditButtonClick = (event, index) => {
         event.stopPropagation();
@@ -82,7 +85,7 @@ const Addresses = ({ userData, setAddress, Screen }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ ...form, UserID: userData.UserID})
+                body: JSON.stringify({ ...form, UserID: userData.UserID })
             });
             if (editingIndex !== null) {
                 const newAddresses = [...addresses];
@@ -95,8 +98,10 @@ const Addresses = ({ userData, setAddress, Screen }) => {
                 setAddresses([...addresses, data]);
             }
             closeForm();
+            setNotification({ type: 'success', message: 'Dirección guardada correctamente' });
         } catch (error) {
             console.error('Error submitting address form:', error);
+            setNotification({ type: 'error', message: 'Error al guardar la dirección' });
         }
     }
 
@@ -143,6 +148,7 @@ const Addresses = ({ userData, setAddress, Screen }) => {
 
     const setDefaultAddress = async (addressID) => {
         try {
+            console.log(`/api/v1/defaultAddress/${userData.UserID}/${addressID}`)
             const response = await fetch(`${backendUrl}/api/v1/defaultAddress/${userData.UserID}/${addressID}`);
             if (response.ok) {
                 const updatedAddresses = addresses.map(address => {
@@ -153,11 +159,14 @@ const Addresses = ({ userData, setAddress, Screen }) => {
                     }
                 });
                 setAddresses(updatedAddresses);
+                setNotification({ type: 'success', message: 'Dirección por defecto establecida correctamente' });
             } else {
                 console.error('Error setting default address:', response.statusText);
+                setNotification({ type: 'error', message: 'Error al establecer la dirección por defecto' });
             }
         } catch (error) {
             console.error('Error setting default address:', error);
+            setNotification({ type: 'error', message: 'Error al establecer la dirección por defecto' });
         }
     };
 
@@ -173,8 +182,10 @@ const Addresses = ({ userData, setAddress, Screen }) => {
                 },
                 body: JSON.stringify({ ...addressToDelete, UserID: "null" })
             });
+            setNotification({ type: 'success', message: 'Dirección eliminada correctamente' });
         } catch (error) {
             console.error('Error deleting address:', error);
+            setNotification({ type: 'error', message: 'Error al eliminar la dirección' });
         }
     };
 

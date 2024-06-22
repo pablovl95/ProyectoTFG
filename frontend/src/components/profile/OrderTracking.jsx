@@ -19,6 +19,7 @@ const OrderTracking = ({ setNotification, userData }) => {
         setIsLoading(true);
         const fetchOrdersID = async () => {
             setIsLoading(true);
+            console.log(id2);
             try {
                 const url = `${backendUrl}/api/v1/orders/${userData.UserID}/${id2}`;
                 const response = await fetch(url);
@@ -76,30 +77,7 @@ const OrderTracking = ({ setNotification, userData }) => {
         }
     }
 
-    function renderButtonActions(status) {
-        switch (status) {
-            case 'pending':
-                return (
-                    <div>
-                        <button className="order-tracking-product-action-button">Cancelar</button>
-                    </div>
-                );
-            case 'shipped':
-                return (
-                    <div>
-                        <a>No hay acciones disponibles en este estado</a>
-                    </div>
-                );
-            case 'delivered':
-                return (
-                    <div>
-                        <button className="order-tracking-product-action-button">Calificar</button>
-                    </div>
-                );
-            default:
-                return null;
-        }
-    }
+  
 
     const handleSearch = async () => {
         if (searchId.trim() === '') {
@@ -108,13 +86,13 @@ const OrderTracking = ({ setNotification, userData }) => {
         }
 
         try {
-            const response = await fetch(`${backendUrl}/api/v1/orders/${userData.UserID}/${searchId}`);
+            const response = await fetch(`${backendUrl}/api/v1/orders/${userData.UserID}?q=${searchId}`);
             const data = await response.json();
             if (response.ok) {
-                setOrders([data]);
+                setOrders(data);
             } else {
                 setError(data.message);
-                setNotification({ message: data.message, type: 'error' });
+                setNotification({ message: "No existen resultados con ese identificador", type: 'error' });
             }
         } catch (err) {
             console.error('Error fetching order data:', err);

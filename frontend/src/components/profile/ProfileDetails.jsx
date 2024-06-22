@@ -12,10 +12,10 @@ const ProfileDetails = ({ userData, changeUserData, setNotification }) => {
             ContentComponent = <UserData userData={userData} changeUserData={changeUserData} setNotification={setNotification}/>;
             break;
         case 'direcciones':
-            ContentComponent = <Addresses userData={userData} Screen={"data"}/>;
+            ContentComponent = <Addresses userData={userData} Screen={"data"} setNotification={setNotification}/>;
             break;
         case 'metodosPago':
-            ContentComponent = <Payment userData={userData} Screen={"Details"}/>;
+            ContentComponent = <Payment userData={userData} Screen={"Details"} setNotification={setNotification}/>;
             break;
         default:
             ContentComponent = null;

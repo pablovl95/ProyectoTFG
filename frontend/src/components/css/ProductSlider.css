@@ -54,4 +54,18 @@
     height: 30vh;
     object-fit: cover;
   }
+  .left-arrow {
+    left: 0;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.123);
+    border: none;
+  }
+  
+  .right-arrow {
+    right: 0;
+    height: 100%;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.123);
+  }
+  
 }

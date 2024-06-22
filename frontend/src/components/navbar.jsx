@@ -7,7 +7,7 @@ import { auth } from "../auth";
 import UserMenu from "./UserMenu"; 
 import { useNavigate } from "react-router-dom";
 
-export default function Navbar({ loginView, user, changeCart }) {
+export default function Navbar({ loginView, user, changeCart, setNotification }) {
   const PrincipalCategories = [
     { id: 1, name: "Frutas" },
     { id: 2, name: "Verduras" },

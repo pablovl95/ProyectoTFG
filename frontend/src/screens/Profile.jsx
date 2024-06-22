@@ -19,7 +19,6 @@ const Profile = ({ userData, changeUserData, setNotification }) => {
   }, [id]);
 
   const handleScreenSelect = (screen) => {
-    // Solo cambia el estado si el screen es diferente al seleccionado
     if (screen !== selectedScreen) {
       setSelectedScreen(screen);
     }
@@ -50,10 +49,17 @@ const Profile = ({ userData, changeUserData, setNotification }) => {
     <div className="profile-container">
       <Sidebar selectedScreen={selectedScreen} onSelect={handleScreenSelect} getNombre={getNombre} />
       <div className="profile-content">
-        <a className={selectedScreen != 'summary' ? 'link-no-active' : 'link-active'} onClick={() => navigate("/profile")}>Mi cuenta </a>{" > "}
+        <a className={selectedScreen !== 'summary' ? 'link-no-active' : 'link-active'} onClick={() => navigate("/profile")}>Mi cuenta </a>{" > "}
         <a onClick={() => navigate("/profile/" + selectedScreen)} className={id2 ? 'link-no-active' : 'link-active'}>{getNombre(selectedScreen)}</a>
-        {id2 ? <>{" > "} <a className='link-active' onClick={() => navigate("/profile/my-orders" + id2)}>Detalles del pedido</a></> : ""}
-        {selectedScreen === 'summary' && <><h2>Ultimos pedidos</h2> <Resumen userData={userData} setNotification={setNotification} /></>}
+        {id2 ? <>{" > "} <a className='link-active' onClick={() => navigate("/profile/my-orders/" + id2)}>Detalles del pedido</a></> : ""}
+        
+        {/* Mostrar el contenido correspondiente a la pantalla seleccionada */}
+        {selectedScreen === 'summary' && (
+          <>
+            <h2>Últimos pedidos</h2>
+            <Summary userData={userData} setNotification={setNotification} />
+          </>
+        )}
         {selectedScreen === 'my-orders' && (
           id2 ? (
             <>
@@ -67,23 +73,29 @@ const Profile = ({ userData, changeUserData, setNotification }) => {
             </>
           )
         )}
-
         {selectedScreen === 'order-tracking' && <OrderTracking userData={userData} setNotification={setNotification} />}
         {selectedScreen === 'my-coupons' && <MyCoupons />}
-        {selectedScreen === 'personal-data' && <><h2>Mis datos</h2> <ProfileDetails userData={userData} changeUserData={changeUserData} setNotification={setNotification}/></>}
+        {selectedScreen === 'personal-data' && (
+          <>
+            <h2>Mis datos</h2>
+            <ProfileDetails userData={userData} changeUserData={changeUserData} setNotification={setNotification} />
+          </>
+        )}
         {selectedScreen === 'work-with-us' && <WorkWithUs />}
-      </div >
-    </div >
+      </div>
+    </div>
   );
 };
 
 const Sidebar = ({ selectedScreen, onSelect, getNombre }) => {
   const [openSidebar, setOpenSidebar] = useState(false);
   const navigate = useNavigate();
+
   const handleLogout = () => {
     auth.signOut();
     navigate('/');
   };
+
   return (
     <>
       <div className="sidebar">
@@ -108,15 +120,16 @@ const Sidebar = ({ selectedScreen, onSelect, getNombre }) => {
             <Link to={`/profile/my-coupons`} className={selectedScreen === 'my-coupons' ? 'sidebar-toggle active' : 'sidebar-toggle'} onClick={() => { onSelect('my-coupons'); setOpenSidebar(!openSidebar); }}>Mis cupones</Link>
             <Link to={`/profile/personal-data`} className={selectedScreen === 'personal-data' ? 'sidebar-toggle active' : 'sidebar-toggle'} onClick={() => { onSelect('personal-data'); setOpenSidebar(!openSidebar); }}>Mis datos</Link>
             <Link to={`/profile/contact-us`} className={selectedScreen === 'contact-us' ? 'sidebar-toggle active' : 'sidebar-toggle'} onClick={() => { onSelect('contact-us'); setOpenSidebar(!openSidebar); }}>Contactanos</Link>
-            <Link to={`/profile/work-with-us`} className={selectedScreen === 'work-with-us' ? 'sidebar-toggle active' : 'sidebar-toggle'} onClick={() => onSelect('work-with-us')}>Trabaja con nosotros</Link>
+            <Link to={`/profile/work-with-us`} className={selectedScreen === 'work-with-us' ? 'sidebar-toggle active' : 'sidebar-toggle'} onClick={() => { onSelect('work-with-us'); setOpenSidebar(!openSidebar); }}>Trabaja con nosotros</Link>
             <button className="logout-button" onClick={handleLogout}>Cerrar sesión</button>
-          </div>)}
+          </div>
+        )}
       </div>
     </>
   );
 }
 
-const Resumen = ({ userData, setNotification }) => {
+const Summary = ({ userData, setNotification }) => {
   const [userAddress, setUserAddress] = useState(null);
   const navigate = useNavigate();
   const backendUrl = process.env.NODE_ENV === 'development'
@@ -134,8 +147,8 @@ const Resumen = ({ userData, setNotification }) => {
           setUserAddress(data[0]);
         }
       })
-      .catch(error => setNotification({ type: 'error', message: error.message }));
-  }, [userData.id]);
+      .catch(error => setNotification({ type: 'error', message: "No se han podido cargar las direcciones" }));
+  }, [userData.UserID, backendUrl, setNotification]);
 
   return (
     <div className='profile-resume-content'>
