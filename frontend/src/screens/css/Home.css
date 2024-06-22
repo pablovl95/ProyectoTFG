@@ -27,6 +27,7 @@
   .home-options-container{
     display: flex;
     flex-direction: row;
+    margin-bottom: 2rem;
   }
   .home-option {
     margin: 1rem 0.5rem 0 0.5rem;
@@ -40,17 +41,53 @@
     cursor: pointer;
     transition: 0.3s;
   }
+  .home-redirections-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+  }
   
+  .home-redirection {
+    flex: 1 1 calc(25% - 1rem);
+    max-width: calc(25% - 1rem);
+    cursor: pointer;
+  }
+  
+  .home-redirection img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .home-redirection img:hover {
+    transform: scale(1.05);
+  }
+
   @media screen and (max-width: 768px) {
     .data-container-cards{
       display: grid;
       grid-template-columns: repeat(2, 1fr);
     }
-    .data-container-cards{
+    .data-container-cards {
       display: flex;
-      width: 95%;
-      margin:0;
-      padding: 0;
-      justify-content: row;
+      flex-wrap: wrap;  
+      width: 100%;
+      margin: auto;
+      justify-content: space-around; 
+      padding: 0; 
+    }
+
+    .home-redirections-images {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+  
+    .home-redirection {
+      flex: 1 1 45%;
+      max-width: 100%;
     }
   }

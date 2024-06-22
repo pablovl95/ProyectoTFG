@@ -57,14 +57,23 @@ function Home({ changeCart }) {
             Trabaja con nosotros
           </div>
         </div>
-        <div className="home-options-container">
-          <div className='home-option' style={{ backgroundColor: "#4A90E2" }} onClick={() => navigate("/next-implementations")}>
-            Ofertas que se adecuan a tus gustos
+
+        <div className='home-redirections-images'>
+          <div className='home-redirection' onClick={() => navigate("/work-with-us")}>
+            <img src="/Image1.png" alt="redirection1" />
           </div>
-          <div className='home-option' style={{ backgroundColor: "#50E3C2" }} onClick={() => navigate("/work-with-us")}>
-            Trabaja con nosotros
+          <div className='home-redirection' onClick={() => navigate("/next-implementations")}>
+            <img src="/Image2.png" alt="redirection2" />
           </div>
+          <div className='home-redirection' onClick={() => navigate("/next-implementations")}>
+            <img src="/Image3.png" alt="redirection3" />
+          </div>
+          <div className='home-redirection' onClick={() => navigate("/next-implementations")}>
+            <img src="/Image4.png" alt="redirection4" />
+          </div>
+
         </div>
+
         <h1 className="HomeTitle">
           Productos más vendidos
         </h1>
