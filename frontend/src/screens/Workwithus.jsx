@@ -8,7 +8,7 @@ const Workwithus = () => {
       telefono: '',
       motivo: '',
       mensaje: '',
-      recursos: [], // Inicializamos como un array vacío
+      recursos: [],  
     });
   
     const handleChange = (e) => {

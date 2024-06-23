@@ -1,26 +1,25 @@
-/* CSS para el overlay y el formulario centrado */
 .write-review-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Color de fondo semi-transparente */
+    background-color: rgba(0, 0, 0, 0.5); 
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999; /* Asegura que esté por encima de otros elementos */
+    z-index: 999; 
 }
 
 .write-review-container {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    max-width: 400px; /* Ancho máximo del formulario */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px; 
     width: 100%;
     text-align: center;
-    position: relative; /* Agregado para el posicionamiento del botón de cierre */
+    position: relative; 
 }
 
 .close-btn {

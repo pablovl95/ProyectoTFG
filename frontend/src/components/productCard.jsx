@@ -8,10 +8,8 @@ const ProductCard = ({ product, changeCart }) => {
     const imageUrl = product?.ImageContent;
 
     const addToCart = () => {
-        // Retrieve cart from localStorage
         let cart = JSON.parse(localStorage.getItem("cart"));
         
-        // Ensure cart is an array, default to an empty array if null
         if (!Array.isArray(cart)) {
             cart = [];
         }

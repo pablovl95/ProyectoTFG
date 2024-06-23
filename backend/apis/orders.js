@@ -53,8 +53,6 @@ function backendOrders(app, db) {
     try {
       const orderId = req.params.id;
       const updates = req.body;
-
-      // Construir la consulta de actualización dinámicamente
       let updateOrderQuery = 'UPDATE Orders SET';
       const updateValues = [];
       for (const key in updates) {

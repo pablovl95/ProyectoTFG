@@ -15,8 +15,8 @@
   background-color: #ffffff;
   padding: 0.5rem;
   margin: 0.25rem 0;
-  display: inline-block; /* Ajustar el ancho al contenido */
-  justify-content: left; /* Esto no es necesario para elementos en línea */
+  display: inline-block; 
+  justify-content: left; 
   color: rgb(0, 0, 0);
   border: 1px solid #adadad;
   cursor: pointer;

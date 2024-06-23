@@ -120,7 +120,7 @@
 .login-close-div-mobile{
   display: none;
 }
-/* Agrega estilos para dispositivos móviles */
+
 @media (max-width: 768px) {
   .login-container {
 

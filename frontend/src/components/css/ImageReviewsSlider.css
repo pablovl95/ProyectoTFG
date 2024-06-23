@@ -10,12 +10,12 @@
 }
 
 .slider-images img {
-  height: 200px; /* Ajusta la altura fija que desees */
+  height: 200px;
   object-fit: cover;
   border-radius: 0.5rem;
   margin: 1rem;
   cursor: pointer; 
-  flex-shrink: 0; /* Evita que las imágenes se reduzcan por debajo de su tamaño original */
+  flex-shrink: 0; 
 }
 
 .arrow {
@@ -31,7 +31,7 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  z-index: 10; /* Asegura que las flechas estén por encima de las imágenes */
+  z-index: 10; 
 }
 
 .arrow.left {
@@ -73,7 +73,7 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    z-index: 10; /* Asegura que las flechas estén por encima de las imágenes */
+    z-index: 10; 
   }
   .arrow.left {
     left: 0; 

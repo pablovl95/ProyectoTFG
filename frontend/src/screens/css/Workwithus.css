@@ -1,24 +1,23 @@
-/* Workwithus.css */
 .workwithus-container {
     width: 80%;
     margin: 40px auto; 
     padding: 30px;
-    background-color: #f8f8f8; /* Soft background color */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f8f8f8; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
 
 .workwithus-container h1 {
     text-align: center;
     margin:0;
     margin-bottom: 30px;
-    color: #333; /* Dark text color */
+    color: #333; 
 }
 
 .workwithus-container form {
     display: flex;
     flex-direction: column; 
-    gap: 15px; /* Spacing between form elements */
+    gap: 15px; 
 }
 
 .workwithus-container input[type="text"],
@@ -28,7 +27,7 @@
 .workwithus-container textarea {
     padding: 1rem;
     margin:0;
-    border: 1px solid #ddd; /* Light border */
+    border: 1px solid #ddd; 
     border-radius: 4px;
     box-sizing: border-box; 
 }
@@ -39,10 +38,10 @@
 }
 
 .workwithus-container button[type="submit"] {
-    background-color: #0f9a00; /* Primary color */
+    background-color: #0f9a00; 
     color: white;
     border: none;
-    
+    padding: 0.5rem;
     width: 100%;
     margin:0;
     border-radius: 4px;
@@ -51,10 +50,9 @@
 }
 
 .workwithus-container button[type="submit"]:hover {
-    background-color: #0c7300; /* Darker shade on hover */
+    background-color: #0c7300; 
 }
 
-/* Image previews */
 .image-previews {
     display: flex;
     flex-wrap: wrap;

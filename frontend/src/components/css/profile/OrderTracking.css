@@ -156,27 +156,27 @@
 
 @media (max-width: 768px) {
     .order-tracking-container {
-        padding: 10px; /* Reduce padding para mejor ajuste en dispositivos pequeños */
+        padding: 10px; 
     }
     
     .order-tracking-item {
-        padding: 10px; /* Reduce padding para mejor ajuste en dispositivos pequeños */
+        padding: 10px; 
     }
 
     .order-tracking-product {
-        flex-direction: column; /* Cambia a columna */
+        flex-direction: column; 
         padding: 10px; 
         margin-bottom:1rem;
     }
 
     .order-tracking-product img {
-        width: 100%; /* Ocupa todo el ancho disponible */
-        height: auto; /* Ajusta la altura automáticamente */
+        width: 100%; 
+        height: auto; 
     }
 
     .order-tracking-product-content {
-        width: 100%; /* Ocupa todo el ancho disponible */
-        padding-left: 0; /* Quita el padding izquierdo */
+        width: 100%;
+        padding-left: 0; 
         margin-top: 10px; 
         
     }
@@ -187,10 +187,10 @@
     }
 
     .order-tracking-product-actions {
-        width: 100%; /* Ocupa todo el ancho disponible */
-        align-items: flex-start; /* Alinea a la izquierda */
+        width: 100%; 
+        align-items: flex-start; 
         justify-content: flex-start;
-        margin-top: 10px; /* Añade margen para separación */
+        margin-top: 10px; 
     }
 
     .order-tracking-status {
@@ -203,26 +203,26 @@
     }
 
     .order-tracking-products-table, .order-tracking-products-table th, .order-tracking-products-table td {
-        padding: 5px; /* Reduce padding para mejor ajuste */
-        font-size: 0.8rem; /* Reduce el tamaño de fuente */
+        padding: 5px; 
+        font-size: 0.8rem; 
     }
 
     .order-tracking-products-table {
-        display: block; /* Cambia la tabla a block */
-        overflow-x: auto; /* Permite el desplazamiento horizontal */
+        display: block; 
+        overflow-x: auto; 
     }
 
     .order-tracking-card {
-        padding: 10px; /* Reduce padding */
-        margin-bottom: 1rem; /* Reduce margen inferior */
+        padding: 10px; 
+        margin-bottom: 1rem; 
     }
 
     .order-tracking-table-column {
-        align-items: flex-start; /* Alinea a la izquierda */
+        align-items: flex-start; 
     }
 
     .order-tracking-status {
-        width: 100%; /* Ocupa todo el ancho disponible */
-        margin-bottom: 10px; /* Reduce el margen inferior */
+        width: 100%; 
+        margin-bottom: 10px; 
     }
 }

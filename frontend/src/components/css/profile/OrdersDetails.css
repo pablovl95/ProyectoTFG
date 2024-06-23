@@ -1,5 +1,3 @@
-/* OrdersDetails.css */
-
 .order-details-container {
     display: flex;
     flex-direction: column;
@@ -88,7 +86,7 @@
     .order-details-change-button,
     .order-details-tracking-button,
     .order-details-review-button {
-        width: 100%; /* Hace que los botones ocupen el ancho completo en dispositivos pequeños */
+        width: 100%; 
     }
 
     .order-details-table-summary,
@@ -98,7 +96,7 @@
     }
 
     .order-details-image {
-        width: 50px; /* Reduce el tamaño de las imágenes de productos en dispositivos pequeños */
+        width: 50px; 
         height: 50px;
         border-radius: 0.5rem;
     }

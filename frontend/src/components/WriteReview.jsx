@@ -26,7 +26,6 @@ function WriteReview({ order, onClose, userData }) {
 
     const handleReviewSubmit = async () => {
         try {
-            // Validar campos antes de enviar
             if (rating < 1 || rating > 5) {
                 setError('La calificación debe estar entre 1 y 5.');
                 return;
@@ -42,8 +41,6 @@ function WriteReview({ order, onClose, userData }) {
             formData.append('Rating', rating);
             formData.append('UserID', userData.UserID);
             formData.append('containsPhoto', selectedImages.length > 0 ? '1' : '0');
-
-            // Agregar imágenes a formData
             selectedImages.forEach((image) => {
                 formData.append('images', image);
             });
@@ -57,7 +54,7 @@ function WriteReview({ order, onClose, userData }) {
                 throw new Error('Error al enviar la reseña.');
             }
 
-            onClose(); // Cerrar el formulario tras el éxito
+            onClose();
         } catch (error) {
             setError(error.message);
         }

@@ -124,7 +124,7 @@ function backendProducts(app, db, upload) {
     app.post('/api/v1/productImages/:productId', upload.single('image'), async (req, res) => {
         try {
             const productId = req.params.productId;
-            const image = req.file.buffer; // Accedemos al buffer del archivo en memoria
+            const image = req.file.buffer;
             await db.execute(`INSERT INTO ProductImages (ProductID, ImageContent) VALUES ('${productId}', '${image.toString('base64')}')`);
             res.status(200).send('Imagen subida correctamente');
         } catch (error) {

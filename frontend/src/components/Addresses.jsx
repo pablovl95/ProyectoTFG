@@ -87,14 +87,19 @@ const Addresses = ({ userData, setAddress, Screen, setNotification }) => {
                 },
                 body: JSON.stringify({ ...form, UserID: userData.UserID })
             });
+            console.log("form", form);
+            console.log("editingIndex", editingIndex);
             if (editingIndex !== null) {
                 const newAddresses = [...addresses];
-                console.log(form);
                 newAddresses[editingIndex] = form;
                 setAddresses(newAddresses);
             } else {
                 const data = await response.json();
                 setAddressSelected(data.AddressID);
+                if (form.DefaultAddress === 1) {
+                    setAddress(data.AddressID);
+                    setAddressSelected(data.AddressID);
+                }
                 setAddresses([...addresses, data]);
             }
             closeForm();
@@ -148,7 +153,6 @@ const Addresses = ({ userData, setAddress, Screen, setNotification }) => {
 
     const setDefaultAddress = async (addressID) => {
         try {
-            console.log(`/api/v1/defaultAddress/${userData.UserID}/${addressID}`)
             const response = await fetch(`${backendUrl}/api/v1/defaultAddress/${userData.UserID}/${addressID}`);
             if (response.ok) {
                 const updatedAddresses = addresses.map(address => {

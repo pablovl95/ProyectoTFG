@@ -82,7 +82,7 @@
 }
 
 .product-card-add-to-cart-button {
-  /* Colocamos el botón al final */
+
   margin-top: 1rem;
   background-color: #006b09;
   color: #fff;
@@ -105,7 +105,7 @@
 .product-card-rating span {
   font-size: 1rem;
   color: #d3d3d3;
-  /* Color de las estrellas vacías */
+
   margin-right: 5px;
   position: relative;
   display: inline-block;
@@ -113,18 +113,17 @@
 
 .product-card-rating .filled {
   color: #ffc107;
-  /* Color de las estrellas llenas */
+
 }
 
 .product-card-rating .half-filled {
   color: #d3d3d3;
-  /* Color de las estrellas medio llenas */
+
 }
 
 .product-card-rating .half-filled::before {
   content: '★';
   color: #ffc107;
-  /* Color de las estrellas vacías */
   position: absolute;
   left: 0;
   width: 50%;
@@ -173,7 +172,6 @@
   }
 
   .product-card-add-to-cart-button {
-    /* Colocamos el botón al final */
     margin-top: auto;
     background-color: #006b09;
     color: #fff;
