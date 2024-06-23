@@ -1,9 +1,9 @@
-describe('Prueba del Flujo de Inicio de Sesión', () => {
+describe('Prueba mostrar perfil', () => {
   beforeEach(() => {
     cy.visit('/');
   });
 
-  it('debería navegar a la página de inicio de sesión e iniciar sesión correctamente', () => {
+  it('debería iniciar sesión y mostrar los datos del usuario', () => {
 
     cy.wait(1000);
 

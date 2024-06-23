@@ -1,9 +1,9 @@
-describe('Prueba del Flujo de Inicio de Sesión', () => {
+describe('Prueba de datos personales', () => {
   beforeEach(() => {
     cy.visit('/');
   });
 
-  it('debería navegar a la página de inicio de sesión e iniciar sesión correctamente', () => {
+  it('debería editar los datos personales', () => {
 
     cy.wait(1000);
 

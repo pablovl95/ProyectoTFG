@@ -53,7 +53,6 @@ const Profile = ({ userData, changeUserData, setNotification }) => {
         <a onClick={() => navigate("/profile/" + selectedScreen)} className={id2 ? 'link-no-active' : 'link-active'}>{getNombre(selectedScreen)}</a>
         {id2 ? <>{" > "} <a className='link-active' onClick={() => navigate("/profile/my-orders/" + id2)}>Detalles del pedido</a></> : ""}
         
-        {/* Mostrar el contenido correspondiente a la pantalla seleccionada */}
         {selectedScreen === 'summary' && (
           <>
             <h2>Últimos pedidos</h2>

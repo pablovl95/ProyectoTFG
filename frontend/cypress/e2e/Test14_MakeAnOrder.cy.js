@@ -1,9 +1,9 @@
-describe('Prueba de búsqueda de productos', () => {
+describe('Prueba de pedidos', () => {
   beforeEach(() => {
     cy.visit('/');
   });
 
-  it('debería buscar "plátano" en productos', () => {
+  it('debería realizar un pedido', () => {
     cy.wait(1000);
 
     cy.get('.tabler-icon-users').click();

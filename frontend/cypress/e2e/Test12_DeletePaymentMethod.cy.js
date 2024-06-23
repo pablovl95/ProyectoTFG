@@ -1,9 +1,9 @@
-describe('Prueba del Flujo de Inicio de Sesión', () => {
+describe('Prueba de metodo de pago', () => {
   beforeEach(() => {
     cy.visit('/');
   });
 
-  it('debería añadir un metodo de pago correctamente', () => {
+  it('Debería añadir y eliminar un metodo de pago', () => {
 
     cy.wait(1000);
 
@@ -26,11 +26,20 @@ describe('Prueba del Flujo de Inicio de Sesión', () => {
 
     cy.contains("Añadir un nuevo").click();
 
-    cy.get('input[name="cardNumber"]').type('5432 8821 2901 1298');
-    cy.get('input[name="expiryDate"]').type('01/29');
-    cy.get('input[name="cvv"]').type('357');
+    cy.get('input[name="cardNumber"]').type('0000 0000 0000 0000');
+    cy.get('input[name="expiryDate"]').type('00/00');
+    cy.get('input[name="cvv"]').type('000');
     cy.get('input[name="cardHolderName"]').type('Prueba Prueba Prueba');
 
     cy.contains("Guardar").click();
+
+    cy.wait(1000);
+
+    cy.contains('0000 0000 0000 0000') 
+      .parents('.payment-card-content') 
+      .find('.payment-button-delete') 
+      .click();
+
+    cy.contains('Metodo de pago borrado con exito').should('be.visible');
   });
 });

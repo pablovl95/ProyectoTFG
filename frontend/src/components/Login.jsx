@@ -29,7 +29,7 @@ function Login({ onClose, setUser, setNotification }) {
       const userSnapshot = await fetch(`${backendUrl}/api/v1/users/${user.uid}`);
       const userData = await userSnapshot.json();
       if (userData.length === 0) {
-        await fetch(`${backendUrl}/api/v1/users`, {
+        const responseD = await fetch(`${backendUrl}/api/v1/users`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ function Login({ onClose, setUser, setNotification }) {
           Phone: Telephone,
         }),
       });
-      setUser(user);
+      await setUser(user);
       setNotification({ type: 'success', message: 'Te has registrado correctamente' });
     } catch (error) {
       setNotification({ type: 'error', message: 'Error durante el registro con correo electrónico' });

@@ -24,10 +24,10 @@ const Payment = ({ setActiveComponent, userData, cartTotal, AddressID, changeCar
         const fetchPaymentMethods = async () => {
             try {
                 const response = await fetch(`${backendUrl}/api/v1/users/payment/${userData.UserID}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch payment methods');
-                }
                 const data = await response.json();
+                if (data.length === 0) {
+                    return;
+                }
                 const methods = data.map((x) => ({
                     PaymentMethodID: x.PaymentMethodID,
                     MethodType: x.PaymentMethodType,

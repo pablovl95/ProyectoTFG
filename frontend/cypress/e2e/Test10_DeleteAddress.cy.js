@@ -1,9 +1,9 @@
-describe('Prueba del Flujo de Inicio de Sesión', () => {
+describe('Prueba eliminar una dirección', () => {
   beforeEach(() => {
     cy.visit('/');
   });
 
-  it('debería navegar a la página de inicio de sesión e iniciar sesión correctamente', () => {
+  it('Debería iniciar sesión, añadir la dirección y eliminarla', () => {
 
     cy.wait(1000);
 

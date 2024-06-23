@@ -14,9 +14,10 @@ function backendUsers(app, db) {
     });
 
     app.get('/api/v1/users/:id', async (req, res) => {
-        const id = req.params.id; // Obtener el valor del parámetro ID de la solicitud
+        const id = req.params.id; 
         try {
             const data = await db.execute(`SELECT * FROM Users WHERE UserID = '${id}'`);
+            console.log(data);
             if (data.rows.length === 0) {
               res.status(404).send([]);
           } else {
@@ -57,7 +58,8 @@ function backendUsers(app, db) {
         } else {
           const query = `INSERT INTO Users (UserID, FirstName, LastName, Email, Phone, UserType, AccountStatus) 
         VALUES ('${UserID}','${FirstName}', '${LastName}', '${Email}', '${Phone}', 'consumer', 'active');`;
-          try {
+        console.log(query);  
+        try {
             const data = await db.execute(query);
             res.status(201).send(data);
           } catch (error) {

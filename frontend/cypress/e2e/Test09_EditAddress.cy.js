@@ -1,4 +1,4 @@
-describe('Prueba del Flujo de Inicio de Sesión', () => {
+describe('Prueba editar una dirección', () => {
     beforeEach(() => {
       cy.visit('/');
     });

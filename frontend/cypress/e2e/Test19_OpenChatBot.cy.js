@@ -3,7 +3,7 @@ describe('Prueba del Flujo de Inicio de Sesión', () => {
     cy.visit('/');
   });
 
-  it('debería navegar a la página de inicio de sesión e iniciar sesión correctamente', () => {
+  it('debería abrir el chat de atención al cliente', () => {
 
     cy.wait(1000);
 

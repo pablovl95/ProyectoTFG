@@ -1,9 +1,9 @@
-describe('Prueba de búsqueda de productos', () => {
+describe('Prueba añadir un producto al carrito', () => {
   beforeEach(() => {
     cy.visit('/');
   });
 
-  it('debería buscar "plátano" en productos', () => {
+  it('debería buscar un producto "plátano" y añadirlo al carrito', () => {
     cy.wait(1000);
 
     cy.get('#searchbar-input').type('plátano');

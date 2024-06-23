@@ -1,9 +1,9 @@
-describe('Prueba del Flujo de Inicio de Sesión', () => {
+describe('Prueba de pedidos', () => {
   beforeEach(() => {
     cy.visit('/');
   });
 
-  it('debería navegar a la página de inicio de sesión e iniciar sesión correctamente', () => {
+  it('debería revisar el seguimiento de un pedido', () => {
 
     cy.wait(1000);
 

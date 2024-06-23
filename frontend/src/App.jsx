@@ -30,7 +30,7 @@ function App() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setUser(user);
-      if (user) {
+      if (user && userData === null) {
         try {
           const data = await fetch(`${backendUrl}/api/v1/users/${user.uid}`);
           const response = await data.json();
@@ -44,6 +44,7 @@ function App() {
               UserID: user.uid || "NULL",
               Phone: user.phoneNumber || 'NULL',
             };
+            console.log("Metiendolo")
             await fetch(`${backendUrl}/api/v1/users`, {
               method: 'POST',
               headers: {
@@ -105,7 +106,7 @@ function App() {
         </Routes>
         {loginView && !user && (
           <div className="overlay">
-            <Login onClose={() => setLoginView(false)} setUser={(user) => setUser(user)} setNotification={setNotification} />
+            <Login onClose={() => setLoginView(false)} setUser={(user) => setUserData(user)} setNotification={setNotification} />
           </div>
         )}
         <div className="chatbot-icon" onClick={() => navigate("/next-implementations")}>
